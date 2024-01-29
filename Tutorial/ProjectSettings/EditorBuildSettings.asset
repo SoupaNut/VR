@@ -8,4 +8,10 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
-  m_configObjects: {}
+  m_configObjects:
+    com.unity.xr.management.loader_settings: {fileID: 11400000, guid: 21de12dd8a8f5ce499ba32c2c0ed89a1,
+      type: 2}
+    com.unity.xr.openxr.settings4: {fileID: 11400000, guid: 3eedcdca8a7cfc244909b8efa1607c24,
+      type: 2}
+    xr.sdk.mock-hmd.settings: {fileID: 11400000, guid: 20535a81bebc7464597b9b80fdf99aec,
+      type: 2}
