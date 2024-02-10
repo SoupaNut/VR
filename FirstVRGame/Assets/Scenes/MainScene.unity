@@ -1339,7 +1339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   head: {fileID: 1967186498}
-  spawnDistance: 2
+  spawnDistance: 1
   menu: {fileID: 1978393007}
   showButton:
     m_UseReference: 1
@@ -1354,6 +1354,8 @@ MonoBehaviour:
       m_Flags: 0
     m_Reference: {fileID: 3831276929205276510, guid: c348712bda248c246b8c49b3db54643f,
       type: 3}
+  continuousTurn: {fileID: 2088453593}
+  snapTurn: {fileID: 2088453592}
 --- !u!4 &432847284
 Transform:
   m_ObjectHideFlags: 0

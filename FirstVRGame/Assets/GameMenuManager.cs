@@ -8,23 +8,28 @@ public class GameMenuManager : MonoBehaviour
     public Transform head;
     public float spawnDistance = 2f;
     public GameObject menu;
-    public InputActionProperty showButton;
+    public InputActionProperty menuButton;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(showButton.action.WasPressedThisFrame())
+        SpawnMenu();
+    }
+
+    private void SpawnMenu()
+    {
+        if (menuButton.action.WasPressedThisFrame())
         {
             menu.SetActive(!menu.activeSelf);
         }
 
-        if(menu.activeSelf)
+        if (menu.activeSelf)
         {
             menu.transform.position = head.position + head.forward * spawnDistance;
             menu.transform.LookAt(head);
