@@ -15,6 +15,7 @@ public class InteractorManager : MonoBehaviour
     private InputActionProperty teleportInput;
     private InputActionProperty directGrabInput;
     private bool isDirectGrabSelected;
+    private bool isDirectGrabHovered;
     private bool isTeleportSelected;
     private bool isGrabRayHovered;
     private bool isGrabRaySelected;
@@ -30,6 +31,7 @@ public class InteractorManager : MonoBehaviour
     void Update()
     {
         isDirectGrabSelected = directInteractor.GetComponent<XRDirectInteractor>().interactablesSelected.Count > 0;
+        isDirectGrabHovered = directInteractor.GetComponent<XRDirectInteractor>().interactablesHovered.Count > 0;
         isTeleportSelected = teleportInput.action.ReadValue<float>() > activationThreshold;
         isGrabRayHovered = grabInteractor.GetComponent<XRRayInteractor>().TryGetHitInfo(out Vector3 position, out Vector3 normal, out int number, out bool isValid);
         isGrabRaySelected = grabInteractor.GetComponent<XRRayInteractor>().interactablesSelected.Count > 0;
@@ -45,6 +47,11 @@ public class InteractorManager : MonoBehaviour
             teleportInteractor.SetActive(false);
             grabInteractor.SetActive(false);
         }
+        else if(isDirectGrabHovered)
+        {
+            teleportInteractor.SetActive(false);
+            grabInteractor.GetComponent<XRInteractorLineVisual>().enabled = false;
+        }
         // Enable Teleport, Disable Grab Ray
         else if(isTeleportSelected && !isGrabRayHovered && !isGrabRaySelected)
         {
@@ -56,6 +63,7 @@ public class InteractorManager : MonoBehaviour
         {
             teleportInteractor.SetActive(false);
             grabInteractor.SetActive(true);
+            grabInteractor.GetComponent<XRInteractorLineVisual>().enabled = true;
         }
     }
 }
