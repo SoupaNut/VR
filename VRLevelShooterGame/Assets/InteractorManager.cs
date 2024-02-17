@@ -6,14 +6,22 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class InteractorManager : MonoBehaviour
 {
-    public GameObject teleportInteractor;
-    public GameObject directInteractor;
-    public GameObject grabInteractor;
+    public GameObject teleportInteractorObject;
+    public GameObject directInteractorObject;
+    public GameObject grabInteractorObject;
     public float activationThreshold = 0.1f;
+    
+    // interactors
+    private XRRayInteractor teleportInteractor;
+    private XRDirectInteractor directInteractor;
+    private XRRayInteractor grabInteractor;
 
-
+    // inputs
     private InputActionProperty teleportInput;
     private InputActionProperty directGrabInput;
+    private InputActionProperty activateInput;
+
+    // bools
     private bool isDirectGrabSelected;
     private bool isDirectGrabHovered;
     private bool isTeleportSelected;
@@ -21,20 +29,33 @@ public class InteractorManager : MonoBehaviour
     private bool isGrabRaySelected;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        teleportInput = teleportInteractor.GetComponent<ActionBasedController>().selectAction;
-        directGrabInput = directInteractor.GetComponent<ActionBasedController>().selectAction;
+        // Get Interactors
+        grabInteractor = grabInteractorObject.GetComponent<XRRayInteractor>();
+        teleportInteractor = teleportInteractorObject.GetComponent<XRRayInteractor>();
+        directInteractor = directInteractorObject.GetComponent<XRDirectInteractor>();
+
+        // Setup input variables
+        teleportInput = teleportInteractorObject.GetComponent<ActionBasedController>().selectAction;
+        directGrabInput = directInteractorObject.GetComponent<ActionBasedController>().selectAction;
+        activateInput = directInteractorObject.GetComponent<ActionBasedController>().activateAction;
+
+        // Add Handlers to Interactors
+        grabInteractor.selectEntered.AddListener(GrabSelectEnteredHandler);
+        grabInteractor.selectExited.AddListener(GrabSelectExitedHandler);
+        directInteractor.selectEntered.AddListener(DirectSelectEnteredHandler);
+        directInteractor.selectExited.AddListener(DirectSelectExitedHandler);
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        isDirectGrabSelected = directInteractor.GetComponent<XRDirectInteractor>().interactablesSelected.Count > 0;
-        isDirectGrabHovered = directInteractor.GetComponent<XRDirectInteractor>().interactablesHovered.Count > 0;
+        isDirectGrabSelected = directInteractor.interactablesSelected.Count > 0;
+        isDirectGrabHovered = directInteractor.interactablesHovered.Count > 0;
         isTeleportSelected = teleportInput.action.ReadValue<float>() > activationThreshold;
-        isGrabRayHovered = grabInteractor.GetComponent<XRRayInteractor>().TryGetHitInfo(out Vector3 position, out Vector3 normal, out int number, out bool isValid);
-        isGrabRaySelected = grabInteractor.GetComponent<XRRayInteractor>().interactablesSelected.Count > 0;
+        isGrabRayHovered = grabInteractor.TryGetHitInfo(out Vector3 position, out Vector3 normal, out int number, out bool isValid);
+        isGrabRaySelected = grabInteractor.interactablesSelected.Count > 0;
 
         HandleInteractors();
     }
@@ -44,26 +65,80 @@ public class InteractorManager : MonoBehaviour
         // Disable Teleport, Disable Grab Ray
         if(isDirectGrabSelected)
         {
-            teleportInteractor.SetActive(false);
-            grabInteractor.SetActive(false);
+            teleportInteractorObject.SetActive(false);
+            grabInteractorObject.SetActive(false);
         }
+        // Disable Teleport, Disable Gray Ray Line Visual
         else if(isDirectGrabHovered)
         {
-            teleportInteractor.SetActive(false);
-            grabInteractor.GetComponent<XRInteractorLineVisual>().enabled = false;
+            teleportInteractorObject.SetActive(false);
+            grabInteractorObject.GetComponent<XRInteractorLineVisual>().enabled = false;
         }
         // Enable Teleport, Disable Grab Ray
         else if(isTeleportSelected && !isGrabRayHovered && !isGrabRaySelected)
         {
-            teleportInteractor.SetActive(true);
-            grabInteractor.SetActive(false);
+            teleportInteractorObject.SetActive(true);
+            grabInteractorObject.SetActive(false);
         }
         // Disable Teleport, Enable Grab Ray
         else
         {
-            teleportInteractor.SetActive(false);
-            grabInteractor.SetActive(true);
-            grabInteractor.GetComponent<XRInteractorLineVisual>().enabled = true;
+            teleportInteractorObject.SetActive(false);
+            grabInteractorObject.SetActive(true);
+            grabInteractorObject.GetComponent<XRInteractorLineVisual>().enabled = true;
+        }
+    }
+
+    private void GrabSelectEnteredHandler(SelectEnterEventArgs args)
+    {
+        if (args.interactableObject.transform.CompareTag("Weapon"))
+        {
+            // disable anchor control
+            grabInteractor.allowAnchorControl = false;
+
+            SetWeaponParameters((XRGrabInteractable) args.interactableObject, true);
+        }
+    }
+
+    private void GrabSelectExitedHandler(SelectExitEventArgs args)
+    {
+        if (args.interactableObject.transform.CompareTag("Weapon"))
+        {
+            SetWeaponParameters((XRGrabInteractable) args.interactableObject, false);
+        }
+
+        // enable anchor control
+        grabInteractor.allowAnchorControl = true;
+    }
+
+    private void DirectSelectEnteredHandler(SelectEnterEventArgs args)
+    {
+        if (args.interactableObject.transform.CompareTag("Weapon"))
+        {
+            SetWeaponParameters((XRGrabInteractable)args.interactableObject, true);
+        }
+    }
+
+    private void DirectSelectExitedHandler(SelectExitEventArgs args)
+    {
+        if (args.interactableObject.transform.CompareTag("Weapon"))
+        {
+            SetWeaponParameters((XRGrabInteractable)args.interactableObject, false);
+        }
+    }
+
+    private void SetWeaponParameters(XRGrabInteractable weapon, bool enable)
+    {
+        GameObject weaponObject = weapon.gameObject;
+
+        // Weapon Enable/Disable
+        WeaponController weaponController = weaponObject.GetComponent<WeaponController>();
+        weaponController.weaponEnabled = enable;
+
+        if (enable)
+        {
+            // Assign the fire weapon input to the interactor's 'Activate' input
+            weaponController.fireWeaponInput = activateInput;
         }
     }
 }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Left Hand
   - Right Hand
+  - Weapon
   layers:
   - Default
   - TransparentFX
