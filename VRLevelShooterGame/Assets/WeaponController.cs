@@ -70,9 +70,7 @@ public class WeaponController : MonoBehaviour
     private void Fire()
     {
         // spawn bullet
-        GameObject spawnedProjectile = Instantiate(projectilePrefab);
-        spawnedProjectile.transform.position = weaponMuzzle.position;
-        spawnedProjectile.transform.rotation = weaponMuzzle.rotation;
+        GameObject spawnedProjectile = Instantiate(projectilePrefab, weaponMuzzle.position, weaponMuzzle.rotation);
         spawnedProjectile.GetComponent<Rigidbody>().velocity = weaponMuzzle.forward * projectileSpeed;
 
         // play weapon bullet sound
