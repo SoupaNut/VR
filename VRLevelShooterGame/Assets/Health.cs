@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Health : MonoBehaviour
 {
     [Tooltip("Maximum amount of health")] 
@@ -16,11 +17,18 @@ public class Health : MonoBehaviour
         CurrentHealth = MaxHealth;
     }
 
-    private void TakeDamage(float damage)
+    public void TakeDamage(float damage)
     {
         if(Invincible)
         {
             return;
+        }
+
+        CurrentHealth -= damage;
+        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
+        if(CurrentHealth <= 0f)
+        {
+            // Die event
         }
     }
 }
