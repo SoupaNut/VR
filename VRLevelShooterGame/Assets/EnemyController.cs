@@ -11,22 +11,28 @@ public class EnemyController : MonoBehaviour
     public LayerMask playerLayer, groundLayer;
 
     [Header("Ranges")]
-    public float walkPointRange;
-    public float sightRange;
-    public float attackRange;
+    public float walkPointRange = 10f;
+    public float sightRange = 20f;
+    public float attackRange = 10f;
     private bool playerInAttackRange, playerInSightRange;
 
-    [Header("Enemy Parameters")]
+    [Header("Movement")]
+    public float stoppingDistance = 5f;
+    public float patrolCooldown = 1f;
+
+    [Header("Weapon Parameters")]
     public GameObject projectile;
+    public Transform weaponAttachPoint;
+    public AudioSource weaponSound;
     public float projectileSpeed = 20f;
     public float projectileDespawnTime = 3f;
-    public Transform weaponAttachPoint;
     public float timeBetweenAttacks = 1f;
-    public AudioSource weaponSound;
+    
 
     // Patrol
     private bool walkPointSet;
     private Vector3 walkPoint;
+    private float patrolTimer;
 
     // Attack
     private bool alreadyAttacked;
@@ -61,12 +67,24 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            Patrolling();
+            // find new patrol walkpoint if timer is 0
+            if(patrolTimer <= 0f)
+            {
+                Patrolling();
+                patrolTimer = patrolCooldown;
+            }
+            // do nothing
+            else
+            {
+                patrolTimer -= Time.deltaTime;
+            }
+            
         }
     }
 
     private void Patrolling()
     {
+        agent.stoppingDistance = 0f;
         if(!walkPointSet)
         {
             SearchWalkPoint();
@@ -102,6 +120,7 @@ public class EnemyController : MonoBehaviour
 
     private void Following()
     {
+        agent.stoppingDistance = stoppingDistance;
         agent.SetDestination(player.transform.position);
     }
 
@@ -116,6 +135,8 @@ public class EnemyController : MonoBehaviour
             alreadyAttacked = true;
             Invoke(nameof(ResetAttack), timeBetweenAttacks);
         }
+
+        Following();
     }
 
     private void Fire()

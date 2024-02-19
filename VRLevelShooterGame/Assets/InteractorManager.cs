@@ -6,10 +6,14 @@ using UnityEngine.XR.Interaction.Toolkit;
 
 public class InteractorManager : MonoBehaviour
 {
+    [Header("Interactors")]
     public GameObject teleportInteractorObject;
     public GameObject directInteractorObject;
     public GameObject grabInteractorObject;
     public float activationThreshold = 0.1f;
+
+    public bool isActivated {get; private set;}
+    public bool objectEnabled {get; private set;}
     
     // interactors
     private XRRayInteractor teleportInteractor;
@@ -27,6 +31,14 @@ public class InteractorManager : MonoBehaviour
     private bool isTeleportSelected;
     private bool isGrabRayHovered;
     private bool isGrabRaySelected;
+
+    // enums
+    public ObjectSelected objectSelected {get; private set;}
+    public enum ObjectSelected
+    {
+        Nothing,
+        Weapon
+    }
 
     // Start is called before the first frame update
     private void Start()
@@ -56,6 +68,7 @@ public class InteractorManager : MonoBehaviour
         isTeleportSelected = teleportInput.action.ReadValue<float>() > activationThreshold;
         isGrabRayHovered = grabInteractor.TryGetHitInfo(out Vector3 position, out Vector3 normal, out int number, out bool isValid);
         isGrabRaySelected = grabInteractor.interactablesSelected.Count > 0;
+        isActivated = activateInput.action.ReadValue<float>() > activationThreshold && objectSelected == ObjectSelected.Weapon;
 
         HandleInteractors();
     }
@@ -95,8 +108,10 @@ public class InteractorManager : MonoBehaviour
         {
             // disable anchor control
             grabInteractor.allowAnchorControl = false;
-
-            SetWeaponParameters((XRGrabInteractable) args.interactableObject, true);
+            objectSelected = ObjectSelected.Weapon;
+            //objectEnabled = true;
+            //SetWeaponParameters((XRGrabInteractable) args.interactableObject, true);
+            
         }
     }
 
@@ -104,7 +119,9 @@ public class InteractorManager : MonoBehaviour
     {
         if (args.interactableObject.transform.CompareTag("Weapon"))
         {
-            SetWeaponParameters((XRGrabInteractable) args.interactableObject, false);
+            objectSelected = ObjectSelected.Nothing;
+            //objectEnabled = false;
+            //SetWeaponParameters((XRGrabInteractable) args.interactableObject, false);
         }
 
         // enable anchor control
@@ -115,7 +132,9 @@ public class InteractorManager : MonoBehaviour
     {
         if (args.interactableObject.transform.CompareTag("Weapon"))
         {
-            SetWeaponParameters((XRGrabInteractable)args.interactableObject, true);
+            objectSelected = ObjectSelected.Weapon;
+            //objectEnabled = true;
+            //SetWeaponParameters((XRGrabInteractable)args.interactableObject, true);
         }
     }
 
@@ -123,22 +142,18 @@ public class InteractorManager : MonoBehaviour
     {
         if (args.interactableObject.transform.CompareTag("Weapon"))
         {
-            SetWeaponParameters((XRGrabInteractable)args.interactableObject, false);
+            objectSelected = ObjectSelected.Nothing;
+            //objectEnabled = false;
+            //SetWeaponParameters((XRGrabInteractable)args.interactableObject, false);
         }
     }
 
-    private void SetWeaponParameters(XRGrabInteractable weapon, bool enable)
-    {
-        GameObject weaponObject = weapon.gameObject;
+    //private void SetWeaponParameters(XRGrabInteractable weapon, bool enable)
+    //{
+    //    GameObject weaponObject = weapon.gameObject;
 
-        // Weapon Enable/Disable
-        WeaponController weaponController = weaponObject.GetComponent<WeaponController>();
-        weaponController.weaponEnabled = enable;
-
-        if (enable)
-        {
-            // Assign the fire weapon input to the interactor's 'Activate' input
-            weaponController.fireWeaponInput = activateInput;
-        }
-    }
+    //    // Weapon Enable/Disable
+    //    WeaponController weaponController = weaponObject.GetComponent<WeaponController>();
+    //    weaponController.weaponEnabled = enable;
+    //}
 }

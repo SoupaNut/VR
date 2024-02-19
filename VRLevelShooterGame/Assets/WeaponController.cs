@@ -7,27 +7,28 @@ using UnityEngine.InputSystem;
 public class WeaponController : MonoBehaviour
 {
 
-    [Header("Internal References")]
-    public Transform weaponMuzzle;
+    [Header("References")]
+    public InteractorManager leftInteractorManager;
+    public InteractorManager rightInteractorManager;
     
 
     [Header("Shoot Parameters")]
+    public Transform weaponMuzzle;
     public GameObject projectilePrefab;
     public float projectileSpeed = 20f;
     public float projectileDespawnTime = 3f;
     public float fireRate = 1f;
+
+
     [SerializeField]
     private WeaponMode weaponMode;
-    public enum WeaponMode
+    private enum WeaponMode
     {
         Auto,
         SemiAuto
     }
 
-    [Header("Internal Variables (Don't Change)")]
-    public bool weaponEnabled;
-    public InputActionProperty fireWeaponInput;
-
+    
     private AudioSource weaponSound;
     private bool autoWeaponModeEnabled;
     private float nextFireTime = 0f;
@@ -54,10 +55,11 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(autoWeaponModeEnabled && weaponEnabled)
+        // if weapon auto and weapon is selected by an interactor
+        if (autoWeaponModeEnabled && (leftInteractorManager.objectSelected == InteractorManager.ObjectSelected.Weapon || rightInteractorManager.objectSelected == InteractorManager.ObjectSelected.Weapon))
         {
             // check if player is pressing the fire button and enough time has passed
-            if(fireWeaponInput.action.ReadValue<float>() > 0.1f && Time.time >= nextFireTime)
+            if((leftInteractorManager.isActivated || rightInteractorManager.isActivated) && Time.time >= nextFireTime)
             {
                 Fire();
 
