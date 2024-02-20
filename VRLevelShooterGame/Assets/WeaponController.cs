@@ -7,9 +7,9 @@ using UnityEngine.InputSystem;
 public class WeaponController : MonoBehaviour
 {
 
-    [Header("References")]
-    public InteractorManager leftInteractorManager;
-    public InteractorManager rightInteractorManager;
+    //[Header("References")]
+    //public InteractorManager leftInteractors;
+    //public InteractorManager rightInteractors;
     
 
     [Header("Shoot Parameters")]
@@ -30,24 +30,21 @@ public class WeaponController : MonoBehaviour
 
     
     private AudioSource weaponSound;
-    private bool autoWeaponModeEnabled;
     private float nextFireTime = 0f;
+    private InteractorManager interactorManager;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Weapon Mode - Semi Auto
+        XRGrabInteractable weapon = GetComponent<XRGrabInteractable>();
         if (weaponMode == WeaponMode.SemiAuto)
         {
-            GetComponent<XRGrabInteractable>().activated.AddListener(ShootProjectile);
-            autoWeaponModeEnabled = false;
+            weapon.activated.AddListener(ShootProjectile);
         }
-        // Weapon Mode - Auto
-        else
-        {
-            autoWeaponModeEnabled = true;
-        }
-        
+
+        weapon.selectEntered.AddListener(GetInteractorManager);
+        weapon.selectExited.AddListener(ClearInteractorManager);
+
         // get weapon sound
         weaponSound = GetComponent<AudioSource>();
     }
@@ -55,18 +52,45 @@ public class WeaponController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // if weapon auto and weapon is selected by an interactor
-        if (autoWeaponModeEnabled && (leftInteractorManager.objectSelected == InteractorManager.ObjectSelected.Weapon || rightInteractorManager.objectSelected == InteractorManager.ObjectSelected.Weapon))
+        // Scratch Code - TEST LATER
+        if(interactorManager != null)
         {
-            // check if player is pressing the fire button and enough time has passed
-            if((leftInteractorManager.isActivated || rightInteractorManager.isActivated) && Time.time >= nextFireTime)
+            // Weapon is auto
+            if(weaponMode == WeaponMode.Auto)
             {
-                Fire();
+                // Fire button is held and enough time has passed
+                if(interactorManager.isActivated && Time.time >= nextFireTime)
+                {
+                    Fire();
 
-                // Set next allowed fire time based on fire rate
-                nextFireTime = Time.time + 1f / fireRate;
+                    // Set next allowed fire time based on fire rate
+                    nextFireTime = Time.time + 1f / fireRate;
+                }
             }
         }
+
+        // if weapon auto and weapon is selected by an interactor
+        //if (weaponMode == WeaponMode.Auto && (leftInteractors.objectSelected == InteractorManager.ObjectSelected.Weapon || rightInteractors.objectSelected == InteractorManager.ObjectSelected.Weapon))
+        //{
+        //    // check if player is pressing the fire button and enough time has passed
+        //    if((leftInteractors.isActivated || rightInteractors.isActivated) && Time.time >= nextFireTime)
+        //    {
+        //        Fire();
+
+        //        // Set next allowed fire time based on fire rate
+        //        nextFireTime = Time.time + 1f / fireRate;
+        //    }
+        //}
+    }
+
+    private void GetInteractorManager(SelectEnterEventArgs args)
+    {
+        interactorManager = args.interactorObject.gameObject.GetComponent<InteractorManager>();
+    }
+
+    private void ClearInteractorManager(SelectExitEventArgs args)
+    {
+        interactorManager = null;
     }
 
     private void Fire()
