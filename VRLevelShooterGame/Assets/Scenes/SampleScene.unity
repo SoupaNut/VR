@@ -189,6 +189,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5159398304025963246, guid: b318fabc73446b746a1005cede0c4ceb,
         type: 3}
+      propertyPath: weaponSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 53d2238f4c4b2aa4f8e559c7af9e0126, type: 3}
+    - target: {fileID: 5159398304025963246, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
       propertyPath: leftInteractorManager
       value: 
       objectReference: {fileID: 1150032368}
@@ -1578,107 +1583,23 @@ MonoBehaviour:
   projectile: {fileID: 3659995153115176983, guid: ec753d54f333bb944b8b04884ad63828,
     type: 3}
   weaponAttachPoint: {fileID: 1094485271}
-  weaponSound: {fileID: 227671770}
+  weaponSound: {fileID: 8300000, guid: a56e3c9f90e17894eb1625f603eceb54, type: 3}
   projectileSpeed: 100
   projectileDespawnTime: 3
   timeBetweenAttacks: 1
---- !u!82 &227671770
-AudioSource:
+--- !u!114 &227671774
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227671765}
   m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243177779269262668, guid: fcc71635aab95ff4fbdf1880bf2afa2f,
-    type: 2}
-  m_audioClip: {fileID: 8300000, guid: a56e3c9f90e17894eb1625f603eceb54, type: 3}
-  m_PlayOnAwake: 0
-  m_Volume: 0.25
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0.5
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 56474f7415495f64eafd71326a4fa5c4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxHealth: 100
 --- !u!1 &240482991
 GameObject:
   m_ObjectHideFlags: 0
@@ -3874,7 +3795,7 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 2015434656898269652, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
       insertIndex: -1
-      addedObject: {fileID: 227671770}
+      addedObject: {fileID: 227671774}
   m_SourcePrefab: {fileID: 100100000, guid: 25a1b0efadb966e44889fce712c8ff8d, type: 3}
 --- !u!1001 &332297231
 PrefabInstance:
@@ -11604,7 +11525,7 @@ MonoBehaviour:
       m_Processors: 
       m_Interactions: 
       m_SingletonActionBindings: []
-      m_Flags: 1
+      m_Flags: -1
     m_Reference: {fileID: -7044516463258014562, guid: c348712bda248c246b8c49b3db54643f,
       type: 3}
   m_TrackingStateAction:

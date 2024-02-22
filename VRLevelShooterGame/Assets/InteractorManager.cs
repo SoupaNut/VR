@@ -68,7 +68,7 @@ public class InteractorManager : MonoBehaviour
         isTeleportSelected = teleportInput.action.ReadValue<float>() > activationThreshold;
         isGrabRayHovered = grabInteractor.TryGetHitInfo(out Vector3 position, out Vector3 normal, out int number, out bool isValid);
         isGrabRaySelected = grabInteractor.interactablesSelected.Count > 0;
-        isActivated = activateInput.action.ReadValue<float>() > activationThreshold && objectSelected == ObjectSelected.Weapon;
+        isActivated = activateInput.action.ReadValue<float>() > activationThreshold;
 
         HandleInteractors();
     }
@@ -109,8 +109,6 @@ public class InteractorManager : MonoBehaviour
             // disable anchor control
             grabInteractor.allowAnchorControl = false;
             objectSelected = ObjectSelected.Weapon;
-            //objectEnabled = true;
-            //SetWeaponParameters((XRGrabInteractable) args.interactableObject, true);
             
         }
     }
@@ -120,8 +118,6 @@ public class InteractorManager : MonoBehaviour
         if (args.interactableObject.transform.CompareTag("Weapon"))
         {
             objectSelected = ObjectSelected.Nothing;
-            //objectEnabled = false;
-            //SetWeaponParameters((XRGrabInteractable) args.interactableObject, false);
         }
 
         // enable anchor control
@@ -133,8 +129,6 @@ public class InteractorManager : MonoBehaviour
         if (args.interactableObject.transform.CompareTag("Weapon"))
         {
             objectSelected = ObjectSelected.Weapon;
-            //objectEnabled = true;
-            //SetWeaponParameters((XRGrabInteractable)args.interactableObject, true);
         }
     }
 
@@ -143,17 +137,6 @@ public class InteractorManager : MonoBehaviour
         if (args.interactableObject.transform.CompareTag("Weapon"))
         {
             objectSelected = ObjectSelected.Nothing;
-            //objectEnabled = false;
-            //SetWeaponParameters((XRGrabInteractable)args.interactableObject, false);
         }
     }
-
-    //private void SetWeaponParameters(XRGrabInteractable weapon, bool enable)
-    //{
-    //    GameObject weaponObject = weapon.gameObject;
-
-    //    // Weapon Enable/Disable
-    //    WeaponController weaponController = weaponObject.GetComponent<WeaponController>();
-    //    weaponController.weaponEnabled = enable;
-    //}
 }

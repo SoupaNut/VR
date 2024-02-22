@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using Unity.Game.Utilities;
 
 public class EnemyController : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class EnemyController : MonoBehaviour
     [Header("Weapon Parameters")]
     public GameObject projectile;
     public Transform weaponAttachPoint;
-    public AudioSource weaponSound;
+    public AudioClip weaponSound;
     public float projectileSpeed = 20f;
     public float projectileDespawnTime = 3f;
     public float timeBetweenAttacks = 1f;
@@ -146,7 +147,7 @@ public class EnemyController : MonoBehaviour
         spawnedProjectile.GetComponent<Rigidbody>().velocity = weaponAttachPoint.forward * projectileSpeed;
 
         // play weapon sound
-        weaponSound.Play();
+        AudioUtility.CreateSfx(weaponSound, weaponAttachPoint.position, 0.25f);
 
         Destroy(spawnedProjectile, projectileDespawnTime);
     }

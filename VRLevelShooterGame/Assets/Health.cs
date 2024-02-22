@@ -2,33 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-
-public class Health : MonoBehaviour
+namespace Unity.Game.Shared
 {
-    [Tooltip("Maximum amount of health")] 
-    public float MaxHealth = 100f;
-
-    public float CurrentHealth { get; set; }
-    public bool Invincible { get; set; }
-
-    // Start is called before the first frame update
-    private void Start()
+    public class Health : MonoBehaviour
     {
-        CurrentHealth = MaxHealth;
-    }
+        [Tooltip("Maximum amount of health")]
+        public float MaxHealth = 100f;
 
-    public void TakeDamage(float damage)
-    {
-        if(Invincible)
+        private float m_CurrentHealth;
+        public float CurrentHealth { get => m_CurrentHealth; set => m_CurrentHealth = value; }
+
+        private bool m_Invincible = false;
+        public bool Invincible { get => m_Invincible; set => m_Invincible = value; }
+
+        // Start is called before the first frame update
+        private void Start()
         {
-            return;
+            m_CurrentHealth = MaxHealth;
         }
 
-        CurrentHealth -= damage;
-        CurrentHealth = Mathf.Clamp(CurrentHealth, 0, MaxHealth);
-        if(CurrentHealth <= 0f)
+        public void TakeDamage(float damage)
         {
-            // Die event
+            if (Invincible)
+            {
+                return;
+            }
+
+            m_CurrentHealth -= damage;
+            m_CurrentHealth = Mathf.Clamp(m_CurrentHealth, 0, MaxHealth);
+            if (m_CurrentHealth <= 0f)
+            {
+                gameObject.SetActive(false);
+                // Die event
+            }
         }
     }
 }
+

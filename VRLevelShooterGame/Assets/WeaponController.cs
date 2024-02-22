@@ -3,94 +3,79 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine.InputSystem;
+using Unity.Game.Utilities;
 
 public class WeaponController : MonoBehaviour
 {
-
-    //[Header("References")]
-    //public InteractorManager leftInteractors;
-    //public InteractorManager rightInteractors;
-    
-
     [Header("Shoot Parameters")]
     public Transform weaponMuzzle;
     public GameObject projectilePrefab;
     public float projectileSpeed = 20f;
     public float projectileDespawnTime = 3f;
     public float fireRate = 1f;
+    public AudioClip weaponSound;
 
 
     [SerializeField]
-    private WeaponMode weaponMode;
+    private WeaponMode m_weaponMode;
     private enum WeaponMode
     {
         Auto,
         SemiAuto
     }
-
     
-    private AudioSource weaponSound;
-    private float nextFireTime = 0f;
-    private InteractorManager interactorManager;
+    private float m_nextFireTime = 0f;
+    private InteractorManager m_InteractorManager;
 
     // Start is called before the first frame update
     void Start()
     {
         XRGrabInteractable weapon = GetComponent<XRGrabInteractable>();
-        if (weaponMode == WeaponMode.SemiAuto)
-        {
-            weapon.activated.AddListener(ShootProjectile);
-        }
 
+        // Handle when an interactor selects weapon
         weapon.selectEntered.AddListener(GetInteractorManager);
         weapon.selectExited.AddListener(ClearInteractorManager);
 
-        // get weapon sound
-        weaponSound = GetComponent<AudioSource>();
+        if (m_weaponMode == WeaponMode.SemiAuto)
+        {
+            weapon.activated.AddListener(ShootProjectile);
+        }
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Scratch Code - TEST LATER
-        if(interactorManager != null)
+        if(m_InteractorManager != null)
         {
             // Weapon is auto
-            if(weaponMode == WeaponMode.Auto)
+            if(m_InteractorManager.isActivated && m_weaponMode == WeaponMode.Auto)
             {
                 // Fire button is held and enough time has passed
-                if(interactorManager.isActivated && Time.time >= nextFireTime)
+                if(Time.time >= m_nextFireTime)
                 {
                     Fire();
 
                     // Set next allowed fire time based on fire rate
-                    nextFireTime = Time.time + 1f / fireRate;
+                    m_nextFireTime = Time.time + 1f / fireRate;
                 }
             }
         }
-
-        // if weapon auto and weapon is selected by an interactor
-        //if (weaponMode == WeaponMode.Auto && (leftInteractors.objectSelected == InteractorManager.ObjectSelected.Weapon || rightInteractors.objectSelected == InteractorManager.ObjectSelected.Weapon))
-        //{
-        //    // check if player is pressing the fire button and enough time has passed
-        //    if((leftInteractors.isActivated || rightInteractors.isActivated) && Time.time >= nextFireTime)
-        //    {
-        //        Fire();
-
-        //        // Set next allowed fire time based on fire rate
-        //        nextFireTime = Time.time + 1f / fireRate;
-        //    }
-        //}
     }
 
     private void GetInteractorManager(SelectEnterEventArgs args)
     {
-        interactorManager = args.interactorObject.gameObject.GetComponent<InteractorManager>();
+        var interactorManager = args.interactorObject.transform.parent.gameObject.GetComponent<InteractorManager>();
+
+        if(interactorManager != null)
+        {
+            m_InteractorManager = interactorManager;
+        }
     }
 
     private void ClearInteractorManager(SelectExitEventArgs args)
     {
-        interactorManager = null;
+        // clear reference
+        m_InteractorManager = new InteractorManager();
     }
 
     private void Fire()
@@ -100,7 +85,8 @@ public class WeaponController : MonoBehaviour
         spawnedProjectile.GetComponent<Rigidbody>().velocity = weaponMuzzle.forward * projectileSpeed;
 
         // play weapon bullet sound
-        weaponSound.Play();
+        AudioUtility.CreateSfx(weaponSound, weaponMuzzle.position, 0.3f);
+
 
         // destroy spawned bullet
         Destroy(spawnedProjectile, projectileDespawnTime);
