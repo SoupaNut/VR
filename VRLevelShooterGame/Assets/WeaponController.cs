@@ -8,23 +8,23 @@ using Unity.Game.Utilities;
 public class WeaponController : MonoBehaviour
 {
     [Header("Shoot Parameters")]
-    public Transform weaponMuzzle;
-    public GameObject projectilePrefab;
-    public float projectileSpeed = 20f;
-    public float projectileDespawnTime = 3f;
-    public float fireRate = 1f;
-    public AudioClip weaponSound;
+    public Transform WeaponMuzzle;
+    public GameObject ProjectilePrefab;
+    public float ProjectileSpeed = 20f;
+    public float FireRate = 1f;
+    public AudioClip WeaponSound;
+    public float Damage = 10f;
 
 
     [SerializeField]
-    private WeaponMode m_weaponMode;
+    private WeaponMode m_WeaponMode;
     private enum WeaponMode
     {
         Auto,
         SemiAuto
     }
     
-    private float m_nextFireTime = 0f;
+    private float m_NextFireTime = 0f;
     private InteractorManager m_InteractorManager;
 
     // Start is called before the first frame update
@@ -36,7 +36,7 @@ public class WeaponController : MonoBehaviour
         weapon.selectEntered.AddListener(GetInteractorManager);
         weapon.selectExited.AddListener(ClearInteractorManager);
 
-        if (m_weaponMode == WeaponMode.SemiAuto)
+        if (m_WeaponMode == WeaponMode.SemiAuto)
         {
             weapon.activated.AddListener(ShootProjectile);
         }
@@ -48,15 +48,15 @@ public class WeaponController : MonoBehaviour
         if(m_InteractorManager != null)
         {
             // Weapon is auto
-            if(m_InteractorManager.isActivated && m_weaponMode == WeaponMode.Auto)
+            if(m_InteractorManager.isActivated && m_WeaponMode == WeaponMode.Auto)
             {
                 // Fire button is held and enough time has passed
-                if(Time.time >= m_nextFireTime)
+                if(Time.time >= m_NextFireTime)
                 {
                     Fire();
 
                     // Set next allowed fire time based on fire rate
-                    m_nextFireTime = Time.time + 1f / fireRate;
+                    m_NextFireTime = Time.time + 1f / FireRate;
                 }
             }
         }
@@ -81,15 +81,12 @@ public class WeaponController : MonoBehaviour
     private void Fire()
     {
         // spawn bullet
-        GameObject spawnedProjectile = Instantiate(projectilePrefab, weaponMuzzle.position, weaponMuzzle.rotation);
-        spawnedProjectile.GetComponent<Rigidbody>().velocity = weaponMuzzle.forward * projectileSpeed;
+        GameObject spawnedProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position, WeaponMuzzle.rotation);
+        //spawnedProjectile.GetComponent<Rigidbody>().velocity = WeaponMuzzle.forward * ProjectileSpeed;
+        spawnedProjectile.Shoot(this);
 
         // play weapon bullet sound
-        AudioUtility.CreateSfx(weaponSound, weaponMuzzle.position, 0.3f);
-
-
-        // destroy spawned bullet
-        Destroy(spawnedProjectile, projectileDespawnTime);
+        AudioUtility.CreateSfx(WeaponSound, WeaponMuzzle.position, 0.3f);
     }
 
     private void ShootProjectile(ActivateEventArgs args)
