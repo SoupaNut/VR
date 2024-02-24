@@ -5,15 +5,17 @@ namespace Unity.Game.Shared
 {
     public abstract class ProjectileBase : MonoBehaviour
     {
+        public GameObject Owner { get; private set; }
         public Vector3 InitialPosition { get; private set; }
         public Vector3 InitialDirection { get; private set; }
-        public Vector3 Speed { get; private set; }
+        public float Speed { get; private set; }
         public float Damage { get; private set; }
 
         public UnityAction OnShoot;
 
         public void Shoot(WeaponController controller)
         {
+            Owner = controller.gameObject;
             InitialPosition = transform.position;
             InitialDirection = controller.WeaponMuzzle.forward;
             Speed = controller.ProjectileSpeed;

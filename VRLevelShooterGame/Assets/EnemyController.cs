@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 using Unity.Game.Utilities;
+using Unity.Game.Shared;
 
 public class EnemyController : MonoBehaviour
 {
@@ -21,13 +22,8 @@ public class EnemyController : MonoBehaviour
     public float stoppingDistance = 5f;
     public float patrolCooldown = 1f;
 
-    [Header("Weapon Parameters")]
-    public GameObject projectile;
-    public Transform weaponAttachPoint;
-    public AudioClip weaponSound;
-    public float projectileSpeed = 20f;
-    public float projectileDespawnTime = 3f;
-    public float timeBetweenAttacks = 1f;
+    [Header("Audio")]
+    public AudioClip DamagedSfxClip;
     
 
     // Patrol
@@ -35,24 +31,38 @@ public class EnemyController : MonoBehaviour
     private Vector3 walkPoint;
     private float patrolTimer;
 
-    // Attack
-    private bool alreadyAttacked;
-
+    private Health m_Health;
+    private WeaponController m_WeaponController;
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        m_WeaponController = GetComponent<WeaponController>();
+    }
+
+    private void OnEnable()
+    {
+        m_Health = GetComponent<Health>();
+        if(m_Health != null )
+        {
+            m_Health.OnDamage += OnDamage;
+            m_Health.OnDie += OnDie;
+        }
+    }
+
+    private void OnDisable()
+    {
+        m_Health.OnDamage -= OnDamage;
+        m_Health.OnDie -= OnDie;
     }
 
     private void Start()
     {
         walkPointSet = false;
-        alreadyAttacked = false;
     }
 
     private void Update()
     {
-        //UpdateAiStateTransitions();
 
         // Check for sight and attack range
         playerInSightRange = Physics.CheckSphere(transform.position, sightRange, playerLayer);
@@ -102,6 +112,8 @@ public class EnemyController : MonoBehaviour
         {
             walkPointSet = false;
         }
+
+        m_WeaponController.SetReadyToFire(false);
     }
 
     private void SearchWalkPoint()
@@ -128,33 +140,19 @@ public class EnemyController : MonoBehaviour
     private void Attacking()
     {
         transform.LookAt(player.transform);
-
-        if(!alreadyAttacked)
-        {
-            Fire();
-
-            alreadyAttacked = true;
-            Invoke(nameof(ResetAttack), timeBetweenAttacks);
-        }
+        m_WeaponController.SetReadyToFire(true);
 
         Following();
     }
 
-    private void Fire()
+    private void OnDamage()
     {
-        // Shoot projectile at player
-        GameObject spawnedProjectile = Instantiate(projectile, weaponAttachPoint.position, weaponAttachPoint.rotation);
-        spawnedProjectile.GetComponent<Rigidbody>().velocity = weaponAttachPoint.forward * projectileSpeed;
-
-        // play weapon sound
-        AudioUtility.CreateSfx(weaponSound, weaponAttachPoint.position, 0.25f);
-
-        Destroy(spawnedProjectile, projectileDespawnTime);
+        AudioUtility.CreateSfx(DamagedSfxClip, transform.position, AudioUtility.AudioGroups.DamageTick);
     }
 
-    private void ResetAttack()
+    private void OnDie()
     {
-        alreadyAttacked = false;
+        gameObject.SetActive(false);
     }
 
     private void OnDrawGizmosSelected()

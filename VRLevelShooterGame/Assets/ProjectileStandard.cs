@@ -24,6 +24,16 @@ namespace Unity.Game.Gameplay
         [Tooltip("Layers this projectile can collide with")]
         public LayerMask HittableLayers = -1;
 
+        [Header("Audio & Visual")]
+        [Tooltip("VFX prefab to spawn upon impact")]
+        public GameObject ImpactVfx;
+
+        [Tooltip("LifeTime of the VFX before being destroyed")]
+        public float ImpactVfxLifetime = 5f;
+
+        [Tooltip("Offset along the hit normal where the VFX will be spawned")]
+        public float ImpactVfxSpawnOffset = 0.1f;
+
         [Tooltip("Clip to play on impact")]
         public AudioClip ImpactSfxClip;
 
@@ -31,19 +41,26 @@ namespace Unity.Game.Gameplay
         Vector3 m_CurrentPosition;
         Vector3 m_LastRootPosition;
         float m_Speed;
+        float m_Damage;
         ProjectileBase m_ProjectileBase;
+        List<Collider> m_IgnoredColliders;
 
         const QueryTriggerInteraction k_TriggerInteraction = QueryTriggerInteraction.Collide;
 
         private void OnEnable()
         {
-            m_ProjectileBase = GetComponent<m_ProjectileBase>();
+            m_ProjectileBase = GetComponent<ProjectileBase>();
             if(m_ProjectileBase != null)
             {
                 m_ProjectileBase.OnShoot += OnShoot;
 
                 Destroy(gameObject, MaxLifeTime);
             }
+        }
+        
+        private void OnDisable()
+        {
+            m_ProjectileBase.OnShoot -= OnShoot;
         }
 
         // Update is called once per frame
@@ -93,7 +110,14 @@ namespace Unity.Game.Gameplay
 
         private bool IsValidHit(RaycastHit hit)
         {
-            if(hit.collider.GetComponentInParent<Health>() == null)
+            // ignore hits with an ignore component
+            if (hit.collider.GetComponent<IgnoreHitDetection>())
+            {
+                return false;
+            }
+
+            // ignore hits with specific ignored colliders (self colliders, by default)
+            if (m_IgnoredColliders != null && m_IgnoredColliders.Contains(hit.collider))
             {
                 return false;
             }
@@ -111,12 +135,22 @@ namespace Unity.Game.Gameplay
             }
 
             // Impact Vfx
+            if (ImpactVfx)
+            {
+                //GameObject impactVfxInstance = Instantiate(ImpactVfx, point + (normal * ImpactVfxSpawnOffset), Quaternion.LookRotation(normal));
+                GameObject impactVfxInstance = Instantiate(ImpactVfx, point + (normal * ImpactVfxSpawnOffset), Quaternion.LookRotation(normal));
+                if (ImpactVfxLifetime > 0)
+                {
+                    Destroy(impactVfxInstance.gameObject, ImpactVfxLifetime);
+                }
+            }
+
 
             // Impact Sfx
-            if(ImpactSfxClip)
+            if (ImpactSfxClip)
             {
-                float volume = 0.3f;
-                AudioUtility.CreateSfx(ImpactSfxClip, point, volume);
+                float volume = 1f;
+                AudioUtility.CreateSfx(ImpactSfxClip, point, AudioUtility.AudioGroups.Impact, 0f, 0f, volume);
             }
 
             Destroy(this.gameObject);
@@ -124,10 +158,15 @@ namespace Unity.Game.Gameplay
 
         private new void OnShoot()
         {
-            m_LastRootPosition = Root.tip;
+            m_LastRootPosition = Root.position;
             m_CurrentPosition = m_ProjectileBase.InitialPosition;
             m_Velocity = m_ProjectileBase.InitialDirection * m_ProjectileBase.Speed;
             m_Damage = m_ProjectileBase.Damage;
+            m_IgnoredColliders = new List<Collider>();
+
+            // Get List of owner colliders and add them to ignored colliders list
+            Collider[] ownerColliders = m_ProjectileBase.Owner.GetComponentsInChildren<Collider>();
+            m_IgnoredColliders.AddRange(ownerColliders);
         }
     }
 

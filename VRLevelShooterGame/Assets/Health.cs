@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Unity.Game.Shared
 {
@@ -14,6 +15,9 @@ namespace Unity.Game.Shared
 
         private bool m_Invincible = false;
         public bool Invincible { get => m_Invincible; set => m_Invincible = value; }
+
+        public UnityAction OnDamage;
+        public UnityAction OnDie;
 
         // Start is called before the first frame update
         private void Start()
@@ -30,10 +34,11 @@ namespace Unity.Game.Shared
 
             m_CurrentHealth -= damage;
             m_CurrentHealth = Mathf.Clamp(m_CurrentHealth, 0, MaxHealth);
+
+            OnDamage?.Invoke();
             if (m_CurrentHealth <= 0f)
             {
-                gameObject.SetActive(false);
-                // Die event
+                OnDie?.Invoke();
             }
         }
     }
