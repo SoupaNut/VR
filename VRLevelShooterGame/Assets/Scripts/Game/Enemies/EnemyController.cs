@@ -1,0 +1,184 @@
+using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.AI;
+using Unity.Game.Utilities;
+using Unity.Game.Shared;
+
+public class EnemyController : MonoBehaviour
+{
+    [Header("References")]
+    public NavMeshAgent Agent;
+    public GameObject Player;
+    public LayerMask PlayerLayer, GroundLayer;
+
+    [Header("Ranges")]
+    public float WalkPointRange = 10f;
+    public float SightRange = 20f;
+    public float AttackRange = 10f;
+    private bool m_PlayerInAttackRange, m_PlayerInSightRange;
+
+    [Header("Movement")]
+    public float StoppingDistance = 5f;
+    public float PatrolCooldown = 1f;
+
+    [Header("Audio")]
+    [Tooltip("Sound played when receiving damages")]
+    public AudioClip DamagedSfxClip;
+
+    [Header("VFX")]
+    [Tooltip("The VFX prefab spawned when the enemy dies")]
+    public GameObject DeathVfx;
+
+    [Tooltip("The point at which the death VFX is spawned")]
+    public Transform DeathVfxSpawnPoint;
+
+    [Header("Misc")]
+    [Tooltip("Delay after death where the GameObject is destroyed (to allow for animation)")]
+    public float DeathDuration = 0f;
+
+
+    // Patrol
+    private bool m_WalkPointSet;
+    private Vector3 m_WalkPoint;
+    private float m_PatrolTimer;
+
+    private Health m_Health;
+    private WeaponController m_WeaponController;
+
+    private void Awake()
+    {
+        Agent = GetComponent<NavMeshAgent>();
+        m_WeaponController = GetComponent<WeaponController>();
+    }
+
+    private void OnEnable()
+    {
+        m_Health = GetComponent<Health>();
+        if(m_Health != null )
+        {
+            m_Health.OnDamage += OnDamage;
+            m_Health.OnDie += OnDie;
+        }
+    }
+
+    private void OnDisable()
+    {
+        m_Health.OnDamage -= OnDamage;
+        m_Health.OnDie -= OnDie;
+    }
+
+    private void Start()
+    {
+        m_WalkPointSet = false;
+    }
+
+    private void Update()
+    {
+
+        // Check for sight and attack range
+        m_PlayerInSightRange = Physics.CheckSphere(transform.position, SightRange, PlayerLayer);
+        m_PlayerInAttackRange = Physics.CheckSphere(transform.position, AttackRange, PlayerLayer);
+
+        if(m_PlayerInSightRange && m_PlayerInAttackRange)
+        {
+            Attacking();
+        }
+        else if(m_PlayerInSightRange && !m_PlayerInAttackRange)
+        {
+            Following();
+        }
+        else
+        {
+            // find new patrol walkpoint if timer is 0
+            if(m_PatrolTimer <= 0f)
+            {
+                Patrolling();
+                m_PatrolTimer = PatrolCooldown;
+            }
+            // do nothing
+            else
+            {
+                m_PatrolTimer -= Time.deltaTime;
+            }
+            
+        }
+    }
+
+    private void Patrolling()
+    {
+        Agent.stoppingDistance = 0f;
+        if(!m_WalkPointSet)
+        {
+            SearchWalkPoint();
+        }
+
+        if(m_WalkPointSet)
+        {
+            Agent.SetDestination(m_WalkPoint);
+        }
+
+        Vector3 distanceToWalkPoint = transform.position - m_WalkPoint;
+
+        if (distanceToWalkPoint.magnitude < 1f)
+        {
+            m_WalkPointSet = false;
+        }
+
+        m_WeaponController.SetReadyToFire(false);
+    }
+
+    private void SearchWalkPoint()
+    {
+        // calculate random point in range
+        float randomX = Random.Range(-WalkPointRange, WalkPointRange);
+        float randomZ = Random.Range(-WalkPointRange, WalkPointRange);
+
+        m_WalkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
+
+        // check if the walkpoint is on the ground
+        if(Physics.Raycast(m_WalkPoint, -transform.up, 2f, GroundLayer))
+        {
+            m_WalkPointSet = true;
+        }
+    }
+
+    private void Following()
+    {
+        Agent.stoppingDistance = StoppingDistance;
+        Agent.SetDestination(Player.transform.position);
+    }
+
+    private void Attacking()
+    {
+        transform.LookAt(Player.transform);
+        m_WeaponController.SetReadyToFire(true);
+
+        Following();
+    }
+
+    private void OnDamage()
+    {
+        AudioUtility.CreateSfx(DamagedSfxClip, transform.position, AudioUtility.AudioGroups.DamageTick);
+    }
+
+    private void OnDie()
+    {
+        // spawn a particle system when dying
+        var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);
+        Destroy(vfx, 5f);
+
+        Destroy(gameObject, DeathDuration);
+
+    }
+
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireSphere(transform.position, WalkPointRange);
+        Gizmos.color = Color.red;
+        Gizmos.DrawWireSphere(transform.position, AttackRange);
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, SightRange);
+    }
+}

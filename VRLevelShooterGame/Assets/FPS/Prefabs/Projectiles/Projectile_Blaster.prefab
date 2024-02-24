@@ -51,7 +51,7 @@ MonoBehaviour:
   MaxLifeTime: 5
   HittableLayers:
     serializedVersion: 2
-    m_Bits: 1463
+    m_Bits: 1719
   ImpactVfx: {fileID: 7655095426451682942, guid: a7d68b1a502e02a49b8efb1b86a8c931,
     type: 3}
   ImpactVfxLifetime: 5

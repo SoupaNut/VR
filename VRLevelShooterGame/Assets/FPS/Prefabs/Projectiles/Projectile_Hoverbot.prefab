@@ -52,6 +52,9 @@ MonoBehaviour:
   HittableLayers:
     serializedVersion: 2
     m_Bits: 1463
+  ImpactVfx: {fileID: 0}
+  ImpactVfxLifetime: 5
+  ImpactVfxSpawnOffset: 0.1
   ImpactSfxClip: {fileID: 0}
 --- !u!1 &5564024855854763701
 GameObject:

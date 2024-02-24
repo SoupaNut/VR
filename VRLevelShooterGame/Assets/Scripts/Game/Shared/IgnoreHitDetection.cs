@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Unity.Game
+namespace Unity.Game.Shared
 {
     public class IgnoreHitDetection : MonoBehaviour
     {

@@ -137,7 +137,6 @@ namespace Unity.Game.Gameplay
             // Impact Vfx
             if (ImpactVfx)
             {
-                //GameObject impactVfxInstance = Instantiate(ImpactVfx, point + (normal * ImpactVfxSpawnOffset), Quaternion.LookRotation(normal));
                 GameObject impactVfxInstance = Instantiate(ImpactVfx, point + (normal * ImpactVfxSpawnOffset), Quaternion.LookRotation(normal));
                 if (ImpactVfxLifetime > 0)
                 {
