@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Events;
 using Unity.Game.Utilities;
 using Unity.Game.Shared;
 
@@ -18,7 +19,7 @@ namespace Unity.Game.AI
         public AIState AiState;
 
         [Header("References")]
-        public NavMeshAgent Agent;
+        public NavMeshAgent NavMeshAgent;
         public GameObject Player;
         public LayerMask PlayerLayer, GroundLayer;
 
@@ -46,8 +47,22 @@ namespace Unity.Game.AI
 
         [Tooltip("Delay after death where the GameObject is destroyed (to allow for animation)")]
         public float DeathDuration = 0f;
-        
 
+        // Actions
+        public UnityAction OnDetectedTarget;
+        public UnityAction OnLostTarget;
+        public UnityAction OnDamaged;
+
+        // Movement
+        public PatrolPath PatrolPath { get; set; }
+        public bool IsTargetInAttackRange => m_DetectionModule.IsTargetInAttackRange;
+        public bool IsSeeingTarget => m_DetectionModule.IsSeeingTarget;
+        public bool HadKnownTarget => m_DetectionModule.HadKnownTarget;
+        private DetectionModule m_DetectionModule;
+        private int m_DestinationPathNodeIndex;
+
+        private Health m_Health;
+        private WeaponController m_WeaponController;
 
         // Patrol
         private bool m_WalkPointSet;
@@ -55,15 +70,11 @@ namespace Unity.Game.AI
         private float m_PatrolTimer;
         private Vector3 m_InitialPosition;
 
-        private Health m_Health;
-        private WeaponController m_WeaponController;
-        private DetectionModule m_DetectionModule;
-
         private void Start()
         {
             // Get required components
             {
-                Agent = GetComponent<NavMeshAgent>();
+                NavMeshAgent = GetComponent<NavMeshAgent>();
                 m_WeaponController = GetComponent<WeaponController>();
             }
             
@@ -112,7 +123,6 @@ namespace Unity.Game.AI
 
         private void Update()
         {
-            UpdateCurrentAiState();
 
             // Check for sight and attack range
             m_PlayerInSightRange = Physics.CheckSphere(transform.position, SightRange, PlayerLayer);
@@ -142,47 +152,9 @@ namespace Unity.Game.AI
             }
         }
 
-        private void UpdateCurrentAiState()
+        private bool IsPathValid()
         {
-            // Handle States
-            switch(AiState)
-            {
-                case AIState.Patrol:
-                    if(PatrolWhenIdle)
-                    {
-                        Patrolling();
-                    }
-                    break;
-                case AIState.Follow:
-                    Following();
-                    break;
-                case AIState.Attack:
-                    Attacking();
-                    break;
-            }
-        }
-
-        private void Patrolling()
-        {
-            Agent.stoppingDistance = 0f;
-            if (!m_WalkPointSet)
-            {
-                UpdatePathDestination();
-            }
-
-            if(m_WalkPointSet)
-            {
-                SetPathDestination(m_WalkPoint);
-            }
-
-            Vector3 distanceToWalkPoint = transform.position - m_WalkPoint;
-
-            if (distanceToWalkPoint.magnitude < 1f)
-            {
-                m_WalkPointSet = false;
-            }
-
-            m_WeaponController.SetReadyToFire(false);
+            return PatrolPath && PatrolPath.PathNodes.Count > 0;
         }
 
         private void UpdatePathDestination()
@@ -210,18 +182,81 @@ namespace Unity.Game.AI
                 m_WalkPointSet = true;
             }
         }
+        //
+        // Sets the path node index to the closest node found
+        //
+        public void SetDestinationToClosestPathNode()
+        {
+            if(IsPathValid())
+            {
+                int closestPathNodeIndex = 0;
+                for(int i = 0; i < PatrolPath.PathNodes.Count; i++)
+                {
+                    float distanceToNode = PatrolPath.GetDistanceToNode(transform.position, i);
+                    if(distanceToNode < PatrolPath.GetDistanceToNode(transform.position, closestPathNodeIndex))
+                    {
+                        closestPathNodeIndex = i;
+                    }
+                }
 
+                m_DestinationPathNodeIndex = closestPathNodeIndex;
+            }
+            else
+            {
+                m_DestinationPathNodeIndex = 0;
+            }
+        }
+        //
+        // Returns the position vector of the destination 
+        //
+        public Vector3 GetPositionOfDestination()
+        {
+            if(IsPathValid())
+            {
+                return PatrolPath.GetPositionOfPathNode(m_DestinationPathNodeIndex);
+            }
+            else
+            {
+                return transform.position;
+            }
+        }
+        //
+        // Sets the destination of the nav mesh agent
+        //
         private void SetPathDestination(Vector3 destination)
         {
-            if(Agent)
+            if(NavMeshAgent)
             {
-                Agent.SetDestination(destination);
+                NavMeshAgent.SetDestination(destination);
             }
+        }
+
+        private void Patrolling()
+        {
+            NavMeshAgent.stoppingDistance = 0f;
+            if (!m_WalkPointSet)
+            {
+                UpdatePathDestination();
+            }
+
+            if (m_WalkPointSet)
+            {
+                SetPathDestination(m_WalkPoint);
+            }
+
+            Vector3 distanceToWalkPoint = transform.position - m_WalkPoint;
+
+            if (distanceToWalkPoint.magnitude < 1f)
+            {
+                m_WalkPointSet = false;
+            }
+
+            m_WeaponController.SetReadyToFire(false);
         }
 
         private void Following()
         {
-            Agent.stoppingDistance = StoppingDistance;
+            NavMeshAgent.stoppingDistance = StoppingDistance;
             SetPathDestination(Player.transform.position);
         }
 

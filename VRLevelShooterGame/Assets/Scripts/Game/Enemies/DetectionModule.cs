@@ -22,7 +22,7 @@ namespace Unity.Game.AI
 
         public GameObject KnownDetectedTarget { get; private set; }
         public bool IsTargetInAttackRange { get; private set; }
-        public bool IsTargetInSightRange { get; private set; }
+        public bool IsSeeingTarget { get; private set; }
         public bool HadKnownTarget { get; private set; }
 
         protected float TimeLastSeenTarget = Mathf.NegativeInfinity;
