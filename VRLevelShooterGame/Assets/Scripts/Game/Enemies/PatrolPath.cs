@@ -21,7 +21,7 @@ namespace Unity.Game.AI
 
         public float GetDistanceToNode(Vector3 origin, int destinationNodeIndex)
         {
-            if(!IsInvalidNodeIndex(destinationNodeIndex))
+            if(IsInvalidNodeIndex(destinationNodeIndex))
             {
                 return -1f;
             }
@@ -31,7 +31,7 @@ namespace Unity.Game.AI
 
         public Vector3 GetPositionOfPathNode(int nodeIndex)
         {
-            if(!IsInvalidNodeIndex(nodeIndex))
+            if(IsInvalidNodeIndex(nodeIndex))
             {
                 return Vector3.zero;
             }

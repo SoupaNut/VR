@@ -51,6 +51,7 @@ namespace Unity.Game.AI
             {
                 case AIState.Patrol:
                     m_EnemyController.UpdatePathDestination();
+                    m_EnemyController.SetPathDestination(m_EnemyController.GetPositionOfDestination());
                     break;
             }
         }

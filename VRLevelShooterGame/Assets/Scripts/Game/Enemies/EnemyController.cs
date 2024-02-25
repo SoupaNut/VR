@@ -23,8 +23,14 @@ namespace Unity.Game.AI
         public GameObject Player;
         public LayerMask PlayerLayer, GroundLayer;
 
+        [Header("Parameters")]
+        [Tooltip("The distance at which the enemy considers that it has reached its current path destination point")]
+        public float PathReachingRadius = 2f;
+
+        [Tooltip("Delay after death where the GameObject is destroyed (to allow for animation)")]
+        public float DeathDuration = 0f;
+
         [Header("Ranges")]
-        public float PatrolRange = 10f;
         public float SightRange = 20f;
         public float AttackRange = 10f;
         private bool m_PlayerInAttackRange, m_PlayerInSightRange;
@@ -45,8 +51,7 @@ namespace Unity.Game.AI
         [Tooltip("The point at which the death VFX is spawned")]
         public Transform DeathVfxSpawnPoint;
 
-        [Tooltip("Delay after death where the GameObject is destroyed (to allow for animation)")]
-        public float DeathDuration = 0f;
+        
 
         // Actions
         public UnityAction OnDetectedTarget;
@@ -63,12 +68,6 @@ namespace Unity.Game.AI
 
         private Health m_Health;
         private WeaponController m_WeaponController;
-
-        // Patrol
-        private bool m_WalkPointSet;
-        private Vector3 m_WalkPoint;
-        private float m_PatrolTimer;
-        private Vector3 m_InitialPosition;
 
         private void Start()
         {
@@ -94,13 +93,6 @@ namespace Unity.Game.AI
                     m_DetectionModule.OnLostTarget += OnLost;
                 }
             }
-
-            // Set starting defaults
-            {
-                m_WalkPointSet = false;
-                m_InitialPosition = transform.position;
-                AiState = AIState.Patrol;
-            }
         }
 
         private void OnDisable()
@@ -125,66 +117,88 @@ namespace Unity.Game.AI
         {
 
             // Check for sight and attack range
-            m_PlayerInSightRange = Physics.CheckSphere(transform.position, SightRange, PlayerLayer);
-            m_PlayerInAttackRange = Physics.CheckSphere(transform.position, AttackRange, PlayerLayer);
+            //m_PlayerInSightRange = Physics.CheckSphere(transform.position, SightRange, PlayerLayer);
+            //m_PlayerInAttackRange = Physics.CheckSphere(transform.position, AttackRange, PlayerLayer);
 
-            if (m_PlayerInSightRange && m_PlayerInAttackRange)
-            {
-                Attacking();
-            }
-            else if (m_PlayerInSightRange && !m_PlayerInAttackRange)
-            {
-                Following();
-            }
-            else
-            {
-                // find new patrol walkpoint if timer is 0
-                if (m_PatrolTimer <= 0f)
-                {
-                    Patrolling();
-                    m_PatrolTimer = PatrolCooldown;
-                }
-                // do nothing
-                else
-                {
-                    m_PatrolTimer -= Time.deltaTime;
-                }
-            }
+            //if (m_PlayerInSightRange && m_PlayerInAttackRange)
+            //{
+            //    Attacking();
+            //}
+            //else if (m_PlayerInSightRange && !m_PlayerInAttackRange)
+            //{
+            //    Following();
+            //}
+            //else
+            //{
+            //    // find new patrol walkpoint if timer is 0
+            //    if (m_PatrolTimer <= 0f)
+            //    {
+            //        Patrolling();
+            //        m_PatrolTimer = PatrolCooldown;
+            //    }
+            //    // do nothing
+            //    else
+            //    {
+            //        m_PatrolTimer -= Time.deltaTime;
+            //    }
+            //}
         }
-
+        /**************************************************************************
+         * FUNCTION: IsPathValid
+         * 
+         * PARAM: NA
+         * 
+         * PURPOSE: Helper function. Checks if there is a valid path
+         * 
+         * RETURN: NA
+         **************************************************************************/
         private bool IsPathValid()
         {
             return PatrolPath && PatrolPath.PathNodes.Count > 0;
         }
 
-        private void UpdatePathDestination()
+        /**************************************************************************
+         * FUNCTION: UpdatePathDestination
+         * 
+         * PARAM: (bool) inverseOrder - go in reverse order of path nodes
+         * 
+         * PURPOSE: Go to the next path node
+         * 
+         * RETURN: NA
+         **************************************************************************/
+        public void UpdatePathDestination(bool inverseOrder=false)
         {
-            //// calculate random point in Patrol Range
-            //float randomX = Random.Range(-PatrolRange, PatrolRange);
-            //float randomZ = Random.Range(-PatrolRange, PatrolRange);
-
-            //m_WalkPoint = new Vector3(m_InitialPosition.x + randomX, m_InitialPosition.y, m_InitialPosition.z + randomZ);
-
-            //// Check if destination is on the ground
-            //if(Physics.Raycast(m_WalkPoint, -transform.up, 2f, GroundLayer))
-            //{
-            //    m_WalkPointSet = true;
-            //}
-
-            float randomX = Random.Range(-PatrolRange, PatrolRange);
-            float randomZ = Random.Range(-PatrolRange, PatrolRange);
-
-            m_WalkPoint = new Vector3(transform.position.x + randomX, transform.position.y, transform.position.z + randomZ);
-
-            // check if the walkpoint is on the ground
-            if (Physics.Raycast(m_WalkPoint, -transform.up, 2f, GroundLayer))
+            if (IsPathValid())
             {
-                m_WalkPointSet = true;
+                //Debug.Log("Magnitude = " + (transform.position - GetPositionOfDestination()).magnitude);
+                // Check if reached the path destination
+                if((transform.position - GetPositionOfDestination()).magnitude <= PathReachingRadius)
+                {
+                    // increment path destination index
+                    m_DestinationPathNodeIndex = inverseOrder ? (m_DestinationPathNodeIndex - 1) : (m_DestinationPathNodeIndex + 1);
+                    if(m_DestinationPathNodeIndex < 0)
+                    {
+                        m_DestinationPathNodeIndex = PatrolPath.PathNodes.Count - 1;
+                    }
+
+                    if (m_DestinationPathNodeIndex >= PatrolPath.PathNodes.Count)
+                    {
+
+                        m_DestinationPathNodeIndex = 0;
+                    }
+                }
             }
         }
-        //
-        // Sets the path node index to the closest node found
-        //
+
+        /**************************************************************************
+         * FUNCTION: SetDestinationToClosestPathNode
+         * 
+         * PARAM: NA
+         * 
+         * PURPOSE: Sets the path node index to the closest node found
+         * 
+         * RETURN: NA
+         **************************************************************************/
         public void SetDestinationToClosestPathNode()
         {
             if(IsPathValid())
@@ -206,9 +220,16 @@ namespace Unity.Game.AI
                 m_DestinationPathNodeIndex = 0;
             }
         }
-        //
-        // Returns the position vector of the destination 
-        //
+
+        /*************************************************************************
+         * FUNCTION: GetPositionOfDestination
+         * 
+         * PARAM: NA
+         * 
+         * PURPOSE: Gets the position of the destination path node
+         * 
+         * RETURN: (Vector3) Position of Path Node
+         **************************************************************************/
         public Vector3 GetPositionOfDestination()
         {
             if(IsPathValid())
@@ -220,10 +241,17 @@ namespace Unity.Game.AI
                 return transform.position;
             }
         }
-        //
-        // Sets the destination of the nav mesh agent
-        //
-        private void SetPathDestination(Vector3 destination)
+
+        /**************************************************************************
+         * FUNCTION: SetPathDestination
+         * 
+         * PARAM: (Vector3) destination - position of destination
+         * 
+         * PURPOSE: Sets the destination of the nav mesh agent
+         * 
+         * RETURN: NA
+         **************************************************************************/
+        public void SetPathDestination(Vector3 destination)
         {
             if(NavMeshAgent)
             {
@@ -231,42 +259,19 @@ namespace Unity.Game.AI
             }
         }
 
-        private void Patrolling()
-        {
-            NavMeshAgent.stoppingDistance = 0f;
-            if (!m_WalkPointSet)
-            {
-                UpdatePathDestination();
-            }
+        //private void Following()
+        //{
+        //    NavMeshAgent.stoppingDistance = StoppingDistance;
+        //    SetPathDestination(Player.transform.position);
+        //}
 
-            if (m_WalkPointSet)
-            {
-                SetPathDestination(m_WalkPoint);
-            }
+        //private void Attacking()
+        //{
+        //    transform.LookAt(Player.transform);
+        //    m_WeaponController.SetReadyToFire(true);
 
-            Vector3 distanceToWalkPoint = transform.position - m_WalkPoint;
-
-            if (distanceToWalkPoint.magnitude < 1f)
-            {
-                m_WalkPointSet = false;
-            }
-
-            m_WeaponController.SetReadyToFire(false);
-        }
-
-        private void Following()
-        {
-            NavMeshAgent.stoppingDistance = StoppingDistance;
-            SetPathDestination(Player.transform.position);
-        }
-
-        private void Attacking()
-        {
-            transform.LookAt(Player.transform);
-            m_WeaponController.SetReadyToFire(true);
-
-            Following();
-        }
+        //    Following();
+        //}
 
         private void OnDamage()
         {
@@ -291,16 +296,6 @@ namespace Unity.Game.AI
         private void OnLost()
         {
 
-        }
-
-        private void OnDrawGizmosSelected()
-        {
-            Gizmos.color = Color.blue;
-            Gizmos.DrawWireSphere(transform.position, PatrolRange);
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, AttackRange);
-            Gizmos.color = Color.yellow;
-            Gizmos.DrawWireSphere(transform.position, SightRange);
         }
     }
 }
