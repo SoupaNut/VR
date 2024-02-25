@@ -3634,7 +3634,7 @@ PrefabInstance:
     - target: {fileID: 2015434656898269656, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 13.32
+      value: 14.65
       objectReference: {fileID: 0}
     - target: {fileID: 2015434656898269656, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -3644,7 +3644,7 @@ PrefabInstance:
     - target: {fileID: 2015434656898269656, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: 41.9
+      value: 41.78
       objectReference: {fileID: 0}
     - target: {fileID: 2015434656898269656, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -3691,6 +3691,11 @@ PrefabInstance:
       propertyPath: player
       value: 
       objectReference: {fileID: 2020257423}
+    - target: {fileID: 3015694156076891736, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: PatrolRange
+      value: 5.01
+      objectReference: {fileID: 0}
     - target: {fileID: 3015694156076891736, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
       propertyPath: GroundLayer.m_Bits

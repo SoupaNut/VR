@@ -1,18 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
-public class DetectionModule : MonoBehaviour
+namespace Unity.Game.AI
 {
-    // Start is called before the first frame update
-    void Start()
+    public class DetectionModule : MonoBehaviour
     {
-        
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
+        [Tooltip("The max distance at which the enemy can see targets")]
+        public float DetectionRange = 20f;
+
+        [Tooltip("The max distance at which the enemy can attack its target")]
+        public float AttackRange = 10f;
+
+        [Tooltip("Time before an enemy abandons a known target that it can't see anymore")]
+        public float KnownTargetTimeout = 4f;
+
+        public UnityAction OnDetectTarget;
+        public UnityAction OnLostTarget;
+
+        public GameObject KnownDetectedTarget { get; private set; }
+        public bool IsTargetInAttackRange { get; private set; }
+        public bool IsTargetInSightRange { get; private set; }
+        public bool HadKnownTarget { get; private set; }
+
+        protected float TimeLastSeenTarget = Mathf.NegativeInfinity;
+
+        public virtual void OnDetect() => OnDetectTarget?.Invoke();
         
+        public virtual void OnLost() => OnLostTarget?.Invoke();
+
+        public virtual void OnDamaged(GameObject damageSource)
+        {
+            TimeLastSeenTarget = Time.time;
+
+            KnownDetectedTarget = damageSource;
+        }
     }
 }
+
+
