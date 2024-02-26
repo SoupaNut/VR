@@ -30,10 +30,10 @@ namespace Unity.Game.AI
         [Tooltip("Delay after death where the GameObject is destroyed (to allow for animation)")]
         public float DeathDuration = 0f;
 
-        [Header("Ranges")]
-        public float SightRange = 20f;
-        public float AttackRange = 10f;
-        private bool m_PlayerInAttackRange, m_PlayerInSightRange;
+        //[Header("Ranges")]
+        //public float SightRange = 20f;
+        //public float AttackRange = 10f;
+        //private bool m_PlayerInAttackRange, m_PlayerInSightRange;
 
         [Header("Movement")]
         public bool PatrolWhenIdle = true;
@@ -123,7 +123,7 @@ namespace Unity.Game.AI
 
         private void Update()
         {
-
+            DetectionModule.HandleUpdateDetection(m_SelfColliders);
             // Check for sight and attack range
             //m_PlayerInSightRange = Physics.CheckSphere(transform.position, SightRange, PlayerLayer);
             //m_PlayerInAttackRange = Physics.CheckSphere(transform.position, AttackRange, PlayerLayer);
@@ -300,12 +300,12 @@ namespace Unity.Game.AI
 
         private void OnDetectTarget()
         {
-
+            onDetectedTarget?.Invoke();
         }
 
         private void OnLostTarget()
         {
-
+            onLostTarget?.Invoke();
         }
     }
 }

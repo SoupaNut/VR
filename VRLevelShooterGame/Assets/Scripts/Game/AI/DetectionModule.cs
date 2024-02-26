@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -7,6 +8,9 @@ namespace Unity.Game.AI
 {
     public class DetectionModule : MonoBehaviour
     {
+        [Tooltip("The point representing the source of target-detection raycasts for the enemy AI")]
+        public Transform DetectionSourcePoint;
+
         [Tooltip("The max distance at which the enemy can see targets")]
         public float DetectionRange = 20f;
 
@@ -41,13 +45,45 @@ namespace Unity.Game.AI
             }
 
             // Find the target
+            float sqrDetectionRange = DetectionRange * DetectionRange;
             IsSeeingTarget = false;
-            bool targetInDetectionRange = Physics.CheckSphere(transform.position, DetectionRange, TargetLayer);
-            bool targetInAttackRange = Physics.CheckSphere(transform.position, AttackRange, TargetLayer);
+            //float closestSqrDistance = Mathf.Infinity;
+            float sqrDistance = (Target.transform.position - DetectionSourcePoint.position).sqrMagnitude; // sqrMagnitude is a micro-optimization. Supposedly better than Vector3.Distance
+
+            // if Target is in detection range
+            if(sqrDistance < sqrDetectionRange)
+            {
+                // Check for obstruction
+                RaycastHit hits = Physics.RayCast(DetectionSourcePoint.position, (Target.transform.position - DetectionSourcePoint.position).normalized, DetectionRange, -1, QueryTriggerInteraction.Ignore);
+                RaycastHit closestValidHit = new RaycastHit();
+                closestValidHit.distance = Mathf.Infinity;
+                bool foundValidHit = false;
+
+                foreach(var hit in hits)
+                {
+                    if(!selfColliders.Contains(hit.collider) && hit.distance < closestValidHit.distance)
+                    {
+                        closestValidHit = hit;
+                        foundValidHit = true;
+                    }
+                }
+
+                if (foundValidHit)
+                {
+                    IsSeeingTarget = true;
+                    //closestSqrDistance = sqrDistance;
+                    TimeLastSeenTarget = Time.time;
+                    KnownDetectedTarget = Target;
+                }
+            }
+
+            float sqrAttackRange = AttackRange * AttackRange;
+
+            IsTargetInAttackRange = KnownDetectedTarget != null && (KnownDetectedTarget.transform.position - DetectionSourcePoint.position).sqrMagnitude <= sqrAttackRange;
 
 
             // Detection Events
-            if(HadKnownTarget && KnownDetectedTarget == null)
+            if (HadKnownTarget && KnownDetectedTarget == null)
             {
                 OnLostTarget();
             }

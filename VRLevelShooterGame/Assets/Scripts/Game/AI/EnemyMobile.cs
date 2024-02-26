@@ -61,17 +61,23 @@ namespace Unity.Game.AI
 
         private void OnDetectedTarget()
         {
-
+            if(AiState == AIState.Patrol)
+            {
+                AiState = AIState.Follow;
+            }
         }
 
         private void OnLostTarget()
         {
-
+            if(AiState == AIState.Follow || AiState == AIState.Attack)
+            {
+                AiState = AIState.Patrol;
+            }
         }
 
         private void OnDamaged()
         {
-
+            AiState = AIState.Follow;
         }
     }
 }
