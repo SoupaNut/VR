@@ -44,9 +44,25 @@ namespace Unity.Game.AI
             return index < 0 || index >= PathNodes.Count || PathNodes[index] == null;
         }
 
-        private void OnDrawGizmosSelected()
+        private void OnDrawGizmos()
         {
             Gizmos.color = Color.cyan;
+            for (int i = 0; i < PathNodes.Count; i++)
+            {
+                int nextIndex = i + 1;
+                if (nextIndex >= PathNodes.Count)
+                {
+                    nextIndex -= PathNodes.Count;
+                }
+
+                Gizmos.DrawLine(PathNodes[i].position, PathNodes[nextIndex].position);
+                Gizmos.DrawSphere(PathNodes[i].position, 0.1f);
+            }
+        }
+
+        private void OnDrawGizmosSelected()
+        {
+            Gizmos.color = Color.green;
             for (int i = 0; i < PathNodes.Count; i++)
             {
                 int nextIndex = i + 1;

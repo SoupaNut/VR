@@ -28,9 +28,9 @@ namespace Unity.Game.AI
             m_EnemyController = GetComponent<EnemyController>();
             if(m_EnemyController != null )
             {
-                m_EnemyController.OnDetectedTarget += OnDetectedTarget;
-                m_EnemyController.OnLostTarget += OnLostTarget;
-                m_EnemyController.OnDamaged += OnDamaged;
+                m_EnemyController.onDetectedTarget += OnDetectedTarget;
+                m_EnemyController.onLostTarget += OnLostTarget;
+                m_EnemyController.onDamaged += OnDamaged;
                 m_EnemyController.SetDestinationToClosestPathNode();
             }
 
@@ -52,6 +52,9 @@ namespace Unity.Game.AI
                 case AIState.Patrol:
                     m_EnemyController.UpdatePathDestination();
                     m_EnemyController.SetPathDestination(m_EnemyController.GetPositionOfDestination());
+                    break;
+                case AIState.Follow:
+                    m_EnemyController.SetPathDestination(m_EnemyController.KnownDetectedTarget.transform.position);
                     break;
             }
         }

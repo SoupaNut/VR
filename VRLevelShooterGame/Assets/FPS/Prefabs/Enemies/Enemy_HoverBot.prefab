@@ -45,6 +45,7 @@ GameObject:
   - component: {fileID: 3015694156076891736}
   - component: {fileID: 895873886455779108}
   - component: {fileID: 8912366881208744614}
+  - component: {fileID: 8656579503457259674}
   m_Layer: 0
   m_Name: Enemy_HoverBot
   m_TagString: Untagged
@@ -204,24 +205,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 991c4c29926ccea4fa7530280c7f6816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  agent: {fileID: 0}
-  player: {fileID: 0}
-  playerLayer:
+  AiState: 0
+  NavMeshAgent: {fileID: 0}
+  Player: {fileID: 0}
+  PlayerLayer:
     serializedVersion: 2
     m_Bits: 256
-  groundLayer:
+  GroundLayer:
     serializedVersion: 2
     m_Bits: 128
-  walkPointRange: 10
-  sightRange: 20
-  attackRange: 10
-  stoppingDistance: 5
-  patrolCooldown: 3
+  PathReachingRadius: 2
+  DeathDuration: 0
+  SightRange: 20
+  AttackRange: 10
+  PatrolWhenIdle: 1
+  StoppingDistance: 5
+  PatrolCooldown: 1
   DamagedSfxClip: {fileID: 8300000, guid: a7fae22399a6e1d448dc0dd2210f1dac, type: 3}
   DeathVfx: {fileID: 8950624839484268180, guid: 2a8f5052fe50f7b41b17149abb0f7414,
     type: 3}
   DeathVfxSpawnPoint: {fileID: 381893446485871685}
-  DeathDuration: 0
+  DetectionModule: {fileID: 0}
 --- !u!114 &895873886455779108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -255,6 +259,19 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxHealth: 100
+--- !u!114 &8656579503457259674
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015434656898269652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 413a7158419bd7445b6f51243a7df801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AttackStopDistanceRatio: 0.5
 --- !u!1 &2201913640410082181
 GameObject:
   m_ObjectHideFlags: 0
@@ -327,6 +344,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 136806910776417928}
+  - component: {fileID: 965767169006437398}
   m_Layer: 0
   m_Name: DetectionModule
   m_TagString: Untagged
@@ -349,6 +367,21 @@ Transform:
   m_Children: []
   m_Father: {fileID: 2015434656898269656}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &965767169006437398
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6229573252830750061}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e010183470e783e4499ede11ec68faa4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DetectionRange: 20
+  AttackRange: 10
+  KnownTargetTimeout: 4
 --- !u!1 &6421371450313891992
 GameObject:
   m_ObjectHideFlags: 0

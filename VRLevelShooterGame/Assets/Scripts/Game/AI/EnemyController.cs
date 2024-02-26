@@ -54,17 +54,20 @@ namespace Unity.Game.AI
         
 
         // Actions
-        public UnityAction OnDetectedTarget;
-        public UnityAction OnLostTarget;
-        public UnityAction OnDamaged;
+        public UnityAction onDetectedTarget;
+        public UnityAction onLostTarget;
+        public UnityAction onDamaged;
 
         // Movement
         public PatrolPath PatrolPath { get; set; }
-        public bool IsTargetInAttackRange => m_DetectionModule.IsTargetInAttackRange;
-        public bool IsSeeingTarget => m_DetectionModule.IsSeeingTarget;
-        public bool HadKnownTarget => m_DetectionModule.HadKnownTarget;
-        private DetectionModule m_DetectionModule;
+        public GameObject KnownDetectedTarget => DetectionModule.KnownDetectedTarget;
+        public bool IsTargetInAttackRange => DetectionModule.IsTargetInAttackRange;
+        public bool IsSeeingTarget => DetectionModule.IsSeeingTarget;
+        public bool HadKnownTarget => DetectionModule.HadKnownTarget;
+        public DetectionModule DetectionModule;
         private int m_DestinationPathNodeIndex;
+
+        private Collider[] m_SelfColliders;
 
         private Health m_Health;
         private WeaponController m_WeaponController;
@@ -77,21 +80,26 @@ namespace Unity.Game.AI
                 m_WeaponController = GetComponent<WeaponController>();
             }
             
-            // Suscribe to Events
+            // Subscribe to Events
             {
                 m_Health = GetComponent<Health>();
                 if (m_Health != null)
                 {
-                    m_Health.OnDamage += OnDamage;
-                    m_Health.OnDie += OnDie;
+                    m_Health.onDamage += OnDamage;
+                    m_Health.onDie += OnDie;
                 }
 
-                m_DetectionModule = GetComponentInChildren<DetectionModule>();
-                if (m_DetectionModule != null)
+                DetectionModule = GetComponentInChildren<DetectionModule>();
+                if (DetectionModule != null)
                 {
-                    m_DetectionModule.OnDetectTarget += OnDetect;
-                    m_DetectionModule.OnLostTarget += OnLost;
+                    DetectionModule.onDetectTarget += OnDetectTarget;
+                    DetectionModule.onLostTarget += OnLostTarget;
                 }
+            }
+
+            // Initialize variables
+            {
+                m_SelfColliders = GetComponentsInChildren<Collider>();
             }
         }
 
@@ -101,14 +109,14 @@ namespace Unity.Game.AI
             {
                 if (m_Health != null)
                 {
-                    m_Health.OnDamage -= OnDamage;
-                    m_Health.OnDie -= OnDie;
+                    m_Health.onDamage -= OnDamage;
+                    m_Health.onDie -= OnDie;
                 }
 
-                if (m_DetectionModule != null)
+                if (DetectionModule != null)
                 {
-                    m_DetectionModule.OnDetectTarget -= OnDetect;
-                    m_DetectionModule.OnLostTarget -= OnLost;
+                    DetectionModule.onDetectTarget -= OnDetectTarget;
+                    DetectionModule.onLostTarget -= OnLostTarget;
                 }
             }
         }
@@ -276,6 +284,8 @@ namespace Unity.Game.AI
         private void OnDamage()
         {
             AudioUtility.CreateSfx(DamagedSfxClip, transform.position, AudioUtility.AudioGroups.DamageTick);
+
+            DetectionModule.OnDamage(DetectionModule.Target);
         }
 
         private void OnDie()
@@ -288,12 +298,12 @@ namespace Unity.Game.AI
 
         }
 
-        private void OnDetect()
+        private void OnDetectTarget()
         {
 
         }
 
-        private void OnLost()
+        private void OnLostTarget()
         {
 
         }
