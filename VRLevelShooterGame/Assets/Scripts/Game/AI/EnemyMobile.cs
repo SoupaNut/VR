@@ -26,13 +26,12 @@ namespace Unity.Game.AI
         void Start()
         {
             m_EnemyController = GetComponent<EnemyController>();
-            if(m_EnemyController != null )
-            {
-                m_EnemyController.onDetectedTarget += OnDetectedTarget;
-                m_EnemyController.onLostTarget += OnLostTarget;
-                m_EnemyController.onDamaged += OnDamaged;
-                m_EnemyController.SetDestinationToClosestPathNode();
-            }
+            DebugUtility.HandleErrorIfNullGetComponent<EnemyController, EnemyMobile>(EnemyController, this, gameObject);
+
+            m_EnemyController.onDetectedTarget += OnDetectedTarget;
+            m_EnemyController.onLostTarget += OnLostTarget;
+            m_EnemyController.onDamaged += OnDamaged;
+            m_EnemyController.SetDestinationToClosestPathNode();
 
             // Start Patrolling
             AiState = AIState.Patrol;

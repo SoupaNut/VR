@@ -50,12 +50,11 @@ namespace Unity.Game.Gameplay
         private void OnEnable()
         {
             m_ProjectileBase = GetComponent<ProjectileBase>();
-            if(m_ProjectileBase != null)
-            {
-                m_ProjectileBase.OnShoot += OnShoot;
+            DebugUtility.HandleErrorIfNullGetComponent<ProjectileBase, ProjectileStandard>(ProjectileBase, this, gameObject);
 
-                Destroy(gameObject, MaxLifeTime);
-            }
+            m_ProjectileBase.OnShoot += OnShoot;
+
+            Destroy(gameObject, MaxLifeTime);
         }
         
         private void OnDisable()

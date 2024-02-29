@@ -87,6 +87,7 @@ namespace Unity.Game.AI
             // Get components
             {
                 NavMeshAgent = GetComponent<NavMeshAgent>();
+                DebugUtility.HandleErrorIfNullGetComponent<NavMeshAgent, EnemyController>(NavMeshAgent, this, gameObject);
 
                 m_WeaponController = GetComponent<WeaponController>();
                 DebugUtility.HandleErrorIfNullGetComponent<WeaponController, EnemyController>(m_WeaponController, this, gameObject);

@@ -79,7 +79,7 @@ namespace Unity.Game.AI
                         if (foundValidHit)
                         {
 #if UNITY_EDITOR
-                            Debug.DrawRay(DetectionSourcePoint.position, (otherActor.AimPoint.position - DetectionSourcePoint.position).normalized * closestValidHit.distance, Color.green);
+                            Debug.DrawRay(DetectionSourcePoint.position, closestValidHit.normal * closestValidHit.distance, Color.green);
 #endif
                             Actor hitActor = closestValidHit.collider.GetComponentInParent<Actor>();
                             if(hitActor == otherActor)
