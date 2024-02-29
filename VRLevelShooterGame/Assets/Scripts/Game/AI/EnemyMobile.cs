@@ -55,6 +55,7 @@ namespace Unity.Game.AI
                     break;
                 case AIState.Follow:
                     m_EnemyController.SetPathDestination(m_EnemyController.KnownDetectedTarget.transform.position);
+                    m_EnemyController.OrientTowards(m_EnemyController.KnownDetectedTarget.transform.position);
                     break;
             }
         }

@@ -16,7 +16,7 @@ namespace Unity.Game.Shared
         private bool m_Invincible = false;
         public bool Invincible { get => m_Invincible; set => m_Invincible = value; }
 
-        public UnityAction onDamage;
+        public UnityAction<float, GameObject> onDamage;
         public UnityAction onDie;
 
         // Start is called before the first frame update
@@ -25,17 +25,29 @@ namespace Unity.Game.Shared
             m_CurrentHealth = MaxHealth;
         }
 
-        public void TakeDamage(float damage)
+        public void TakeDamage(float damage, GameObject damageSource)
         {
             if (Invincible)
             {
                 return;
             }
 
+            float healthBefore = m_CurrentHealth;
             m_CurrentHealth -= damage;
             m_CurrentHealth = Mathf.Clamp(m_CurrentHealth, 0, MaxHealth);
 
-            onDamage?.Invoke();
+            // Call onDamage action
+            float trueDamageTaken = healthBefore - m_CurrentHealth;
+            if(trueDamageTaken > 0)
+            {
+                onDamage?.Invoke(trueDamageTaken, damageSource);
+            }
+
+            HandleDeath();
+        }
+
+        private void HandleDeath()
+        {
             if (m_CurrentHealth <= 0f)
             {
                 onDie?.Invoke();

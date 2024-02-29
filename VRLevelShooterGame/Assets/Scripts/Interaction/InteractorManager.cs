@@ -109,7 +109,6 @@ public class InteractorManager : MonoBehaviour
             // disable anchor control
             grabInteractor.allowAnchorControl = false;
             objectSelected = ObjectSelected.Weapon;
-            
         }
     }
 

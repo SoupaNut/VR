@@ -8,6 +8,7 @@ using Unity.Game.Shared;
 
 namespace Unity.Game.AI
 {
+    [RequireComponent(typeof(Health), typeof(Actor), typeof(NavMeshAgent))]
     public class EnemyController : MonoBehaviour
     {
         public enum AIState
@@ -30,10 +31,8 @@ namespace Unity.Game.AI
         [Tooltip("Delay after death where the GameObject is destroyed (to allow for animation)")]
         public float DeathDuration = 0f;
 
-        //[Header("Ranges")]
-        //public float SightRange = 20f;
-        //public float AttackRange = 10f;
-        //private bool m_PlayerInAttackRange, m_PlayerInSightRange;
+        [Tooltip("The speed at which the enemy rotates")]
+        public float OrientationSpeed = 10f;
 
         [Header("Movement")]
         public bool PatrolWhenIdle = true;
@@ -51,7 +50,17 @@ namespace Unity.Game.AI
         [Tooltip("The point at which the death VFX is spawned")]
         public Transform DeathVfxSpawnPoint;
 
-        
+        [Header("Debug Display")]
+        [Tooltip("Color of the sphere gizmo representing the path reaching range")]
+        public Color PathReachingRangeColor = Color.yellow;
+
+        [Tooltip("Color of the sphere gizmo representing the attack range")]
+        public Color AttackRangeColor = Color.red;
+
+        [Tooltip("Color of the sphere gizmo representing the detection range")]
+        public Color DetectionRangeColor = Color.blue;
+
+
 
         // Actions
         public UnityAction onDetectedTarget;
@@ -65,41 +74,41 @@ namespace Unity.Game.AI
         public bool IsSeeingTarget => DetectionModule.IsSeeingTarget;
         public bool HadKnownTarget => DetectionModule.HadKnownTarget;
         public DetectionModule DetectionModule;
-        private int m_DestinationPathNodeIndex;
+        int m_DestinationPathNodeIndex;
 
         private Collider[] m_SelfColliders;
 
         private Health m_Health;
+        private Actor m_Actor;
         private WeaponController m_WeaponController;
 
         private void Start()
         {
-            // Get required components
+            // Get components
             {
                 NavMeshAgent = GetComponent<NavMeshAgent>();
+
                 m_WeaponController = GetComponent<WeaponController>();
+                DebugUtility.HandleErrorIfNullGetComponent<WeaponController, EnemyController>(m_WeaponController, this, gameObject);
+
+                m_Health = GetComponent<Health>();
+                DebugUtility.HandleErrorIfNullGetComponent<Health, EnemyController>(m_Health, this, gameObject);
+
+                m_Actor = GetComponent<Actor>();
+                DebugUtility.HandleErrorIfNullGetComponent<Actor, EnemyController>(m_Actor, this, gameObject);
+
+                DetectionModule = GetComponentInChildren<DetectionModule>();
+                DebugUtility.HandleErrorIfNullGetComponent<DetectionModule, EnemyController>(DetectionModule, this, gameObject);
+
+                m_SelfColliders = GetComponentsInChildren<Collider>();
             }
             
             // Subscribe to Events
             {
-                m_Health = GetComponent<Health>();
-                if (m_Health != null)
-                {
-                    m_Health.onDamage += OnDamage;
-                    m_Health.onDie += OnDie;
-                }
-
-                DetectionModule = GetComponentInChildren<DetectionModule>();
-                if (DetectionModule != null)
-                {
-                    DetectionModule.onDetectTarget += OnDetectTarget;
-                    DetectionModule.onLostTarget += OnLostTarget;
-                }
-            }
-
-            // Initialize variables
-            {
-                m_SelfColliders = GetComponentsInChildren<Collider>();
+                m_Health.onDamage += OnDamage;
+                m_Health.onDie += OnDie;
+                DetectionModule.onDetectTarget += OnDetectTarget;
+                DetectionModule.onLostTarget += OnLostTarget;
             }
         }
 
@@ -123,7 +132,7 @@ namespace Unity.Game.AI
 
         private void Update()
         {
-            DetectionModule.HandleUpdateDetection(m_SelfColliders);
+            DetectionModule.HandleTargetDetection(m_Actor, m_SelfColliders);
             // Check for sight and attack range
             //m_PlayerInSightRange = Physics.CheckSphere(transform.position, SightRange, PlayerLayer);
             //m_PlayerInAttackRange = Physics.CheckSphere(transform.position, AttackRange, PlayerLayer);
@@ -178,7 +187,6 @@ namespace Unity.Game.AI
         {
             if (IsPathValid())
             {
-                //Debug.Log("Magnitude = " + (transform.position - GetPositionOfDestination()).magnitude);
                 // Check if reached the path destination
                 if((transform.position - GetPositionOfDestination()).magnitude <= PathReachingRadius)
                 {
@@ -267,6 +275,15 @@ namespace Unity.Game.AI
             }
         }
 
+        public void OrientTowards(Vector3 lookPosition)
+        {
+            //GameObject lookObject = new GameObject();
+            //lookObject.transform.position = lookPosition;
+            //transform.LookAt(lookPosition);
+            Quaternion targetRotation = Quaternion.LookRotation(lookPosition - transform.position);
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, OrientationSpeed * Time.deltaTime);
+        }
+
         //private void Following()
         //{
         //    NavMeshAgent.stoppingDistance = StoppingDistance;
@@ -281,11 +298,11 @@ namespace Unity.Game.AI
         //    Following();
         //}
 
-        private void OnDamage()
+        private void OnDamage(float damage, GameObject damageSource)
         {
             AudioUtility.CreateSfx(DamagedSfxClip, transform.position, AudioUtility.AudioGroups.DamageTick);
 
-            DetectionModule.OnDamage(DetectionModule.Target);
+            DetectionModule.OnDamaged(damageSource);
         }
 
         private void OnDie()
@@ -306,6 +323,24 @@ namespace Unity.Game.AI
         private void OnLostTarget()
         {
             onLostTarget?.Invoke();
+        }
+
+        void OnDrawGizmos()
+        {
+            // Path reaching range
+            Gizmos.color = PathReachingRangeColor;
+            Gizmos.DrawWireSphere(transform.position, PathReachingRadius);
+
+            if (DetectionModule != null)
+            {
+                // Detection range
+                Gizmos.color = DetectionRangeColor;
+                Gizmos.DrawWireSphere(transform.position, DetectionModule.DetectionRange);
+
+                // Attack range
+                Gizmos.color = AttackRangeColor;
+                Gizmos.DrawWireSphere(transform.position, DetectionModule.AttackRange);
+            }
         }
     }
 }

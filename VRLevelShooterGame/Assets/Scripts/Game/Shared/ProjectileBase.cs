@@ -15,7 +15,7 @@ namespace Unity.Game.Shared
 
         public void Shoot(WeaponController controller)
         {
-            Owner = controller.gameObject;
+            Owner = controller.Owner;
             InitialPosition = transform.position;
             InitialDirection = controller.WeaponMuzzle.forward;
             Speed = controller.ProjectileSpeed;

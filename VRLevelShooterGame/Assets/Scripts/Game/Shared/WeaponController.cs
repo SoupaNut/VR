@@ -25,8 +25,16 @@ namespace Unity.Game.Shared
         [Header("Audio")]
         public AudioClip WeaponSound;
 
+        public GameObject Owner { get; set; }
+
         private bool m_ReadyToFire;
         private float m_NextFireTime = 0f;
+
+        // ------------------- TEMPORARY (REMOVE LATER)
+        private void Start()
+        {
+            Owner = gameObject;
+        }
 
         // Update is called once per frame
         void Update()

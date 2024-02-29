@@ -131,7 +131,7 @@ namespace Unity.Game.Gameplay
             Health health = collider.GetComponentInParent<Health>();
             if(health != null)
             {
-                health.TakeDamage(m_Damage);
+                health.TakeDamage(m_Damage, m_ProjectileBase.Owner);
             }
 
             // Impact Vfx

@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Events;
+using Unity.Game.Shared;
+using Unity.Game.Utilities;
 
 namespace Unity.Game.AI
 {
@@ -20,12 +22,6 @@ namespace Unity.Game.AI
         [Tooltip("Time before an enemy abandons a known target that it can't see anymore")]
         public float KnownTargetTimeout = 4f;
 
-        [Tooltip("The game object that the detection module should target")]
-        public GameObject Target;
-
-        [Tooltip("LayerMask of the Target")]
-        public LayerMask TargetLayer;
-
         public UnityAction onDetectTarget;
         public UnityAction onLostTarget;
 
@@ -36,7 +32,15 @@ namespace Unity.Game.AI
 
         protected float TimeLastSeenTarget = Mathf.NegativeInfinity;
 
-        public virtual void HandleTargetDetection(Collider[] selfColliders)
+        private ActorsManager m_ActorsManager;
+
+        protected virtual void Start()
+        {
+            m_ActorsManager = FindObjectOfType<ActorsManager>();
+            DebugUtility.HandleErrorIfNullFindObject<ActorsManager, DetectionModule>(m_ActorsManager, this);
+        }
+
+        public virtual void HandleTargetDetection(Actor actor, Collider[] selfColliders)
         {
             // Handle known target detection timeout
             if(KnownDetectedTarget && !IsSeeingTarget && (Time.time - TimeLastSeenTarget) < KnownTargetTimeout)
@@ -44,36 +48,50 @@ namespace Unity.Game.AI
                 KnownDetectedTarget = null;
             }
 
-            // Find the target
+            // Find the closest visible hostile actor
             float sqrDetectionRange = DetectionRange * DetectionRange;
             IsSeeingTarget = false;
-            //float closestSqrDistance = Mathf.Infinity;
-            float sqrDistance = (Target.transform.position - DetectionSourcePoint.position).sqrMagnitude; // sqrMagnitude is a micro-optimization. Supposedly better than Vector3.Distance
+            float closestSqrDistance = Mathf.Infinity;
 
-            // if Target is in detection range
-            if(sqrDistance < sqrDetectionRange)
+            foreach(Actor otherActor in m_ActorsManager.Actors)
             {
-                // Check for obstruction
-                RaycastHit hits = Physics.RayCast(DetectionSourcePoint.position, (Target.transform.position - DetectionSourcePoint.position).normalized, DetectionRange, -1, QueryTriggerInteraction.Ignore);
-                RaycastHit closestValidHit = new RaycastHit();
-                closestValidHit.distance = Mathf.Infinity;
-                bool foundValidHit = false;
-
-                foreach(var hit in hits)
+                // if other actor does not have the same affiliation as self actor
+                if(otherActor.Affiliation != actor.Affiliation)
                 {
-                    if(!selfColliders.Contains(hit.collider) && hit.distance < closestValidHit.distance)
+                    float sqrDistance = (otherActor.transform.position - DetectionSourcePoint.position).sqrMagnitude; // sqrMagnitude is a micro-optimization. Supposedly better than Vector3.Distance                                                              // if Target is in detection range
+                    if (sqrDistance < sqrDetectionRange && sqrDistance < closestSqrDistance)
                     {
-                        closestValidHit = hit;
-                        foundValidHit = true;
-                    }
-                }
+                        // Check for obstructions
+                        RaycastHit[] hits = Physics.RaycastAll(DetectionSourcePoint.position, (otherActor.AimPoint.position - DetectionSourcePoint.position).normalized, DetectionRange, -1, QueryTriggerInteraction.Ignore);
+                        RaycastHit closestValidHit = new RaycastHit();
+                        closestValidHit.distance = Mathf.Infinity;
+                        bool foundValidHit = false;
 
-                if (foundValidHit)
-                {
-                    IsSeeingTarget = true;
-                    //closestSqrDistance = sqrDistance;
-                    TimeLastSeenTarget = Time.time;
-                    KnownDetectedTarget = Target;
+                        foreach (var hit in hits)
+                        {
+                            if (!selfColliders.Contains(hit.collider) && hit.distance < closestValidHit.distance)
+                            {
+                                closestValidHit = hit;
+                                foundValidHit = true;
+                            }
+                        }
+
+                        if (foundValidHit)
+                        {
+#if UNITY_EDITOR
+                            Debug.DrawRay(DetectionSourcePoint.position, (otherActor.AimPoint.position - DetectionSourcePoint.position).normalized * closestValidHit.distance, Color.green);
+#endif
+                            Actor hitActor = closestValidHit.collider.GetComponentInParent<Actor>();
+                            if(hitActor == otherActor)
+                            {
+                                IsSeeingTarget = true;
+                                closestSqrDistance = sqrDistance;
+
+                                TimeLastSeenTarget = Time.time;
+                                KnownDetectedTarget = otherActor.AimPoint.gameObject;
+                            }
+                        }
+                    }
                 }
             }
 
