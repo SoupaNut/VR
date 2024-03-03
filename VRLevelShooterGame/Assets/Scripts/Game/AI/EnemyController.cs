@@ -11,20 +11,23 @@ namespace Unity.Game.AI
     [RequireComponent(typeof(Health), typeof(Actor), typeof(NavMeshAgent))]
     public class EnemyController : MonoBehaviour
     {
-        public enum AIState
+        [System.Serializable]
+        public struct RendererIndexData
         {
-            Patrol,
-            Follow,
-            Attack
-        }
-        public AIState AiState;
+            public Renderer Renderer;
+            public int MaterialIndex;
 
-        [Header("References")]
-        public NavMeshAgent NavMeshAgent;
-        public GameObject Player;
-        public LayerMask PlayerLayer, GroundLayer;
+            public RendererIndexData(Renderer renderer, int index)
+            {
+                Renderer = renderer;
+                MaterialIndex = index;
+            }
+        }
 
         [Header("Parameters")]
+        [Tooltip("The Y height at which the enemy will be automatically killed (if it falls off of the level)")]
+        public float SelfDestructYHeight = -20f;
+
         [Tooltip("The distance at which the enemy considers that it has reached its current path destination point")]
         public float PathReachingRadius = 2f;
 
@@ -33,11 +36,6 @@ namespace Unity.Game.AI
 
         [Tooltip("The speed at which the enemy rotates")]
         public float OrientationSpeed = 10f;
-
-        [Header("Movement")]
-        public bool PatrolWhenIdle = true;
-        public float StoppingDistance = 5f;
-        public float PatrolCooldown = 1f;
 
         [Header("Audio")]
         [Tooltip("Sound played when receiving damages")]
@@ -50,6 +48,29 @@ namespace Unity.Game.AI
         [Tooltip("The point at which the death VFX is spawned")]
         public Transform DeathVfxSpawnPoint;
 
+        [Header("Eye color")]
+        [Tooltip("Material for the eye color")]
+        public Material EyeColorMaterial;
+
+        [Tooltip("The default color of the bot's eye")]
+        [ColorUsageAttribute(true, true)]
+        public Color DefaultEyeColor;
+
+        [Tooltip("The attack color of the bot's eye")]
+        [ColorUsageAttribute(true, true)]
+        public Color AttackEyeColor;
+
+        [Header("Flash on hit")]
+        [Tooltip("The material used for the body of the hoverbot")]
+        public Material BodyMaterial;
+
+        [Tooltip("The gradient representing the color of the flash on hit")]
+        [GradientUsageAttribute(true)]
+        public Gradient OnHitBodyGradient;
+
+        [Tooltip("The duration of the flash on hit")]
+        public float FlashOnHitDuration = 0.5f;
+
         [Header("Debug Display")]
         [Tooltip("Color of the sphere gizmo representing the path reaching range")]
         public Color PathReachingRangeColor = Color.yellow;
@@ -60,27 +81,36 @@ namespace Unity.Game.AI
         [Tooltip("Color of the sphere gizmo representing the detection range")]
         public Color DetectionRangeColor = Color.blue;
 
-
-
-        // Actions
+        // - - - - - - - - - - A C T I O N S - - - - - - - - - - //
         public UnityAction onDetectedTarget;
         public UnityAction onLostTarget;
         public UnityAction onDamaged;
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
-        // Movement
+        // - - - - - - - - - - P U B L I C - - - - - - - - - - //
+        public NavMeshAgent NavMeshAgent { get; set; }
         public PatrolPath PatrolPath { get; set; }
         public GameObject KnownDetectedTarget => DetectionModule.KnownDetectedTarget;
         public bool IsTargetInAttackRange => DetectionModule.IsTargetInAttackRange;
         public bool IsSeeingTarget => DetectionModule.IsSeeingTarget;
         public bool HadKnownTarget => DetectionModule.HadKnownTarget;
-        public DetectionModule DetectionModule;
+        public DetectionModule DetectionModule { get; set; }
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
+
+        // - - - - - - - - - - P R I V A T E - - - - - - - - - - //
         int m_DestinationPathNodeIndex;
+        Collider[] m_SelfColliders;
+        Health m_Health;
+        Actor m_Actor;
+        WeaponController m_WeaponController;
 
-        private Collider[] m_SelfColliders;
+        List<RendererIndexData> m_BodyRenderers = new List<RendererIndexData>();
+        MaterialPropertyBlock m_BodyFlashMaterialPropertyBlock;
+        float m_LastTimeDamaged = Mathf.NegativeInfinity;
 
-        private Health m_Health;
-        private Actor m_Actor;
-        private WeaponController m_WeaponController;
+        RendererIndexData m_EyeRendererData;
+        MaterialPropertyBlock m_EyeColorMaterialPropertyBlock;
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
         private void Start()
         {
@@ -102,6 +132,32 @@ namespace Unity.Game.AI
                 DebugUtility.HandleErrorIfNullGetComponent<DetectionModule, EnemyController>(DetectionModule, this, gameObject);
 
                 m_SelfColliders = GetComponentsInChildren<Collider>();
+
+                foreach (var renderer in GetComponentsInChildren<Renderer>(true))
+                {
+                    for (int i = 0; i < renderer.sharedMaterials.Length; i++)
+                    {
+                        if (renderer.sharedMaterials[i] == EyeColorMaterial)
+                        {
+                            m_EyeRendererData = new RendererIndexData(renderer, i);
+                        }
+
+                        if (renderer.sharedMaterials[i] == BodyMaterial)
+                        {
+                            m_BodyRenderers.Add(new RendererIndexData(renderer, i));
+                        }
+                    }
+                }
+
+                m_BodyFlashMaterialPropertyBlock = new MaterialPropertyBlock();
+
+                // Check if we have an eye renderer for this enemy
+                if (m_EyeRendererData.Renderer != null)
+                {
+                    m_EyeColorMaterialPropertyBlock = new MaterialPropertyBlock();
+                    m_EyeColorMaterialPropertyBlock.SetColor("_EmissionColor", DefaultEyeColor);
+                    m_EyeRendererData.Renderer.SetPropertyBlock(m_EyeColorMaterialPropertyBlock, m_EyeRendererData.MaterialIndex);
+                }
             }
             
             // Subscribe to Events
@@ -133,34 +189,37 @@ namespace Unity.Game.AI
 
         private void Update()
         {
-            DetectionModule.HandleTargetDetection(m_Actor, m_SelfColliders);
-            // Check for sight and attack range
-            //m_PlayerInSightRange = Physics.CheckSphere(transform.position, SightRange, PlayerLayer);
-            //m_PlayerInAttackRange = Physics.CheckSphere(transform.position, AttackRange, PlayerLayer);
+            EnsureIsWithinLevelBounds();
 
-            //if (m_PlayerInSightRange && m_PlayerInAttackRange)
-            //{
-            //    Attacking();
-            //}
-            //else if (m_PlayerInSightRange && !m_PlayerInAttackRange)
-            //{
-            //    Following();
-            //}
-            //else
-            //{
-            //    // find new patrol walkpoint if timer is 0
-            //    if (m_PatrolTimer <= 0f)
-            //    {
-            //        Patrolling();
-            //        m_PatrolTimer = PatrolCooldown;
-            //    }
-            //    // do nothing
-            //    else
-            //    {
-            //        m_PatrolTimer -= Time.deltaTime;
-            //    }
-            //}
+            DetectionModule.HandleTargetDetection(m_Actor, m_SelfColliders);
+
+            // flash body on hit
+            Color currentColor = OnHitBodyGradient.Evaluate((Time.time - m_LastTimeDamaged) / FlashOnHitDuration);
+            m_BodyFlashMaterialPropertyBlock.SetColor("_EmissionColor", currentColor);
+            foreach (var data in m_BodyRenderers)
+            {
+                data.Renderer.SetPropertyBlock(m_BodyFlashMaterialPropertyBlock, data.MaterialIndex);
+            }
         }
+
+        /**************************************************************************
+         * FUNCTION: EnsureIsWithinLevelBounds
+         * 
+         * PARAM: NA
+         * 
+         * PURPOSE: at every frame, this tests for conditions to kill the enemy
+         * 
+         * RETURN: NA
+         **************************************************************************/
+        private void EnsureIsWithinLevelBounds()
+        {
+            if (transform.position.y < SelfDestructYHeight)
+            {
+                Destroy(gameObject);
+                return;
+            }
+        }
+
         /**************************************************************************
          * FUNCTION: IsPathValid
          * 
@@ -276,42 +335,57 @@ namespace Unity.Game.AI
             }
         }
 
+        /**************************************************************************
+         * FUNCTION: OrientTowards
+         * 
+         * PARAM: (Vector3) lookPosition - position to orient towards
+         * 
+         * PURPOSE: rotates self towards lookPosition with an angular speed of OrientationSpeed
+         * 
+         * RETURN: NA
+         **************************************************************************/
         public void OrientTowards(Vector3 lookPosition)
         {
-            //GameObject lookObject = new GameObject();
-            //lookObject.transform.position = lookPosition;
-            //transform.LookAt(lookPosition);
-            Quaternion targetRotation = Quaternion.LookRotation(lookPosition - transform.position);
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, OrientationSpeed * Time.deltaTime);
+            Vector3 lookDirection = Vector3.ProjectOnPlane(lookPosition - transform.position, Vector3.up).normalized;
+            if (lookDirection.sqrMagnitude != 0f)
+            {
+                Quaternion targetRotation = Quaternion.LookRotation(lookDirection);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * OrientationSpeed);
+            }
         }
 
-        //private void Following()
-        //{
-        //    NavMeshAgent.stoppingDistance = StoppingDistance;
-        //    SetPathDestination(Player.transform.position);
-        //}
-
-        //private void Attacking()
-        //{
-        //    transform.LookAt(Player.transform);
-        //    m_WeaponController.SetReadyToFire(true);
-
-        //    Following();
-        //}
+        public void TryAttack()
+        {
+            m_WeaponController.SetReadyToFire(true);
+        }
 
         private void OnDamage(float damage, GameObject damageSource)
         {
-            AudioUtility.CreateSfx(DamagedSfxClip, transform.position, AudioUtility.AudioGroups.DamageTick);
+            // Make sure the damage source is the player
+            if(damageSource && !damageSource.GetComponent<EnemyController>()) 
+            {
+                DetectionModule.OnDamaged(damageSource);
 
-            DetectionModule.OnDamaged(damageSource);
+                // play damaged sound
+                if (DamagedSfxClip)
+                {
+                    AudioUtility.CreateSfx(DamagedSfxClip, transform.position, AudioUtility.AudioGroups.DamageTick);
+                }
+
+                onDamaged?.Invoke();
+                m_LastTimeDamaged = Time.time;
+            }
         }
 
         private void OnDie()
         {
             // spawn a particle system when dying
-            var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);
-            Destroy(vfx, 5f);
-
+            if(DeathVfx)
+            {
+                var vfx = Instantiate(DeathVfx, DeathVfxSpawnPoint.position, Quaternion.identity);
+                Destroy(vfx, 5f);
+            }
+            
             Destroy(gameObject, DeathDuration);
 
         }
@@ -319,11 +393,25 @@ namespace Unity.Game.AI
         private void OnDetectTarget()
         {
             onDetectedTarget?.Invoke();
+
+            if (m_EyeRendererData.Renderer != null)
+            {
+                m_EyeColorMaterialPropertyBlock = new MaterialPropertyBlock();
+                m_EyeColorMaterialPropertyBlock.SetColor("_EmissionColor", AttackEyeColor);
+                m_EyeRendererData.Renderer.SetPropertyBlock(m_EyeColorMaterialPropertyBlock, m_EyeRendererData.MaterialIndex);
+            }
         }
 
         private void OnLostTarget()
         {
             onLostTarget?.Invoke();
+
+            if (m_EyeRendererData.Renderer != null)
+            {
+                m_EyeColorMaterialPropertyBlock = new MaterialPropertyBlock();
+                m_EyeColorMaterialPropertyBlock.SetColor("_EmissionColor", DefaultEyeColor);
+                m_EyeRendererData.Renderer.SetPropertyBlock(m_EyeColorMaterialPropertyBlock, m_EyeRendererData.MaterialIndex);
+            }
         }
 
         void OnDrawGizmos()

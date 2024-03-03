@@ -46,6 +46,7 @@ GameObject:
   - component: {fileID: 895873886455779108}
   - component: {fileID: 8912366881208744614}
   - component: {fileID: 8656579503457259674}
+  - component: {fileID: 8895752854807962758}
   m_Layer: 0
   m_Name: Enemy_HoverBot
   m_TagString: Untagged
@@ -205,27 +206,52 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 991c4c29926ccea4fa7530280c7f6816, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AiState: 0
-  NavMeshAgent: {fileID: 0}
-  Player: {fileID: 0}
-  PlayerLayer:
-    serializedVersion: 2
-    m_Bits: 256
-  GroundLayer:
-    serializedVersion: 2
-    m_Bits: 128
+  SelfDestructYHeight: -20
   PathReachingRadius: 2
   DeathDuration: 0
-  SightRange: 20
-  AttackRange: 10
-  PatrolWhenIdle: 1
-  StoppingDistance: 5
-  PatrolCooldown: 1
+  OrientationSpeed: 10
   DamagedSfxClip: {fileID: 8300000, guid: a7fae22399a6e1d448dc0dd2210f1dac, type: 3}
   DeathVfx: {fileID: 8950624839484268180, guid: 2a8f5052fe50f7b41b17149abb0f7414,
     type: 3}
   DeathVfxSpawnPoint: {fileID: 381893446485871685}
-  DetectionModule: {fileID: 0}
+  EyeColorMaterial: {fileID: 2100000, guid: e6fdfd4e017234d43ac116abee8fa90a, type: 2}
+  DefaultEyeColor: {r: 23.849058, g: 7.3669863, b: 0, a: 1}
+  AttackEyeColor: {r: 23.849058, g: 1.1237776, b: 0, a: 1}
+  BodyMaterial: {fileID: 2100000, guid: c3dc5a90c49c99142999f85d6b419d80, type: 2}
+  OnHitBodyGradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.9669811, b: 0.9669811, a: 1}
+    key2: {r: 1, g: 1, b: 1, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 15008
+    ctime2: 50527
+    ctime3: 65535
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  FlashOnHitDuration: 0.2
+  PathReachingRangeColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  AttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
+  DetectionRangeColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!114 &895873886455779108
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -239,12 +265,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponMuzzle: {fileID: 2096565386399891227}
+  ShootType: 0
   ProjectilePrefab: {fileID: 78909356740942539, guid: ec753d54f333bb944b8b04884ad63828,
     type: 3}
   ProjectileSpeed: 100
   FireRate: 1
   Damage: 10
-  WeaponMode: 0
   WeaponSound: {fileID: 8300000, guid: a56e3c9f90e17894eb1625f603eceb54, type: 3}
 --- !u!114 &8912366881208744614
 MonoBehaviour:
@@ -271,7 +297,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 413a7158419bd7445b6f51243a7df801, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AttackStopDistanceRatio: 0.5
+  Animator: {fileID: 320366457759794871}
+  AttackStopDistanceRatio: 0.25
+  RandomHitSparks:
+  - {fileID: 9125706537325074547}
+  - {fileID: 8158939429672774431}
+  - {fileID: 3661562211460385405}
+  - {fileID: 5625802328757436829}
+  OnDetectVfx:
+  - {fileID: 6104096765092005263}
+  - {fileID: 1407167163009738010}
+  - {fileID: 8934028655093144013}
+  OnDetectSfx: {fileID: 8300000, guid: 25722734eeccba042a18e26e376ca542, type: 3}
+--- !u!114 &8895752854807962758
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2015434656898269652}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fe24d4c29fab6484b90538bb537a362d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Affiliation: 0
+  AimPoint: {fileID: 381893446485871685}
 --- !u!1 &2201913640410082181
 GameObject:
   m_ObjectHideFlags: 0
@@ -318,7 +369,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &3175718064325614203
 Transform:
   m_ObjectHideFlags: 0
@@ -379,6 +430,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e010183470e783e4499ede11ec68faa4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DetectionSourcePoint: {fileID: 6571005840976436832}
   DetectionRange: 20
   AttackRange: 10
   KnownTargetTimeout: 4
@@ -1036,6 +1088,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 320366457750418391}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &320366457759794871 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 9500000, guid: 8e64c7aa328349d4ea713298f19a414f,
+    type: 3}
+  m_PrefabInstance: {fileID: 320366457750418391}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1680067821895709280
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1122,6 +1180,12 @@ PrefabInstance:
 --- !u!4 &7101048784638327738 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8492437560918690266, guid: 7593818fba43c7f4c8372299ce5e893f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1680067821895709280}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &9125706537325074547 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7635230255058315795, guid: 7593818fba43c7f4c8372299ce5e893f,
     type: 3}
   m_PrefabInstance: {fileID: 1680067821895709280}
   m_PrefabAsset: {fileID: 0}
@@ -1214,6 +1278,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1787833773761626380}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &8158939429672774431 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7635230255058315795, guid: 7593818fba43c7f4c8372299ce5e893f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1787833773761626380}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1946610501135631697
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1295,6 +1365,12 @@ PrefabInstance:
 --- !u!4 &1671305298049621688 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 878787690634796009, guid: f77e2130c96652640accf8b9f6990d6b,
+    type: 3}
+  m_PrefabInstance: {fileID: 1946610501135631697}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &8934028655093144013 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6989503427151715484, guid: f77e2130c96652640accf8b9f6990d6b,
     type: 3}
   m_PrefabInstance: {fileID: 1946610501135631697}
   m_PrefabAsset: {fileID: 0}
@@ -1381,6 +1457,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7593818fba43c7f4c8372299ce5e893f, type: 3}
+--- !u!198 &5625802328757436829 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7635230255058315795, guid: 7593818fba43c7f4c8372299ce5e893f,
+    type: 3}
+  m_PrefabInstance: {fileID: 2875289014724193166}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &5925653989777056340 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8492437560918690266, guid: 7593818fba43c7f4c8372299ce5e893f,
@@ -1498,6 +1580,12 @@ PrefabInstance:
 --- !u!4 &6104096765092005256 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8855434715677272941, guid: 1bc9e4f49c67a6a41af3e7cb3d30bb43,
+    type: 3}
+  m_PrefabInstance: {fileID: 3337951679708442341}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &6104096765092005263 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 8855434715677272938, guid: 1bc9e4f49c67a6a41af3e7cb3d30bb43,
     type: 3}
   m_PrefabInstance: {fileID: 3337951679708442341}
   m_PrefabAsset: {fileID: 0}
@@ -1634,6 +1722,11 @@ PrefabInstance:
       propertyPath: ColorModule.gradient.maxGradient.m_NumColorKeys
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 7951582856014658560, guid: 3f5b545b9a1e74c418b061bba5bb9e2c,
+        type: 3}
+      propertyPath: m_Materials.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1734,6 +1827,12 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 6567851450993991790}
   m_PrefabAsset: {fileID: 0}
+--- !u!198 &3661562211460385405 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 7635230255058315795, guid: 7593818fba43c7f4c8372299ce5e893f,
+    type: 3}
+  m_PrefabInstance: {fileID: 6567851450993991790}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8320672172411124102
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1812,6 +1911,12 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f77e2130c96652640accf8b9f6990d6b, type: 3}
+--- !u!198 &1407167163009738010 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6989503427151715484, guid: f77e2130c96652640accf8b9f6990d6b,
+    type: 3}
+  m_PrefabInstance: {fileID: 8320672172411124102}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &9172394271898018415 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 878787690634796009, guid: f77e2130c96652640accf8b9f6990d6b,

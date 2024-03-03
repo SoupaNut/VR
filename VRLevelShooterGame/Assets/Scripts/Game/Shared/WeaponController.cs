@@ -7,23 +7,38 @@ namespace Unity.Game.Shared
 {
     public class WeaponController : MonoBehaviour
     {
-        [Header("Internal References")]
-        public Transform WeaponMuzzle;
-
-        [Header("Shoot Parameters")]
-        public ProjectileBase ProjectilePrefab;
-        public float ProjectileSpeed = 20f;
-        public float FireRate = 1f;
-        public float Damage = 10f;
-        public WeaponModes WeaponMode;
-        public enum WeaponModes
+        public enum WeaponShootType
         {
-            Auto,
-            SemiAuto
+            Manual,
+            Automatic,
+            Charge
         }
 
+        [Header("Internal References")]
+        public Transform WeaponMuzzle;
+        
+        [Header("Shoot Parameters")]
+        [Tooltip("The type of weapon wil affect how it shoots")]
+        public WeaponShootType ShootType;
+
+        [Tooltip("The projectile prefab")]
+        public ProjectileBase ProjectilePrefab;
+
+        [Tooltip("How fast the projectile prefab travels")]
+        public float ProjectileSpeed = 20f;
+
+        [Tooltip("How fast the weapon shoots projectiles")]
+        public float FireRate = 1f;
+
+        [Tooltip("Amount of damage the projectile deals upon hit")]
+        public float Damage = 10f;
+        
         [Header("Audio")]
         public AudioClip WeaponSound;
+
+        [Header("Visual")]
+        [Tooltip("Prefab of the muzzle flash")]
+        public GameObject MuzzleFlashPrefab;
 
         public GameObject Owner { get; set; }
 
@@ -43,6 +58,7 @@ namespace Unity.Game.Shared
             {
                 Fire();
                 m_NextFireTime = Time.time + 1f / FireRate;
+                m_ReadyToFire = false;
             }
         }
 
@@ -57,6 +73,15 @@ namespace Unity.Game.Shared
             ProjectileBase spawnedProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position, WeaponMuzzle.rotation);
             spawnedProjectile.Shoot(this);
 
+            // Spawn Muzzle Flash
+            if(MuzzleFlashPrefab != null)
+            {
+                GameObject spawnedMuzzleFlash = Instantiate(MuzzleFlashPrefab, WeaponMuzzle.position, WeaponMuzzle.rotation, WeaponMuzzle.transform);
+
+
+                Destroy(spawnedMuzzleFlash, 2f);
+            }
+            
             // play weapon bullet sound
             float volume = 0.3f;
             float spatialBlend = 1f;

@@ -18,7 +18,7 @@ public class WeaponGrabInteractable : XRGrabInteractableTwoAttach
         weapon.selectEntered.AddListener(GetInteractorManager);
         weapon.selectExited.AddListener(ClearInteractorManager);
 
-        if (controller.WeaponMode == WeaponController.WeaponModes.SemiAuto)
+        if (controller.ShootType == WeaponController.WeaponShootType.Manual)
         {
             weapon.activated.AddListener(ShootProjectile);
         }
@@ -27,13 +27,9 @@ public class WeaponGrabInteractable : XRGrabInteractableTwoAttach
     // Update is called once per frame
     void Update()
     {
-        if (m_InteractorManager != null && controller.WeaponMode == WeaponController.WeaponModes.Auto)
+        if (m_InteractorManager != null && controller.ShootType == WeaponController.WeaponShootType.Automatic)
         {
             controller.SetReadyToFire(m_InteractorManager.isActivated);
-        }
-        else
-        {
-            controller.SetReadyToFire(false);
         }
     }
 

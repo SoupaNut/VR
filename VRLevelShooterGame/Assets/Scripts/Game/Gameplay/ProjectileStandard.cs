@@ -50,7 +50,7 @@ namespace Unity.Game.Gameplay
         private void OnEnable()
         {
             m_ProjectileBase = GetComponent<ProjectileBase>();
-            DebugUtility.HandleErrorIfNullGetComponent<ProjectileBase, ProjectileStandard>(ProjectileBase, this, gameObject);
+            DebugUtility.HandleErrorIfNullGetComponent<ProjectileBase, ProjectileStandard>(m_ProjectileBase, this, gameObject);
 
             m_ProjectileBase.OnShoot += OnShoot;
 

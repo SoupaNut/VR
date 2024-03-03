@@ -43,7 +43,7 @@ namespace Unity.Game.AI
         public virtual void HandleTargetDetection(Actor actor, Collider[] selfColliders)
         {
             // Handle known target detection timeout
-            if(KnownDetectedTarget && !IsSeeingTarget && (Time.time - TimeLastSeenTarget) < KnownTargetTimeout)
+            if(KnownDetectedTarget && !IsSeeingTarget && (Time.time - TimeLastSeenTarget) > KnownTargetTimeout)
             {
                 KnownDetectedTarget = null;
             }
@@ -69,7 +69,7 @@ namespace Unity.Game.AI
 
                         foreach (var hit in hits)
                         {
-                            if (!selfColliders.Contains(hit.collider) && hit.distance < closestValidHit.distance)
+                            if (!selfColliders.Contains(hit.collider) && !hit.collider.GetComponent<IgnoreHitDetection>() && hit.distance < closestValidHit.distance)
                             {
                                 closestValidHit = hit;
                                 foundValidHit = true;
@@ -79,7 +79,7 @@ namespace Unity.Game.AI
                         if (foundValidHit)
                         {
 #if UNITY_EDITOR
-                            Debug.DrawRay(DetectionSourcePoint.position, closestValidHit.normal * closestValidHit.distance, Color.green);
+                            Debug.DrawRay(DetectionSourcePoint.position, (closestValidHit.transform.position - DetectionSourcePoint.position).normalized * closestValidHit.distance, Color.green);
 #endif
                             Actor hitActor = closestValidHit.collider.GetComponentInParent<Actor>();
                             if(hitActor == otherActor)
