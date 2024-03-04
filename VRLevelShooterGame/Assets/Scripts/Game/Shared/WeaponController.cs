@@ -16,7 +16,17 @@ namespace Unity.Game.Shared
 
         [Header("Internal References")]
         public Transform WeaponMuzzle;
-        
+
+        [Header("Weapon Parameters")]
+        [Tooltip("How many projectiles the weapon fires per second")]
+        public float FireRate = 1f;
+
+        [Tooltip("Amount of damage the projectile deals upon hit")]
+        public float Damage = 10f;
+
+        [Tooltip("Total weapon ammo per clip (0 = no ammo limit)")]
+        public float AmmoPerClip = 30f;
+
         [Header("Shoot Parameters")]
         [Tooltip("The type of weapon wil affect how it shoots")]
         public WeaponShootType ShootType;
@@ -27,12 +37,6 @@ namespace Unity.Game.Shared
         [Tooltip("How fast the projectile prefab travels")]
         public float ProjectileSpeed = 20f;
 
-        [Tooltip("How fast the weapon shoots projectiles")]
-        public float FireRate = 1f;
-
-        [Tooltip("Amount of damage the projectile deals upon hit")]
-        public float Damage = 10f;
-        
         [Header("Audio")]
         public AudioClip WeaponSound;
 
@@ -61,6 +65,19 @@ namespace Unity.Game.Shared
                 m_ReadyToFire = false;
             }
         }
+
+        //public void TryShoot()
+        //{
+        //    if(Time.time >= m_NextFireTime && HasAmmo())
+        //    {
+        //        // Shoot
+        //    }
+        //}
+
+        //private bool HasAmmo()
+        //{
+            
+        //}
 
         public void SetReadyToFire(bool fire)
         {
