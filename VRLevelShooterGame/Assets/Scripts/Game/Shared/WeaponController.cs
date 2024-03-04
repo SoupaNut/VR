@@ -24,11 +24,14 @@ namespace Unity.Game.Shared
         [Tooltip("Amount of damage the projectile deals upon hit")]
         public float Damage = 10f;
 
-        [Tooltip("Total weapon ammo per clip (0 = no ammo limit)")]
-        public float AmmoPerClip = 30f;
+        [Tooltip("Total weapon ammo (-1 = no ammo limit")]
+        public float MaxAmmo = -1f;
+
+        [Tooltip("Weapon ammo per clip (-1 = no ammo limit)")]
+        public float AmmoPerClip = -1f;
 
         [Header("Shoot Parameters")]
-        [Tooltip("The type of weapon wil affect how it shoots")]
+        [Tooltip("The type of weapon will affect how it shoots")]
         public WeaponShootType ShootType;
 
         [Tooltip("The projectile prefab")]
@@ -46,13 +49,15 @@ namespace Unity.Game.Shared
 
         public GameObject Owner { get; set; }
 
-        private bool m_ReadyToFire;
-        private float m_NextFireTime = 0f;
-
-        // ------------------- TEMPORARY (REMOVE LATER)
+        bool m_ReadyToFire;
+        float m_NextFireTime = Mathf.NegativeInfinity;
+        float m_CurrentAmmo;
+        float m_CurrentClipAmmo;
+        
         private void Start()
         {
-            Owner = gameObject;
+            m_CurrentAmmo = MaxAmmo;
+            m_CurrentClipAmmo = AmmoPerClip;
         }
 
         // Update is called once per frame
@@ -66,18 +71,31 @@ namespace Unity.Game.Shared
             }
         }
 
-        //public void TryShoot()
-        //{
-        //    if(Time.time >= m_NextFireTime && HasAmmo())
-        //    {
-        //        // Shoot
-        //    }
-        //}
+        public void TryShoot()
+        {
+            if (Time.time >= m_NextFireTime)
+            {
+                HandleShoot();
+                m_NextFireTime = Time.time + 1f / FireRate;
+            }
+        }
 
-        //private bool HasAmmo()
-        //{
-            
-        //}
+        private void HandleShoot()
+        {
+            if(HasAmmo())
+            {
+                m_CurrentClipAmmo -= 1;
+                m_CurrentAmmo -= 1;
+            }
+        }
+
+        private bool HasAmmo()
+        {
+            if(m_CurrentAmmo > 0 && m_CurrentClipAmmo > 0)
+            {
+                return true;
+            }
+        }
 
         public void SetReadyToFire(bool fire)
         {

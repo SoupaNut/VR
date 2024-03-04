@@ -3,23 +3,28 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
-public class XRGrabInteractableTwoAttach : XRGrabInteractable
+namespace Unity.Game.Interaction
 {
-    public Transform leftAttachTransform;
-    public Transform rightAttachTransform;
-
-
-    protected override void OnSelectEntered(SelectEnterEventArgs args)
+    public class XRGrabInteractableTwoAttach : XRGrabInteractable
     {
-        if (args.interactorObject.transform.CompareTag("Left Hand"))
-        {
-            attachTransform = leftAttachTransform;
-        }
-        else if (args.interactorObject.transform.CompareTag("Right Hand"))
-        {
-            attachTransform = rightAttachTransform;
-        }
+        public Transform leftAttachTransform;
+        public Transform rightAttachTransform;
 
-        base.OnSelectEntered(args);
+
+        protected override void OnSelectEntered(SelectEnterEventArgs args)
+        {
+            if (args.interactorObject.transform.CompareTag("Left Hand"))
+            {
+                attachTransform = leftAttachTransform;
+            }
+            else if (args.interactorObject.transform.CompareTag("Right Hand"))
+            {
+                attachTransform = rightAttachTransform;
+            }
+
+            base.OnSelectEntered(args);
+        }
     }
 }
+
+

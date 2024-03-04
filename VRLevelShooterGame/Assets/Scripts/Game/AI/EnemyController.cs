@@ -167,6 +167,11 @@ namespace Unity.Game.AI
                 DetectionModule.onDetectTarget += OnDetectTarget;
                 DetectionModule.onLostTarget += OnLostTarget;
             }
+
+            // Variables
+            {
+                m_WeaponController.Owner = gameObject;
+            }
         }
 
         private void OnDisable()
