@@ -85,6 +85,7 @@ namespace Unity.Game.AI
         public UnityAction onDetectedTarget;
         public UnityAction onLostTarget;
         public UnityAction onDamaged;
+        public UnityAction onAttack;
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
         // - - - - - - - - - - P U B L I C - - - - - - - - - - //
@@ -361,7 +362,10 @@ namespace Unity.Game.AI
 
         public void TryAttack()
         {
-            m_WeaponController.SetReadyToFire(true);
+            if (m_WeaponController.HandleShootInputs(false, true, false);)
+            {
+                onAttack?.Invoke();
+            }
         }
 
         private void OnDamage(float damage, GameObject damageSource)

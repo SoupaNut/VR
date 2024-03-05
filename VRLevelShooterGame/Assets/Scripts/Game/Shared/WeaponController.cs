@@ -24,11 +24,17 @@ namespace Unity.Game.Shared
         [Tooltip("Amount of damage the projectile deals upon hit")]
         public float Damage = 10f;
 
-        [Tooltip("Total weapon ammo (-1 = no ammo limit")]
-        public float MaxAmmo = -1f;
+        [Tooltip("Weapon has infinite ammo")]
+        public bool HasInfiniteAmmo = true;
 
-        [Tooltip("Weapon ammo per clip (-1 = no ammo limit)")]
-        public float AmmoPerClip = -1f;
+        [Tooltip("Weapon has infinite clip")]
+        public bool HasInfiniteClip = true;
+
+        [Tooltip("Total number of bullets")]
+        public float MaxAmmo = 240f;
+
+        [Tooltip("Number of bullets per clip (CANNOT be larger than MaxAmmo)")]
+        public float AmmoPerClip = 30f;
 
         [Header("Shoot Parameters")]
         [Tooltip("The type of weapon will affect how it shoots")]
@@ -56,6 +62,11 @@ namespace Unity.Game.Shared
         
         private void Start()
         {
+            if(AmmoPerClip > MaxAmmo)
+            {
+                // TODO: Create new DebugUtility function for invalid variable values
+                Debug.LogError("Error: Variable 'AmmoPerClip' <" + typeof(AmmoPerClip) + "> is greater than variable 'MaxAmmo' <" + typeof(MaxAmmo) + ">");
+            }
             m_CurrentAmmo = MaxAmmo;
             m_CurrentClipAmmo = AmmoPerClip;
         }
@@ -63,46 +74,74 @@ namespace Unity.Game.Shared
         // Update is called once per frame
         void Update()
         {
-            if(Time.time >= m_NextFireTime && m_ReadyToFire)
+            //if(Time.time >= m_NextFireTime && m_ReadyToFire)
+            //{
+            //    Fire();
+            //    m_NextFireTime = Time.time + 1f / FireRate;
+            //    m_ReadyToFire = false;
+            //}
+        }
+
+        public bool HandleShootInputs(bool inputDown,bool inputHeld, bool inputUp)
+        {
+            switch(ShootType)
             {
-                Fire();
-                m_NextFireTime = Time.time + 1f / FireRate;
-                m_ReadyToFire = false;
+                case WeaponShootType.Manual:
+                    if(inputDown)
+                    {
+                        return TryShoot();
+                    }
+                    return false;
+
+                case WeaponShootType.Automatic:
+                    if(inputHeld)
+                    {
+                        return TryShoot();
+                    }
+                    return false;
+
+                case WeaponShootType.Charge:
+                    if(inputHeld)
+                    {
+                        // begin charging
+                    }
+                    return false;
+
+                default:
+                    return false;
             }
         }
 
         public void TryShoot()
         {
-            if (Time.time >= m_NextFireTime)
+            if (HasAmmo() && Time.time >= m_NextFireTime)
             {
                 HandleShoot();
-                m_NextFireTime = Time.time + 1f / FireRate;
-            }
-        }
 
-        private void HandleShoot()
-        {
-            if(HasAmmo())
-            {
+                m_NextFireTime = Time.time + 1f / FireRate;
                 m_CurrentClipAmmo -= 1;
                 m_CurrentAmmo -= 1;
+
+                return true;
             }
+
+            return false;
         }
 
         private bool HasAmmo()
         {
-            if(m_CurrentAmmo > 0 && m_CurrentClipAmmo > 0)
+            if(HasInfiniteAmmo && HasInfiniteClip)
             {
                 return true;
             }
+            return m_CurrentAmmo > 0f && m_CurrentClipAmmo > 0f;
         }
+        //public void SetReadyToFire(bool fire)
+        //{
+        //    m_ReadyToFire = fire;
+        //}
 
-        public void SetReadyToFire(bool fire)
-        {
-            m_ReadyToFire = fire;
-        }
-
-        public void Fire()
+        private void HandleShoot()
         {
             // spawn bullet
             ProjectileBase spawnedProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position, WeaponMuzzle.rotation);
@@ -122,6 +161,14 @@ namespace Unity.Game.Shared
             float spatialBlend = 1f;
             float minDistance = 3f;
             AudioUtility.CreateSfx(WeaponSound, WeaponMuzzle.position, AudioUtility.AudioGroups.WeaponShoot, spatialBlend, minDistance, volume);
+        }
+
+        private void OnValidate()
+        {
+            if(AmmoPerClip > MaxAmmo)
+            {
+                AmmoPerClip = MaxAmmo;
+            }
         }
     }
 }

@@ -42,6 +42,7 @@ namespace Unity.Game.AI
             m_EnemyController = GetComponent<EnemyController>();
             DebugUtility.HandleErrorIfNullGetComponent<EnemyController, EnemyMobile>(m_EnemyController, this, gameObject);
 
+            m_EnemyController.onAttack += OnAttack;
             m_EnemyController.onDetectedTarget += OnDetectedTarget;
             m_EnemyController.onLostTarget += OnLostTarget;
             m_EnemyController.onDamaged += OnDamaged;
@@ -114,6 +115,11 @@ namespace Unity.Game.AI
                     m_EnemyController.TryAttack();
                     break;
             }
+        }
+
+        private void OnAttack()
+        {
+            Animator.SetTrigger(k_AnimAttackParameter);
         }
 
         private void OnDetectedTarget()

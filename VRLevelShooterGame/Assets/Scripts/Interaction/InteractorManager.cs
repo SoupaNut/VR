@@ -16,6 +16,9 @@ namespace Unity.Game.Interaction
         public GameObject GrabInteractor;
         public float ActivationThreshold = 0.1f;
 
+        public InputActionProperty TeleportInput { get => m_TeleportInput; set => m_TeleportInput = value; }
+        public InputActionProperty ActivateInput { get => m_ActivateInput; set => m_ActivateInput = value; }
+
         public bool IsDirectGrabSelected { get; private set; }
         public bool IsDirectGrabHovered { get; private set; }
         public bool IsTeleportSelected { get; private set; }
@@ -119,7 +122,7 @@ namespace Unity.Game.Interaction
 
         private void GrabSelectEnteredHandler(SelectEnterEventArgs args)
         {
-            if (args.interactableObject.transform.gameObject.GetComponent<WeaponGrabInteractable>())
+            if (args.interactableObject.transform.GetComponent<WeaponGrabInteractable>())
             {
                 // disable anchor control
                 m_GrabInteractor.allowAnchorControl = false;
