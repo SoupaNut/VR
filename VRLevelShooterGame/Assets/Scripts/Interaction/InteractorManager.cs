@@ -54,10 +54,7 @@ namespace Unity.Game.Interaction
             // Input Actions
             {
                 m_TeleportInput = TeleportInteractor.GetComponent<ActionBasedController>().selectAction;
-                DebugUtility.HandleErrorIfNullGetComponent<ActionBasedController, InteractorManager>(m_TeleportInput, this, gameObject);
-
                 m_ActivateInput = DirectInteractor.GetComponent<ActionBasedController>().activateAction;
-                DebugUtility.HandleErrorIfNullGetComponent<ActionBasedController, InteractorManager>(m_ActivateInput, this, gameObject);
             }
 
             // Handlers

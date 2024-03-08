@@ -362,7 +362,7 @@ namespace Unity.Game.AI
 
         public void TryAttack()
         {
-            if (m_WeaponController.HandleShootInputs(false, true, false);)
+            if (m_WeaponController.HandleShootInputs(false, true, false))
             {
                 onAttack?.Invoke();
             }

@@ -146,6 +146,7 @@ GameObject:
   - component: {fileID: 3787092857391653929}
   - component: {fileID: 4002616641475768}
   - component: {fileID: 2591567228184016750}
+  - component: {fileID: 3755933255451901417}
   m_Layer: 0
   m_Name: Weapon_Blaster
   m_TagString: Weapon
@@ -186,12 +187,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   WeaponMuzzle: {fileID: 8334323006752503713}
+  FireRate: 10
+  Damage: 5
   ShootType: 1
   ProjectilePrefab: {fileID: 1239558287851595220, guid: 3c6b27d949cdda749892906e1f1d1b27,
     type: 3}
   ProjectileSpeed: 300
-  FireRate: 5
-  Damage: 10
+  HasInfiniteAmmo: 0
+  MaxAmmo: 30
+  AmmoReloadDelay: 1
+  AmmoReloadRate: 10
   WeaponSound: {fileID: 8300000, guid: 53d2238f4c4b2aa4f8e559c7af9e0126, type: 3}
   MuzzleFlashPrefab: {fileID: 748781637555137343, guid: 9f671b22f25370048a18fb1f821294ec,
     type: 3}
@@ -349,7 +354,6 @@ MonoBehaviour:
   m_AddDefaultGrabTransformers: 1
   leftAttachTransform: {fileID: 7913725930626428358}
   rightAttachTransform: {fileID: 4977804100888491254}
-  controller: {fileID: 5159398304025963246}
 --- !u!54 &8149930214392034223
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -465,6 +469,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20f5ad79fe5eb764fb15774c39ca7d0c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &3755933255451901417
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2225486910712267859}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dce206fca5e081046b508b5fcfce240c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  SimultaneousFuelCellsUsage: 0
+  FuelCells:
+  - {fileID: 6867164318175680849}
+  - {fileID: 6867164318175680855}
+  - {fileID: 6867164318175680853}
+  - {fileID: 6867164318175680859}
+  FuelCellUsedPosition: {x: 0, y: 0.1, z: 0}
+  FuelCellUnusedPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &2867801751256125023
 GameObject:
   m_ObjectHideFlags: 0

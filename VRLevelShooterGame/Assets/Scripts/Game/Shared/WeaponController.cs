@@ -24,18 +24,6 @@ namespace Unity.Game.Shared
         [Tooltip("Amount of damage the projectile deals upon hit")]
         public float Damage = 10f;
 
-        [Tooltip("Weapon has infinite ammo")]
-        public bool HasInfiniteAmmo = true;
-
-        [Tooltip("Weapon has infinite clip")]
-        public bool HasInfiniteClip = true;
-
-        [Tooltip("Total number of bullets")]
-        public float MaxAmmo = 240f;
-
-        [Tooltip("Number of bullets per clip (CANNOT be larger than MaxAmmo)")]
-        public float AmmoPerClip = 30f;
-
         [Header("Shoot Parameters")]
         [Tooltip("The type of weapon will affect how it shoots")]
         public WeaponShootType ShootType;
@@ -46,6 +34,19 @@ namespace Unity.Game.Shared
         [Tooltip("How fast the projectile prefab travels")]
         public float ProjectileSpeed = 20f;
 
+        [Header("Ammo Parameters")]
+        [Tooltip("Weapon has infinite ammo")]
+        public bool HasInfiniteAmmo = true;
+
+        [Tooltip("Total number of bullets in a clip")]
+        public int MaxAmmo = 30;
+
+        [Tooltip("Amount of time it takes to start the reloading process")]
+        public float AmmoReloadDelay = 1f;
+
+        [Tooltip("Amount of ammo reloaded per second")]
+        public float AmmoReloadRate = 10f;
+
         [Header("Audio")]
         public AudioClip WeaponSound;
 
@@ -54,32 +55,61 @@ namespace Unity.Game.Shared
         public GameObject MuzzleFlashPrefab;
 
         public GameObject Owner { get; set; }
+        public float CurrentAmmoRatio { get; private set; }
 
         bool m_ReadyToFire;
         float m_NextFireTime = Mathf.NegativeInfinity;
+        float m_LastShotFired = Mathf.NegativeInfinity;
         float m_CurrentAmmo;
-        float m_CurrentClipAmmo;
+        bool m_Overheated;
         
-        private void Start()
+        private void Awake()
         {
-            if(AmmoPerClip > MaxAmmo)
-            {
-                // TODO: Create new DebugUtility function for invalid variable values
-                Debug.LogError("Error: Variable 'AmmoPerClip' <" + typeof(AmmoPerClip) + "> is greater than variable 'MaxAmmo' <" + typeof(MaxAmmo) + ">");
-            }
+            Owner = gameObject;// TODO: Remove
+
             m_CurrentAmmo = MaxAmmo;
-            m_CurrentClipAmmo = AmmoPerClip;
+            m_ReadyToFire = true;
         }
 
         // Update is called once per frame
         void Update()
         {
-            //if(Time.time >= m_NextFireTime && m_ReadyToFire)
-            //{
-            //    Fire();
-            //    m_NextFireTime = Time.time + 1f / FireRate;
-            //    m_ReadyToFire = false;
-            //}
+            UpdateAmmo();
+        }
+
+        void UpdateAmmo()
+        {
+            // return if infinite ammo or ammo is full
+            if(HasInfiniteAmmo || m_CurrentAmmo >= MaxAmmo)
+            {
+                m_Overheated = false;
+                m_ReadyToFire = true;
+                CurrentAmmoRatio = 1f;
+                return;
+            }
+
+            // Overheated --> wait until full reload is done to fire
+            if(m_CurrentAmmo <= 0)
+            {
+                m_CurrentAmmo = 0;
+                m_ReadyToFire = false;
+                m_Overheated = true;
+            }
+
+            // Wait until ammo reload delay is done
+            if(Time.time - m_LastShotFired >= AmmoReloadDelay)
+            {
+                // if we haven't overheated, then weapon can fire any time
+                if(!m_Overheated)
+                {
+                    m_ReadyToFire = true;
+                }
+
+                m_CurrentAmmo += AmmoReloadRate * Time.deltaTime;
+                m_CurrentAmmo = Mathf.Clamp(m_CurrentAmmo, 0, MaxAmmo);
+            }
+
+            CurrentAmmoRatio = m_CurrentAmmo / MaxAmmo;
         }
 
         public bool HandleShootInputs(bool inputDown,bool inputHeld, bool inputUp)
@@ -103,7 +133,7 @@ namespace Unity.Game.Shared
                 case WeaponShootType.Charge:
                     if(inputHeld)
                     {
-                        // begin charging
+                        // TODO: begin charging
                     }
                     return false;
 
@@ -112,14 +142,13 @@ namespace Unity.Game.Shared
             }
         }
 
-        public void TryShoot()
+        public bool TryShoot()
         {
-            if (HasAmmo() && Time.time >= m_NextFireTime)
+            if (HasAmmo() && Time.time >= m_NextFireTime && m_ReadyToFire)
             {
                 HandleShoot();
 
                 m_NextFireTime = Time.time + 1f / FireRate;
-                m_CurrentClipAmmo -= 1;
                 m_CurrentAmmo -= 1;
 
                 return true;
@@ -130,16 +159,8 @@ namespace Unity.Game.Shared
 
         private bool HasAmmo()
         {
-            if(HasInfiniteAmmo && HasInfiniteClip)
-            {
-                return true;
-            }
-            return m_CurrentAmmo > 0f && m_CurrentClipAmmo > 0f;
+            return HasInfiniteAmmo || m_CurrentAmmo > 0;
         }
-        //public void SetReadyToFire(bool fire)
-        //{
-        //    m_ReadyToFire = fire;
-        //}
 
         private void HandleShoot()
         {
@@ -161,14 +182,8 @@ namespace Unity.Game.Shared
             float spatialBlend = 1f;
             float minDistance = 3f;
             AudioUtility.CreateSfx(WeaponSound, WeaponMuzzle.position, AudioUtility.AudioGroups.WeaponShoot, spatialBlend, minDistance, volume);
-        }
 
-        private void OnValidate()
-        {
-            if(AmmoPerClip > MaxAmmo)
-            {
-                AmmoPerClip = MaxAmmo;
-            }
+            m_LastShotFired = Time.time;
         }
     }
 }

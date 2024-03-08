@@ -187,6 +187,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weapon_Blaster
       objectReference: {fileID: 0}
+    - target: {fileID: 5159398304025963246, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: HasInfiniteAmmo
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 7576213377685515522, guid: b318fabc73446b746a1005cede0c4ceb,
         type: 3}
       propertyPath: m_InteractionManager
@@ -1305,6 +1310,11 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 8
       objectReference: {fileID: 0}
+    - target: {fileID: 109434732395284509, guid: 65847589f926b734d9eaed6e25f0046b,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 109434732395284511, guid: 65847589f926b734d9eaed6e25f0046b,
         type: 3}
       propertyPath: m_Layer
@@ -1637,6 +1647,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Layer
       value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5686134208185362930, guid: 1fd3a7c43c8190f4d8c167ebde694364,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5686134208185362932, guid: 1fd3a7c43c8190f4d8c167ebde694364,
         type: 3}
@@ -2726,7 +2741,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 0}
+  m_ModelPrefab: {fileID: 1306706676}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -2966,10 +2981,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff40080c784da0c49a493f8ed7e6c547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportInteractorObject: {fileID: 294388121}
-  directInteractorObject: {fileID: 1573146831}
-  grabInteractorObject: {fileID: 564734952}
-  activationThreshold: 0.1
+  TeleportInteractor: {fileID: 294388121}
+  DirectInteractor: {fileID: 1573146831}
+  GrabInteractor: {fileID: 564734952}
+  ActivationThreshold: 0.1
 --- !u!1 &294388121
 GameObject:
   m_ObjectHideFlags: 0
@@ -3733,6 +3748,11 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 895873886455779108, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: ShootType
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 895873886455779108, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
       propertyPath: AmmoPerClip
@@ -9315,7 +9335,7 @@ MonoBehaviour:
   m_UpdateTrackingType: 0
   m_EnableInputTracking: 1
   m_EnableInputActions: 1
-  m_ModelPrefab: {fileID: 0}
+  m_ModelPrefab: {fileID: 272766865}
   m_ModelParent: {fileID: 0}
   m_Model: {fileID: 0}
   m_AnimateModel: 0
@@ -9555,10 +9575,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff40080c784da0c49a493f8ed7e6c547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  teleportInteractorObject: {fileID: 240482991}
-  directInteractorObject: {fileID: 1145437070}
-  grabInteractorObject: {fileID: 1178297775}
-  activationThreshold: 0.1
+  TeleportInteractor: {fileID: 240482991}
+  DirectInteractor: {fileID: 1145437070}
+  GrabInteractor: {fileID: 1178297775}
+  ActivationThreshold: 0.1
 --- !u!4 &1150293595 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6199973837475924900, guid: 03363bf476696af44a6b5a5d1229f0a5,
@@ -10780,14 +10800,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1297127155}
-  - component: {fileID: 1297127156}
   m_Layer: 8
-  m_Name: HitBox
+  m_Name: AimPoint
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &1297127155
 Transform:
   m_ObjectHideFlags: 0
@@ -10796,36 +10815,13 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1297127154}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 2020257426}
+  m_Father: {fileID: 1765792034}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!136 &1297127156
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1297127154}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.2
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 1, z: 0}
 --- !u!4 &1306706676 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5686134208185136530, guid: 1fd3a7c43c8190f4d8c167ebde694364,
@@ -12897,7 +12893,8 @@ Transform:
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
-  m_Children: []
+  m_Children:
+  - {fileID: 1297127155}
   m_Father: {fileID: 609005598}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1765792035
@@ -12916,7 +12913,7 @@ MonoBehaviour:
   m_UpdateType: 0
   m_IgnoreTrackingState: 0
   m_PositionInput:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Position
       m_Type: 0
@@ -12945,7 +12942,7 @@ MonoBehaviour:
     m_Reference: {fileID: 7862207684358717888, guid: c348712bda248c246b8c49b3db54643f,
       type: 3}
   m_RotationInput:
-    m_UseReference: 0
+    m_UseReference: 1
     m_Action:
       m_Name: Rotation
       m_Type: 0
@@ -14250,10 +14247,10 @@ GameObject:
   - component: {fileID: 2020257429}
   - component: {fileID: 2020257431}
   - component: {fileID: 2020257432}
-  - component: {fileID: 2020257433}
   - component: {fileID: 2020257434}
   - component: {fileID: 2020257435}
   - component: {fileID: 2020257436}
+  - component: {fileID: 2020257437}
   m_Layer: 8
   m_Name: XR Rig
   m_TagString: Untagged
@@ -14290,7 +14287,7 @@ MonoBehaviour:
   m_Camera: {fileID: 1765792037}
   m_OriginBaseGameObject: {fileID: 2020257423}
   m_CameraFloorOffsetObject: {fileID: 609005597}
-  m_RequestedTrackingOriginMode: 0
+  m_RequestedTrackingOriginMode: 1
   m_CameraYOffset: 1.1176
 --- !u!4 &2020257426
 Transform:
@@ -14306,7 +14303,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 609005598}
-  - {fileID: 1297127155}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &2020257427
@@ -14489,21 +14485,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_System: {fileID: 2020257428}
   m_DelayTime: 0
---- !u!114 &2020257433
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2020257423}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: af6bf904e410ee8479f9093d8830d1f8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_LocomotionProvider: {fileID: 2020257427}
-  m_MinHeight: 0
-  m_MaxHeight: Infinity
 --- !u!114 &2020257434
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -14543,6 +14524,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 890ba236051e0fd41a24fdcf023e0520, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &2020257437
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2020257423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: af6bf904e410ee8479f9093d8830d1f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_LocomotionProvider: {fileID: 2020257427}
+  m_MinHeight: 0
+  m_MaxHeight: Infinity
 --- !u!1 &2058761358 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 8ce6e2e20646ae64cb94614e8d7381db,
