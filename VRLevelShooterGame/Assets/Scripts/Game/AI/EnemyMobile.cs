@@ -138,8 +138,7 @@ namespace Unity.Game.AI
             {
                 float spatialBlend = 1f;
                 float rolloffDistanceMin = 10f;
-                float volume = 1f;
-                AudioUtility.CreateSfx(OnDetectSfx, transform.position, AudioUtility.AudioGroups.EnemyDetection, spatialBlend, rolloffDistanceMin, volume);
+                AudioUtility.CreateSfx(OnDetectSfx, transform.position, AudioUtility.AudioGroups.EnemyDetection, spatialBlend, rolloffDistanceMin);
             }
 
             Animator.SetBool(k_AnimAlertedParameter, true);

@@ -55,20 +55,25 @@ namespace Unity.Game.Shared
         public GameObject MuzzleFlashPrefab;
 
         public GameObject Owner { get; set; }
+        public bool IsWeaponEnabled { get; set; }
+        public bool IsReadyToFire { get; private set; }
+        public bool IsReloading { get; private set; }
         public float CurrentAmmoRatio { get; private set; }
 
-        bool m_ReadyToFire;
         float m_NextFireTime = Mathf.NegativeInfinity;
         float m_LastShotFired = Mathf.NegativeInfinity;
         float m_CurrentAmmo;
         bool m_Overheated;
+
         
         private void Awake()
         {
             Owner = gameObject;// TODO: Remove
 
             m_CurrentAmmo = MaxAmmo;
-            m_ReadyToFire = true;
+            IsReadyToFire = true;
+            IsWeaponEnabled = false;
+            IsReloading = false;
         }
 
         // Update is called once per frame
@@ -83,7 +88,8 @@ namespace Unity.Game.Shared
             if(HasInfiniteAmmo || m_CurrentAmmo >= MaxAmmo)
             {
                 m_Overheated = false;
-                m_ReadyToFire = true;
+                IsReadyToFire = true;
+                IsReloading = false;
                 CurrentAmmoRatio = 1f;
                 return;
             }
@@ -92,7 +98,8 @@ namespace Unity.Game.Shared
             if(m_CurrentAmmo <= 0)
             {
                 m_CurrentAmmo = 0;
-                m_ReadyToFire = false;
+                IsReadyToFire = false;
+                IsReloading = false;
                 m_Overheated = true;
             }
 
@@ -102,11 +109,16 @@ namespace Unity.Game.Shared
                 // if we haven't overheated, then weapon can fire any time
                 if(!m_Overheated)
                 {
-                    m_ReadyToFire = true;
+                    IsReadyToFire = true;
                 }
 
                 m_CurrentAmmo += AmmoReloadRate * Time.deltaTime;
                 m_CurrentAmmo = Mathf.Clamp(m_CurrentAmmo, 0, MaxAmmo);
+                IsReloading = true;
+            }
+            else
+            {
+                IsReloading = false;
             }
 
             CurrentAmmoRatio = m_CurrentAmmo / MaxAmmo;
@@ -144,7 +156,7 @@ namespace Unity.Game.Shared
 
         public bool TryShoot()
         {
-            if (HasAmmo() && Time.time >= m_NextFireTime && m_ReadyToFire)
+            if (HasAmmo() && Time.time >= m_NextFireTime && IsReadyToFire)
             {
                 HandleShoot();
 
@@ -178,10 +190,9 @@ namespace Unity.Game.Shared
             }
             
             // play weapon bullet sound
-            float volume = 0.3f;
             float spatialBlend = 1f;
             float minDistance = 3f;
-            AudioUtility.CreateSfx(WeaponSound, WeaponMuzzle.position, AudioUtility.AudioGroups.WeaponShoot, spatialBlend, minDistance, volume);
+            AudioUtility.CreateSfx(WeaponSound, WeaponMuzzle.position, AudioUtility.AudioGroups.WeaponShoot, spatialBlend, minDistance);
 
             m_LastShotFired = Time.time;
         }

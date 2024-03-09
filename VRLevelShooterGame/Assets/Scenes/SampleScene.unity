@@ -132,6 +132,166 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: SteamVfx
+      value: 
+      objectReference: {fileID: 1000830329}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: CoolingCellsSound
+      value: 
+      objectReference: {fileID: 8300000, guid: 93331a7c9fe98494a84f18effb358899, type: 3}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatingMaterial
+      value: 
+      objectReference: {fileID: 2100000, guid: 0c55f53a7bb3c354ababeb18b89c2fce, type: 2}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: CoolCellsSoundVolume
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.ctime0
+      value: 193
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.ctime1
+      value: 65535
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.ctime2
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.key0.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.key0.g
+      value: 3.482202
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.key0.r
+      value: 0.31408098
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.key1.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.key1.g
+      value: 1.5567491
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.key1.r
+      value: 5.2164755
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.key2.g
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.key2.r
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: OverheatGradient.m_NumColorKeys
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].time
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[2].time
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[2].value
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[0].inSlope
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].inSlope
+      value: -0.0030681617
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[0].outSlope
+      value: 1.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].outSlope
+      value: -0.0030681617
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[2].inWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[0].outWeight
+      value: 0.33333334
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].outWeight
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[0].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].tangentMode
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[2].tangentMode
+      value: 34
+      objectReference: {fileID: 0}
     - target: {fileID: 2225486910712267856, guid: b318fabc73446b746a1005cede0c4ceb,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -187,10 +347,15 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weapon_Blaster
       objectReference: {fileID: 0}
+    - target: {fileID: 2772967909889388702, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 5159398304025963246, guid: b318fabc73446b746a1005cede0c4ceb,
         type: 3}
       propertyPath: HasInfiniteAmmo
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7576213377685515522, guid: b318fabc73446b746a1005cede0c4ceb,
         type: 3}
@@ -765,6 +930,7 @@ GameObject:
   m_Component:
   - component: {fileID: 123421546}
   - component: {fileID: 123421545}
+  - component: {fileID: 123421547}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -799,6 +965,20 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &123421547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 123421544}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f198f0cf20089ef4cba148a760af68b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  AudioMixers:
+  - {fileID: 24100000, guid: fcc71635aab95ff4fbdf1880bf2afa2f, type: 2}
 --- !u!1 &126897613
 GameObject:
   m_ObjectHideFlags: 0
@@ -3763,6 +3943,11 @@ PrefabInstance:
       propertyPath: MuzzleFlashPrefab
       value: 
       objectReference: {fileID: 1919902783}
+    - target: {fileID: 1614318205656627459, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: m_Volume
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 2015434656898269652, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
       propertyPath: m_Name
@@ -7890,6 +8075,12 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5794612925722370850, guid: 1e4bd8ac328e4bb4fbbee62ca0f24a98,
     type: 3}
   m_PrefabInstance: {fileID: 1110790543}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &1000830329 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1818117475793052272, guid: b318fabc73446b746a1005cede0c4ceb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2925707}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1049849997
 GameObject:

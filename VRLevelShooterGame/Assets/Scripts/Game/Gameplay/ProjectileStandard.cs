@@ -147,8 +147,8 @@ namespace Unity.Game.Gameplay
             // Impact Sfx
             if (ImpactSfxClip)
             {
-                float volume = 1f;
-                AudioUtility.CreateSfx(ImpactSfxClip, point, AudioUtility.AudioGroups.Impact, 0f, 0f, volume);
+                float spatialBlend = 1f;
+                AudioUtility.CreateSfx(ImpactSfxClip, point, AudioUtility.AudioGroups.Impact, spatialBlend);
             }
 
             Destroy(this.gameObject);

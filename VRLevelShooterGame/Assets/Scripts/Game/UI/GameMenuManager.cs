@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
+using Unity.Game.Utilities;
 
 public class GameMenuManager : MonoBehaviour
 {
@@ -19,7 +20,7 @@ public class GameMenuManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        AudioUtility.SetMasterVolume(0.5f);
     }
 
     // Update is called once per frame

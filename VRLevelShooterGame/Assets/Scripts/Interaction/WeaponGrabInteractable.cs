@@ -64,6 +64,7 @@ namespace Unity.Game.Interaction
                 m_InteractorManager = interactorManager;
                 m_InteractorManager.ActivateInput.action.performed += OnActivateAction;
                 m_InteractorManager.ActivateInput.action.performed += OnDeactivateAction;
+                m_WeaponController.IsWeaponEnabled = true;
             }
         }
 
@@ -76,6 +77,7 @@ namespace Unity.Game.Interaction
                 m_InteractorManager.ActivateInput.action.performed -= OnActivateAction;
                 m_InteractorManager.ActivateInput.action.performed -= OnDeactivateAction;
                 m_InteractorManager = new InteractorManager();
+                m_WeaponController.IsWeaponEnabled = false;
             }
         }
 
