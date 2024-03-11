@@ -132,165 +132,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
+    - target: {fileID: 570899076709725326, guid: b318fabc73446b746a1005cede0c4ceb,
         type: 3}
-      propertyPath: SteamVfx
-      value: 
-      objectReference: {fileID: 1000830329}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: CoolingCellsSound
-      value: 
-      objectReference: {fileID: 8300000, guid: 93331a7c9fe98494a84f18effb358899, type: 3}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatingMaterial
-      value: 
-      objectReference: {fileID: 2100000, guid: 0c55f53a7bb3c354ababeb18b89c2fce, type: 2}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: CoolCellsSoundVolume
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.ctime0
-      value: 193
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.ctime1
-      value: 65535
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.ctime2
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.key0.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.key0.g
-      value: 3.482202
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.key0.r
-      value: 0.31408098
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.key1.b
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.key1.g
-      value: 1.5567491
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.key1.r
-      value: 5.2164755
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.key2.g
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.key2.r
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: OverheatGradient.m_NumColorKeys
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].time
-      value: 0.8
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[2].time
+      propertyPath: m_Color.a
       value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[2].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[0].inSlope
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].inSlope
-      value: -0.0030681617
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[0].outSlope
-      value: 1.25
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].outSlope
-      value: -0.0030681617
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[2].inWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[0].outWeight
-      value: 0.33333334
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].outWeight
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[0].tangentMode
-      value: 34
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[1].tangentMode
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1904346932017955736, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: AmmoToVolumeRatioCurve.m_Curve.Array.data[2].tangentMode
-      value: 34
       objectReference: {fileID: 0}
     - target: {fileID: 2225486910712267856, guid: b318fabc73446b746a1005cede0c4ceb,
         type: 3}
@@ -347,25 +192,54 @@ PrefabInstance:
       propertyPath: m_Name
       value: Weapon_Blaster
       objectReference: {fileID: 0}
-    - target: {fileID: 2772967909889388702, guid: b318fabc73446b746a1005cede0c4ceb,
+    - target: {fileID: 4882715479736778418, guid: b318fabc73446b746a1005cede0c4ceb,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 0.5
-      objectReference: {fileID: 0}
-    - target: {fileID: 5159398304025963246, guid: b318fabc73446b746a1005cede0c4ceb,
-        type: 3}
-      propertyPath: HasInfiniteAmmo
+      propertyPath: m_AnchorMax.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4882715479736778418, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5422734266749368678, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6358005339940535290, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: m_Transition
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6682609847274195914, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: AmmoBarObject
+      value: 
+      objectReference: {fileID: 1828901301}
     - target: {fileID: 7576213377685515522, guid: b318fabc73446b746a1005cede0c4ceb,
         type: 3}
       propertyPath: m_InteractionManager
       value: 
       objectReference: {fileID: 682774596}
+    - target: {fileID: 8149930214392034223, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8994792778614807337, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      propertyPath: m_Color.a
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5422734266749368678, guid: b318fabc73446b746a1005cede0c4ceb,
+        type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1198962645}
   m_SourcePrefab: {fileID: 100100000, guid: b318fabc73446b746a1005cede0c4ceb, type: 3}
 --- !u!4 &58863515 stripped
 Transform:
@@ -4077,6 +3951,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.z
       value: 0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 5299349968446827641, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: m_FillAmount
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5509532083174401704, guid: 25a1b0efadb966e44889fce712c8ff8d,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5625802328757436829, guid: 25a1b0efadb966e44889fce712c8ff8d,
         type: 3}
@@ -8076,12 +7960,6 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1110790543}
   m_PrefabAsset: {fileID: 0}
---- !u!198 &1000830329 stripped
-ParticleSystem:
-  m_CorrespondingSourceObject: {fileID: 1818117475793052272, guid: b318fabc73446b746a1005cede0c4ceb,
-    type: 3}
-  m_PrefabInstance: {fileID: 2925707}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1049849997
 GameObject:
   m_ObjectHideFlags: 0
@@ -10599,6 +10477,33 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1183272049}
   m_CullTransparentMesh: 1
+--- !u!1 &1198962639 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5422734266749368678, guid: b318fabc73446b746a1005cede0c4ceb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2925707}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1198962645
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1198962639}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: e85c60c8630389149a415416f18102c2, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1 &1205267519
 GameObject:
   m_ObjectHideFlags: 0
@@ -13492,6 +13397,12 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1795245516}
   m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1828901301 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2294703050642112168, guid: b318fabc73446b746a1005cede0c4ceb,
+    type: 3}
+  m_PrefabInstance: {fileID: 2925707}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1837638287
 GameObject:
   m_ObjectHideFlags: 0

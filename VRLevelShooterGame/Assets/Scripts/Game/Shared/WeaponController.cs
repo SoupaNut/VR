@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using Unity.Game.Utilities;
 
 namespace Unity.Game.Shared
@@ -59,6 +60,8 @@ namespace Unity.Game.Shared
         public bool IsReadyToFire { get; private set; }
         public bool IsReloading { get; private set; }
         public float CurrentAmmoRatio { get; private set; }
+
+        public UnityAction onShoot;
 
         float m_NextFireTime = Mathf.NegativeInfinity;
         float m_LastShotFired = Mathf.NegativeInfinity;
@@ -179,6 +182,8 @@ namespace Unity.Game.Shared
             // spawn bullet
             ProjectileBase spawnedProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position, WeaponMuzzle.rotation);
             spawnedProjectile.Shoot(this);
+
+            onShoot?.Invoke();
 
             // Spawn Muzzle Flash
             if(MuzzleFlashPrefab != null)
