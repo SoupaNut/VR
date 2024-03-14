@@ -68,15 +68,15 @@ namespace Unity.Game.UI
 
             //m_LastAmmoRatio = currentAmmoRatio;
 
-            if (m_WeaponController)
+            if (m_WeaponController.IsWeaponEnabled)
             {
-                if (m_WeaponController.CurrentAmmoRatio == 1f)
+                if (m_Slider.value == m_Slider.maxValue)
                 {
                     // check if this is a different trigger
                     if(!m_Animator.GetBool("FadeOut") && !m_AnimationSetThisFrame)
                     {
                         m_Animator.SetTrigger("FadeOut");
-                        m_AnimationSetThisFrame = true;
+                        //m_AnimationSetThisFrame = true;
                         Debug.Log("Fade Out");
                     }
                 }
@@ -85,7 +85,7 @@ namespace Unity.Game.UI
                     if (!m_Animator.GetBool("FadeIn") && !m_AnimationSetThisFrame)
                     {
                         m_Animator.SetTrigger("FadeIn");
-                        m_AnimationSetThisFrame = true;
+                        //m_AnimationSetThisFrame = true;
                         Debug.Log("Fade In");
                     }
                 }
@@ -93,7 +93,12 @@ namespace Unity.Game.UI
                 SetAmmoRatio(m_WeaponController.CurrentAmmoRatio);
 
                 m_LastAmmoRatio = m_WeaponController.CurrentAmmoRatio;
+                //Debug.Log(m_Slider.value);
             }
+        }
+        public void AnimationStart()
+        {
+            m_AnimationSetThisFrame = false;
         }
 
         public void AnimationDone()
