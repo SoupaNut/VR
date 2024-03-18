@@ -17,6 +17,11 @@ namespace Unity.Game.Audio
             m_AudioClip = Microphone.Start(m_Mic, true, 20, AudioSettings.outputSampleRate);
         }
 
+        public string GetSpeechToText()
+        {
+            return AudioUtility.GetTextFromAudioClip(Microphone.GetPosition(Microphone.devices[0]), m_AudioClip);
+        }
+
         public float GetLoudnessFromMicrophone()
         {
             return AudioUtility.GetLoudnessFromAudioClip(Microphone.GetPosition(Microphone.devices[0]), m_AudioClip);

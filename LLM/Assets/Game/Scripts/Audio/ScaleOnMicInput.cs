@@ -31,6 +31,8 @@ namespace Unity.Game.Audio
 
             // lerp value from minscale to maxscale
             transform.localScale = Vector3.Lerp(MinScale, MaxScale, loudness);
+
+            //AudioManager.GetSpeechToText();
         }
     }
 }

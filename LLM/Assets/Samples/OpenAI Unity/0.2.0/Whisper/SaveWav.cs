@@ -47,6 +47,8 @@ namespace Samples.Whisper
 			// Make sure directory exists if user is saving to sub dir.
 			Directory.CreateDirectory(Path.GetDirectoryName(filepath) ?? string.Empty);
 
+			Debug.Log(filepath);
+
 			using(var memoryStream = CreateEmpty())
 			{
 				ConvertAndWrite(memoryStream, clip);

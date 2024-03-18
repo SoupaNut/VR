@@ -30,7 +30,6 @@ namespace Unity.Game.Interaction
 
         // inputs
         InputActionProperty m_TeleportInput;
-        InputActionProperty m_DirectGrabInput;
         InputActionProperty m_ActivateInput;
 
         // Start is called before the first frame update
