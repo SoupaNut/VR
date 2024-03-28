@@ -1,129 +1,148 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
-using OpenAI;
+using UnityEngine.Events;
+using Unity.Game.Gameplay;
+using Unity.Game.Utilities;
 
 namespace Unity.Game.Audio
 {
     public class MicrophoneInput : MonoBehaviour
     {
+        [Tooltip("Button to press when talking")]
         public InputActionProperty TalkButton;
-        public float m_ActivationThreshold = 0.1f;
-        public int MaxRecordDuration = 30;
 
-        public string CurrentMicrophone { get; private set; }
+        [Tooltip("Threshold to know when button is pressed")]
+        public float m_ActivationThreshold = 0.1f;
+
+        [Tooltip("How long user can talk for")]
+        [Range(1, 30)]
+        public int MaxRecordDuration = 15;
+
+        public UnityAction onStartRecord;
+        public UnityAction onStopRecord;
+
         public bool IsRecording { get; private set; }
 
-        OpenAIApi openai = new OpenAIApi();
-        AudioSource m_AudioSource;
-        int ResizeRecordingRate = 1;
-        float m_Time;
-        string m_FileName = "output.wav";
+        
 
-        // Temporary audio vector we write to every second while recording is enabled
-        List<float> tempRecording = new List<float>();
+        ChatGPTManager m_ChatGPTManager;
+        AudioClip m_AudioClip;
+        float m_Time;
+        int m_StartSamplePosition;
+        int m_EndSamplePosition;
+        int m_MaxSamples;
 
         // Start is called before the first frame update
         void Start()
         {
-            m_AudioSource = GetComponent<AudioSource>();
-            //CurrentMicrophone = Microphone.devices[0];
+            m_ChatGPTManager = FindObjectOfType<ChatGPTManager>();
+            DebugUtility.HandleErrorIfNullFindObject<ChatGPTManager, MicrophoneInput>(m_ChatGPTManager, this);
 
-            // Set up recording to last a max of the recording rate and loop over and over
-            m_AudioSource.clip = Microphone.Start(null, true, ResizeRecordingRate, AudioSettings.outputSampleRate);
+            // Set up recording to last a max of the recording rate + 1 and loop over and over
+            // +1 is to give enough time to read the data before it is overwritten
+            m_AudioClip = Microphone.Start(null, true, MaxRecordDuration + 1, AudioSettings.outputSampleRate);
 
-            // resize our temp vector every second
-            //Invoke("ResizeRecording", ResizeRecordingRate);
-        }
-
-        void ResizeRecording()
-        {
-            if(IsRecording)
-            {
-                // Add next second of recorded audio to temp vector
-                float[] clipData = new float[AudioSettings.outputSampleRate];
-                m_AudioSource.clip.GetData(clipData, 0);
-                tempRecording.AddRange(clipData);
-            }
+            m_MaxSamples = m_AudioClip.samples * m_AudioClip.channels;
+            
         }
 
         void OnEnable()
         {
-            TalkButton.action.performed += StartRecording;
-            TalkButton.action.canceled += StopRecording;
+            TalkButton.action.performed += TalkButtonPressed;
+            TalkButton.action.canceled += TalkButtonReleased;
         }
 
         void OnDisable()
         {
-            TalkButton.action.performed -= StartRecording;
-            TalkButton.action.canceled -= StopRecording;
+            TalkButton.action.performed -= TalkButtonPressed;
+            TalkButton.action.canceled -= TalkButtonReleased;
         }
 
         // Update is called once per frame
         void Update()
         {
-            m_Time += Time.deltaTime;
-
-            if (m_Time >= ResizeRecordingRate)
+            if (IsRecording)
             {
-                ResizeRecording();
-                m_Time = 0;
+                // stop recording if we hit our max time of recording
+                m_Time += Time.deltaTime;
+                if (m_Time >= MaxRecordDuration)
+                {
+                    StopRecording();
+                }
             }
-
-            //if (IsRecording)
-            //{
-            //    //m_Time += Time.deltaTime;
-
-            //    //if(m_Time >= ResizeRecordingRate)
-            //    //{
-            //    //    m_Time = 0;
-            //    //}
-
-            //    //if(m_Time >= MaxRecordDuration)
-            //    //{
-            //    //    IsRecording = false;
-            //    //    m_Time = 0f;
-            //    //    TranscribeAudio();
-            //    //}
-            //    //StopRecording();
-            //    // TODO: Might use this loop later for UI elements or something
-            //}
-
         }
 
-        void StartRecording(InputAction.CallbackContext context)
+        void TalkButtonPressed(InputAction.CallbackContext context)
         {
+#if UNITY_EDITOR
             Debug.Log("Recording...");
+#endif
+            onStartRecord?.Invoke();
+            m_StartSamplePosition = Microphone.GetPosition(null);
             IsRecording = true;
-            //AudioClip = Microphone.Start(null, false, MaxRecordDuration, 44100);
+            m_Time = 0;
         }
 
-        void StopRecording(InputAction.CallbackContext context)
+        void TalkButtonReleased(InputAction.CallbackContext context)
         {
-            if(IsRecording)
+            StopRecording();
+        }
+
+        void StopRecording()
+        {
+            if (IsRecording)
             {
+                onStopRecord?.Invoke();
+                m_EndSamplePosition = Microphone.GetPosition(null);
                 IsRecording = false;
-                Microphone.End(null);
                 TranscribeAudio();
             }
         }
 
+        float[] GetSampleDataArray(float[] samples, int startIndex, int endIndex)
+        {
+            // Don't add 1 at the end since we don't need the data at the endIndex
+            int range = (endIndex - startIndex + m_MaxSamples) % m_MaxSamples;
+            // create array to hold our new samples
+            float[] newSamples = new float[range];
+
+            // fill in data
+            for(int i = 0; i < range; i++)
+            {
+                int index = (startIndex + i) % m_MaxSamples;
+                newSamples[i] = samples[index];
+            }
+            return newSamples;
+        }
+
         async void TranscribeAudio()
         {
+#if UNITY_EDITOR
             Debug.Log("Transcribing...");
+#endif
+            // get entire audioclip data
+            float[] samples = new float[m_MaxSamples];
+            m_AudioClip.GetData(samples, 0);
 
-            byte[] data = SaveWav.Save(m_FileName, m_AudioSource.clip);
-            var req = new CreateAudioTranscriptionsRequest
-            {
-                FileData = new FileData() { Data = data, Name = "audio.wav" },
-                // File = Application.persistentDataPath + "/" + fileName,
-                Model = "whisper-1",
-                Language = "en"
-            };
+            // get new samples array based on the given start and end point
+            samples = GetSampleDataArray(samples, m_StartSamplePosition, m_EndSamplePosition);
 
-            var res = await openai.CreateAudioTranscription(req);
+            byte[] data = SaveWav.EncodeAsWAV(samples, m_AudioClip.frequency, m_AudioClip.channels);
 
-            Debug.Log(res.Text);
+            string res = await m_ChatGPTManager.GetAudioTranscription(data);
+
+#if UNITY_EDITOR
+            Debug.Log(res);
+#endif
+
+            m_ChatGPTManager.AskChatGPT(res);
+        }
+
+        public float GetLoudness()
+        {
+            return AudioUtility.GetLoudnessFromAudioClip(Microphone.GetPosition(null), m_AudioClip);
         }
     }
 }

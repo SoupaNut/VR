@@ -781,6 +781,24 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": true
+                },
+                {
+                    "name": "XButton",
+                    "type": "Button",
+                    "id": "a247a10a-affd-4344-9497-5881749f6843",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "YButton",
+                    "type": "Button",
+                    "id": "639a9322-44e2-4d4c-b796-a00dca5b509e",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -946,6 +964,28 @@
                     "processors": "ScaleVector2(x=0),StickDeadzone",
                     "groups": "Generic XR Controller",
                     "action": "Scale Delta",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "3e63f6d3-bcc3-4bb6-ab91-6a5ee4e580c8",
+                    "path": "<XRController>{LeftHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "YButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0cee3263-db69-4805-82e8-1a83aece3e24",
+                    "path": "<XRController>{LeftHand}/primaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "XButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -1579,9 +1619,18 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "TalkButton",
+                    "name": "AButton",
                     "type": "Button",
                     "id": "b2335c27-2aaf-4727-8f12-d75a4221a0a7",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "BButton",
+                    "type": "Button",
+                    "id": "7fb6d48e-acfe-4f80-ad02-900d22999b9d",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -1761,7 +1810,18 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "TalkButton",
+                    "action": "AButton",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "75cc87d7-8312-40d0-8753-ef46c66aeee1",
+                    "path": "<XRController>{RightHand}/secondaryButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "BButton",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
