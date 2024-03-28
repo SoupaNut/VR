@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
-using Unity.Game.Utilities;
+using Unity.Game.Shared;
 
 namespace Unity.Game.Interaction
 {

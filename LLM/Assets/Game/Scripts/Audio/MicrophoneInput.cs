@@ -3,8 +3,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 using UnityEngine.Events;
-using Unity.Game.Gameplay;
-using Unity.Game.Utilities;
+using Unity.Game.Shared;
 
 namespace Unity.Game.Audio
 {
@@ -16,7 +15,7 @@ namespace Unity.Game.Audio
         [Tooltip("Threshold to know when button is pressed")]
         public float m_ActivationThreshold = 0.1f;
 
-        [Tooltip("How long user can talk for")]
+        [Tooltip("How long user can talk for in seconds")]
         [Range(1, 30)]
         public int MaxRecordDuration = 15;
 
@@ -24,8 +23,6 @@ namespace Unity.Game.Audio
         public UnityAction onStopRecord;
 
         public bool IsRecording { get; private set; }
-
-        
 
         ChatGPTManager m_ChatGPTManager;
         AudioClip m_AudioClip;
@@ -74,6 +71,11 @@ namespace Unity.Game.Audio
             }
         }
 
+        public float GetLoudness()
+        {
+            return AudioUtility.GetLoudnessFromAudioClip(Microphone.GetPosition(null), m_AudioClip);
+        }
+
         void TalkButtonPressed(InputAction.CallbackContext context)
         {
 #if UNITY_EDITOR
@@ -101,22 +103,6 @@ namespace Unity.Game.Audio
             }
         }
 
-        float[] GetSampleDataArray(float[] samples, int startIndex, int endIndex)
-        {
-            // Don't add 1 at the end since we don't need the data at the endIndex
-            int range = (endIndex - startIndex + m_MaxSamples) % m_MaxSamples;
-            // create array to hold our new samples
-            float[] newSamples = new float[range];
-
-            // fill in data
-            for(int i = 0; i < range; i++)
-            {
-                int index = (startIndex + i) % m_MaxSamples;
-                newSamples[i] = samples[index];
-            }
-            return newSamples;
-        }
-
         async void TranscribeAudio()
         {
 #if UNITY_EDITOR
@@ -140,9 +126,20 @@ namespace Unity.Game.Audio
             m_ChatGPTManager.AskChatGPT(res);
         }
 
-        public float GetLoudness()
+        float[] GetSampleDataArray(float[] samples, int startIndex, int endIndex)
         {
-            return AudioUtility.GetLoudnessFromAudioClip(Microphone.GetPosition(null), m_AudioClip);
+            // Don't add 1 at the end since we don't need the data at the endIndex
+            int range = (endIndex - startIndex + m_MaxSamples) % m_MaxSamples;
+            // create array to hold our new samples
+            float[] newSamples = new float[range];
+
+            // fill in data
+            for (int i = 0; i < range; i++)
+            {
+                int index = (startIndex + i) % m_MaxSamples;
+                newSamples[i] = samples[index];
+            }
+            return newSamples;
         }
     }
 }
