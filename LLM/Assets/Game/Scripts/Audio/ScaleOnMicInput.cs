@@ -1,5 +1,5 @@
 using UnityEngine;
-using Unity.Game.Utilities;
+using Unity.Game.Shared;
 
 namespace Unity.Game.Audio
 {
@@ -10,21 +10,21 @@ namespace Unity.Game.Audio
         public float LoudnessSensibility = 100f;
         public float Threshold = 0.1f;
 
-        AudioManager AudioManager;
+        MicrophoneInput MicrophoneInput;
 
         // Start is called before the first frame update
         void Start()
         {
-            AudioManager = FindObjectOfType<AudioManager>();
-            DebugUtility.HandleErrorIfNullFindObject<AudioManager, ScaleOnMicInput>(AudioManager, this);
+            MicrophoneInput = FindObjectOfType<MicrophoneInput>();
+            DebugUtility.HandleErrorIfNullFindObject<MicrophoneInput, ScaleOnMicInput>(MicrophoneInput, this);
         }
 
         // Update is called once per frame
         void Update()
         {
-            float loudness = AudioManager.GetLoudnessFromMicrophone() * LoudnessSensibility;
+            float loudness = MicrophoneInput.GetLoudness() * LoudnessSensibility;
 
-            if(loudness < Threshold)
+            if (loudness < Threshold)
             {
                 loudness = 0;
             }
