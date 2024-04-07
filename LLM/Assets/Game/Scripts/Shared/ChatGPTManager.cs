@@ -29,6 +29,11 @@ namespace Unity.Game.Shared
             public UnityEvent actionEvent;
         }
 
+        public OnResponseEvent OnResponse;
+
+        [System.Serializable]
+        public class OnResponseEvent : UnityEvent<string> { }
+
         OpenAIApi openai = new OpenAIApi();
         List<ChatMessage> messages = new List<ChatMessage>();
 
@@ -66,7 +71,7 @@ namespace Unity.Game.Shared
             foreach (var item in actions)
             {
                 instructions += "If I imply that I want you to do the following: " + item.actionDescription
-                    + ". You must add to your answer the following keyword: " + item.actionKeyword + ".\n";
+                    + ". You must add to your answer the following keyword, no exceptions: " + item.actionKeyword + ".\n";
             }
 
             return instructions;
@@ -106,6 +111,8 @@ namespace Unity.Game.Shared
                 }
 
                 messages.Add(chatResponse);
+
+                OnResponse.Invoke(chatResponse.Content);
                 
             }
 
