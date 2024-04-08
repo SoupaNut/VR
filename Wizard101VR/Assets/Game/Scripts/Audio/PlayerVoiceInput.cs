@@ -8,7 +8,6 @@ namespace Unity.Game.Audio
 {
     public class PlayerVoiceInput : MonoBehaviour
     {
-
         [Header("General")]
         [Tooltip("Object containing Oculus Voice SDK")]
         public AppVoiceExperience VoiceManager;

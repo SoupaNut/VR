@@ -10,13 +10,17 @@ namespace Unity.Game.Shared
     public class ChatGPTManager : MonoBehaviour
     {
         [TextArea(5, 20)]
+        [Tooltip("The personality that the NPC will be built upon.")]
         public string Personality;
 
         [TextArea(5, 20)]
+        [Tooltip("The current scene that the NPC is in.")]
         public string Scene;
 
+        [Tooltip("Maximum number of words that ChatGPT will respond with.")]
         public int MaxResponseWordLimit = 15;
 
+        [Tooltip("Actions that the NPC will do if the player implies a certain action. ChatGPT will include in its response the Action Keyword if the action was implied.")]
         public List<NPCAction> actions;
 
         [System.Serializable]
@@ -29,6 +33,7 @@ namespace Unity.Game.Shared
             public UnityEvent actionEvent;
         }
 
+        [Tooltip("Event for when ChatGPT responds with an answer.")]
         public OnResponseEvent OnResponse;
 
         [System.Serializable]
@@ -36,10 +41,7 @@ namespace Unity.Game.Shared
 
         OpenAIApi openai = new OpenAIApi();
         List<ChatMessage> messages = new List<ChatMessage>();
-
         string ChatGPTModel = "gpt-3.5-turbo";
-        string WhisperModel = "whisper-1";
-        string WhisperLanguage = "en";
 
         public string GetInstructions()
         {
@@ -115,22 +117,6 @@ namespace Unity.Game.Shared
                 OnResponse.Invoke(chatResponse.Content);
                 
             }
-
-        }
-
-        public async Task<string> GetAudioTranscription(byte[] data)
-        {
-            var req = new CreateAudioTranscriptionsRequest
-            {
-                FileData = new FileData() { Data = data, Name = "audio.wav" },
-                // File = Application.persistentDataPath + "/" + fileName,
-                Model = WhisperModel,
-                Language = WhisperLanguage
-            };
-
-            var res = await openai.CreateAudioTranscription(req);
-
-            return res.Text;
         }
     }
 }
