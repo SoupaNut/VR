@@ -115,11 +115,11 @@ namespace Unity.Game.Interaction
 
         private void GrabSelectEnteredHandler(SelectEnterEventArgs args)
         {
-            //if (args.interactableObject.transform.GetComponent<WeaponGrabInteractable>())
-            //{
-            //    // disable anchor control
-            //    m_GrabInteractor.allowAnchorControl = false;
-            //}
+            if (args.interactableObject.transform.GetComponent<WeaponGrabInteractable>())
+            {
+                // disable anchor control
+                m_GrabInteractor.allowAnchorControl = false;
+            }
         }
 
         private void GrabSelectExitedHandler(SelectExitEventArgs args)
