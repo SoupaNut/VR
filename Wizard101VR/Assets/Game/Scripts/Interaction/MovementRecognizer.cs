@@ -1,14 +1,11 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using PDollarGestureRecognizer;
 using System.IO;
-using Unity.Game.Shared;
 
 namespace Unity.Game.Interaction
 {
-    [RequireComponent(typeof(WeaponGrabInteractable))]
     public class MovementRecognizer : MonoBehaviour
     {
         [Header("General")]
@@ -38,6 +35,7 @@ namespace Unity.Game.Interaction
         [Tooltip("How accurate the gesture should be.")]
         [Range(0f, 1f)]
         public float RecognitionThreshold = 0.9f;
+        
 
 
         // - - - - - - - - - - E V E N T S - - - - - - - - - - //
@@ -49,50 +47,20 @@ namespace Unity.Game.Interaction
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
         // - - - - - - - - - - P R I V A T E - - - - - - - - - - //
-        WeaponGrabInteractable m_WeaponGrabInteractable;
         List<Gesture> m_GestureList = new List<Gesture>();
         List<Vector3> m_PositionsList = new List<Vector3>();
-        string m_GestureFileExtension = "_gesture.xml";
-        bool m_IsMoving = false;
         LineRenderer m_CurrentLine;
+        string m_GestureFileExtension = ".xml";
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
         void Start()
         {
-            m_WeaponGrabInteractable = GetComponent<WeaponGrabInteractable>();
-            DebugUtility.HandleErrorIfNullGetComponent<WeaponGrabInteractable, WandMovementRecognizer>(m_WeaponGrabInteractable, this, gameObject);
-
             // Get all recorded gestures
             string[] gestureFiles = Directory.GetFiles(Application.persistentDataPath, "*" + m_GestureFileExtension);
             foreach (var item in gestureFiles)
             {
                 m_GestureList.Add(GestureIO.ReadGestureFromFile(item));
-            }
-        }
-
-        void Update()
-        {
-            // if wand is being grabbed
-            if (m_WeaponGrabInteractable.IsWeaponEnabled)
-            {
-                bool isPressed = m_WeaponGrabInteractable.InteractorManager.IsActivated;
-
-                // Start the Movement
-                if (!m_IsMoving && isPressed)
-                {
-                    StartMovement();
-                }
-                // Updating the Movement
-                else if (m_IsMoving && isPressed)
-                {
-                    UpdateMovement();
-                }
-                // Ending the Movement
-                else if (m_IsMoving && !isPressed)
-                {
-                    EndMovement();
-                }
             }
         }
 
@@ -110,9 +78,8 @@ namespace Unity.Game.Interaction
             m_PositionsList.Add(MovementSource.position);
         }
 
-        void StartMovement()
+        public void StartMovement()
         {
-            m_IsMoving = true;
             m_PositionsList.Clear();
 
             // Create Line
@@ -122,7 +89,7 @@ namespace Unity.Game.Interaction
             UpdateLine();
         }
 
-        void UpdateMovement()
+        public void UpdateMovement()
         {
             // Check if we have a line
             if (!m_CurrentLine || m_PositionsList.Count == 0)
@@ -141,51 +108,46 @@ namespace Unity.Game.Interaction
             }
         }
 
-        void EndMovement()
+        public void EndMovement()
         {
-            m_IsMoving = false;
-
-            // Create a new gesture based on the positions list we have
-            {
-                Point[] pointArray = new Point[m_PositionsList.Count];
-
-                for (int i = 0; i < pointArray.Length; i++)
-                {
-                    Vector2 screenPoint = Camera.main.WorldToScreenPoint(m_PositionsList[i]);
-                    pointArray[i] = new Point(screenPoint.x, screenPoint.y, 0);
-                }
-
-                Gesture newGesture = new Gesture(pointArray);
-            }
-
-            // Either add a new gesture or recognize the gesture
-            {
-                // Add a new gesture to gesture list
-                if (CreationMode)
-                {
-                    newGesture.Name = NewGestureName;
-                    m_GestureList.Add(newGesture);
-
-                    string fileName = Application.persistentDataPath + "/" + NewGestureName + m_GestureFileExtension;
-                    GestureIO.WriteGesture(pointArray, NewGestureName, fileName);
-                }
-                // Recognize
-                else
-                {
-                    Result result = PointCloudRecognizer.Classify(newGesture, m_GestureList.ToArray());
-                    Debug.Log(result.GestureClass + result.Score);
-
-                    if (result.Score > RecognitionThreshold)
-                    {
-                        onRecognized.Invoke(result.GestureClass);
-                    }
-                }
-            }
-
-
             // Destroy the line we drew
             Destroy(m_CurrentLine.gameObject, LineDespawnTime);
             m_CurrentLine = null;
+
+            Point[] pointArray = new Point[m_PositionsList.Count];
+
+            for (int i = 0; i < pointArray.Length; i++)
+            {
+                Vector2 screenPoint = Camera.main.WorldToScreenPoint(m_PositionsList[i]);
+                pointArray[i] = new Point(screenPoint.x, screenPoint.y, 0);
+            }
+
+            Gesture newGesture = new Gesture(pointArray);
+
+            // Add a new gesture to gesture list
+            if (CreationMode)
+            {
+                newGesture.Name = NewGestureName;
+                m_GestureList.Add(newGesture);
+
+                string fileName = Application.persistentDataPath + "/" + NewGestureName + m_GestureFileExtension;
+                GestureIO.WriteGesture(pointArray, NewGestureName, fileName);
+            }
+            // Recognize
+            else
+            {
+                Result result = PointCloudRecognizer.Classify(newGesture, m_GestureList.ToArray());
+                Debug.Log(result.GestureClass + result.Score);
+
+                if (result.Score > RecognitionThreshold)
+                {
+                    onRecognized.Invoke(result.GestureClass);
+
+                    //return result.GestureClass;
+                }
+            }
+
+            //return "";
         }
     }
 }

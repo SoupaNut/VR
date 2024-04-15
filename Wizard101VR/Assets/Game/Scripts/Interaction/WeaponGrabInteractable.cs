@@ -8,6 +8,15 @@ namespace Unity.Game.Interaction
         public InteractorManager InteractorManager { get; set; }
         public bool IsWeaponEnabled { get; private set; }
 
+        void Start()
+        {
+            var outline = GetComponent<Outline>();
+            if(outline)
+            {
+                outline.enabled = false;
+            }
+        }
+
         protected override void OnSelectEntered(SelectEnterEventArgs args)
         {
             var interactorManager = args.interactorObject.transform.parent.GetComponent<InteractorManager>();
@@ -23,7 +32,7 @@ namespace Unity.Game.Interaction
 
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
-            Interactor = new InteractorManager();
+            InteractorManager = new InteractorManager();
             IsWeaponEnabled = false;
 
             base.OnSelectExited(args);

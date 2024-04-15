@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5766025452578896412}
+  - component: {fileID: 7525361114696974857}
   m_Layer: 0
   m_Name: Incendio Spell
   m_TagString: Untagged
@@ -34,6 +35,26 @@ Transform:
   - {fileID: 5891591001153580010}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &7525361114696974857
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5766025452578896415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c7817bc32e30d1428d8dad1a384f2fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Speed: 5
+  CollisionRadius: 0.2
+  CollisionLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  Bolt: {fileID: 6078831272711255763}
+  Trail: {fileID: 6078831272711226499}
+  Explosion: {fileID: 5891591001135157104}
 --- !u!1 &5891591001153296490
 GameObject:
   m_ObjectHideFlags: 0

@@ -53,7 +53,7 @@ namespace Unity.Game.Player
             DebugUtility.HandleErrorIfNullFindObject<ChatGPTManager, PlayerVoiceInput>(m_ChatGPTManager, this);
 
             // - 0.5 so that we don't accidentally go over the talk limit
-            m_MaxTalkDuration = VoiceManager.RuntimeConfiguration.maxRecordingTime - 0.5f;
+            m_MaxTalkDuration = VoiceManager.RuntimeConfiguration.maxRecordingTime - 0.2f;
             VoiceManager.VoiceEvents.OnFullTranscription.AddListener(AskChatGpt);
 
         }

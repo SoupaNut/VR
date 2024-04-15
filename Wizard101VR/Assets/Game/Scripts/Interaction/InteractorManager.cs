@@ -33,7 +33,7 @@ namespace Unity.Game.Interaction
         InputActionProperty m_ActivateInput;
 
         // Start is called before the first frame update
-        private void Start()
+        void Start()
         {
             // Get Interactors
             {
@@ -55,9 +55,13 @@ namespace Unity.Game.Interaction
 
             // Handlers
             {
+                m_GrabInteractor.hoverEntered.AddListener(GrabHoverEnteredHandler);
+                m_GrabInteractor.hoverExited.AddListener(GrabHoverExitedHandler);
                 m_GrabInteractor.selectEntered.AddListener(GrabSelectEnteredHandler);
                 m_GrabInteractor.selectExited.AddListener(GrabSelectExitedHandler);
 
+                m_DirectInteractor.hoverEntered.AddListener(DirectHoverEnteredHandler);
+                m_DirectInteractor.hoverExited.AddListener(DirectHoverExitedHandler);
                 m_DirectInteractor.selectEntered.AddListener(DirectSelectEnteredHandler);
                 m_DirectInteractor.selectExited.AddListener(DirectSelectExitedHandler);
             }
@@ -65,7 +69,7 @@ namespace Unity.Game.Interaction
         }
 
         // Update is called once per frame
-        private void Update()
+        void Update()
         {
             // Direct Interactor
             IsDirectGrabSelected = m_DirectInteractor.interactablesSelected.Count > 0;
@@ -84,7 +88,7 @@ namespace Unity.Game.Interaction
             HandleInteractors();
         }
 
-        private void HandleInteractors()
+        void HandleInteractors()
         {
             // Disable Teleport, Disable Grab Ray
             if (IsDirectGrabSelected)
@@ -113,7 +117,17 @@ namespace Unity.Game.Interaction
             }
         }
 
-        private void GrabSelectEnteredHandler(SelectEnterEventArgs args)
+        void GrabHoverEnteredHandler(HoverEnterEventArgs args)
+        {
+            SetObjectOutline(args.interactableObject, true);
+        }
+
+        void GrabHoverExitedHandler(HoverExitEventArgs args)
+        {
+            SetObjectOutline(args.interactableObject, false);
+        }
+
+        void GrabSelectEnteredHandler(SelectEnterEventArgs args)
         {
             if (args.interactableObject.transform.GetComponent<WeaponGrabInteractable>())
             {
@@ -122,18 +136,39 @@ namespace Unity.Game.Interaction
             }
         }
 
-        private void GrabSelectExitedHandler(SelectExitEventArgs args)
+        void GrabSelectExitedHandler(SelectExitEventArgs args)
         {
             // enable anchor control
             m_GrabInteractor.allowAnchorControl = true;
         }
 
-        private void DirectSelectEnteredHandler(SelectEnterEventArgs args)
+        void DirectHoverEnteredHandler(HoverEnterEventArgs args)
+        {
+            SetObjectOutline(args.interactableObject, true);
+        }
+
+        void DirectHoverExitedHandler(HoverExitEventArgs args)
+        {
+            SetObjectOutline(args.interactableObject, false);
+        }
+
+        void DirectSelectEnteredHandler(SelectEnterEventArgs args)
         {
         }
 
-        private void DirectSelectExitedHandler(SelectExitEventArgs args)
+        void DirectSelectExitedHandler(SelectExitEventArgs args)
         {
+        }
+
+        void SetObjectOutline(IXRHoverInteractable grabbable, bool enable)
+        {
+            var outline = grabbable.transform.GetComponent<Outline>();
+
+            // Check if has Outline component
+            if(outline)
+            {
+                outline.enabled = enable && !grabbable.transform.GetComponent<XRGrabInteractable>().isSelected;
+            }
         }
     }
 
