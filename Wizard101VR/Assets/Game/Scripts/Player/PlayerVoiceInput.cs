@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using Oculus.Voice;
 using Unity.Game.Shared;
 using Unity.Game.NPC;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Unity.Game.Player
 {
@@ -12,6 +13,9 @@ namespace Unity.Game.Player
         [Header("General")]
         [Tooltip("Object containing Oculus Voice SDK")]
         public AppVoiceExperience VoiceManager;
+
+        [Tooltip("Gaze Interactor object for looking at NPC")]
+        public XRGazeInteractor GazeInteractor;
 
         [Tooltip("Button to press when talking")]
         public InputActionProperty TalkButton;
@@ -49,8 +53,7 @@ namespace Unity.Game.Player
         // Start is called before the first frame update
         void Start()
         {
-            m_ChatGPTManager = FindObjectOfType<ChatGPTManager>();
-            DebugUtility.HandleErrorIfNullFindObject<ChatGPTManager, PlayerVoiceInput>(m_ChatGPTManager, this);
+            GazeInteractor.selectEntered.AddListener(GazeSelectEnteredHandler);
 
             // - 0.5 so that we don't accidentally go over the talk limit
             m_MaxTalkDuration = VoiceManager.RuntimeConfiguration.maxRecordingTime - 0.2f;
@@ -60,9 +63,12 @@ namespace Unity.Game.Player
 
         void AskChatGpt(string text)
         {
-            Debug.Log("Player: " + text);
+            if(m_ChatGPTManager)
+            {
+                Debug.Log("Player: " + text);
 
-            m_ChatGPTManager.AskChatGPT(text);
+                m_ChatGPTManager.AskChatGPT(text);
+            }
         }
 
         // Update is called once per frame
@@ -125,6 +131,33 @@ namespace Unity.Game.Player
             if (MicrophoneStopClip)
             {
                 AudioUtility.CreateSfx(MicrophoneStopClip, transform.position, AudioUtility.AudioGroups.UserInterface);
+            }
+        }
+
+        void GazeSelectEnteredHandler(SelectEnterEventArgs args)
+        {
+            var chatgptManager = args.interactableObject.transform.GetComponent<ChatGPTManager>();
+
+            // If we are looking at a different npc
+            if (chatgptManager && chatgptManager != m_ChatGPTManager)
+            {
+                // if we were previously talking to an NPC
+                if(m_ChatGPTManager != null)
+                {
+                    m_ChatGPTManager.TryGetComponent<NpcController>(out NpcController oldNpc);
+                    if (oldNpc)
+                    {
+                        oldNpc.ClearNPCActiveMarker();
+                    }
+                }
+
+                // get the current NPC
+                m_ChatGPTManager = chatgptManager;
+                m_ChatGPTManager.TryGetComponent<NpcController>(out NpcController newNpc);
+                if (newNpc)
+                {
+                    newNpc.SetNPCActiveMarker();
+                }
             }
         }
     }

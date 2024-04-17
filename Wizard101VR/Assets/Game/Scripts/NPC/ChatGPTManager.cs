@@ -118,6 +118,19 @@ namespace Unity.Game.NPC
                 
             }
         }
+
+        public void Test(bool select)
+        {
+            if (select)
+            {
+                Debug.Log("Activated");
+            }
+            else
+            {
+                Debug.Log("Deactivated");
+            }
+            
+        }
     }
 }
 
