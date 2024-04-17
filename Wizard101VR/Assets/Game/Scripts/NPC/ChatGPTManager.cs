@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Events;
 using OpenAI;
+using Unity.Game.Shared;
 
 namespace Unity.Game.NPC
 {
@@ -39,9 +40,17 @@ namespace Unity.Game.NPC
         [System.Serializable]
         public class OnResponseEvent : UnityEvent<string> { }
 
+        public NpcController NPCController { get; private set; }
+
         OpenAIApi openai = new OpenAIApi();
         List<ChatMessage> messages = new List<ChatMessage>();
         string ChatGPTModel = "gpt-3.5-turbo";
+
+        void Start()
+        {
+            NPCController = GetComponent<NpcController>();
+            DebugUtility.HandleErrorIfNullGetComponent<NpcController, ChatGPTManager>(NPCController, this, gameObject);
+        }
 
         public string GetInstructions()
         {
@@ -119,17 +128,14 @@ namespace Unity.Game.NPC
             }
         }
 
-        public void Test(bool select)
+        public void TurnNPCTowardsTarget()
         {
-            if (select)
-            {
-                Debug.Log("Activated");
-            }
-            else
-            {
-                Debug.Log("Deactivated");
-            }
-            
+            NPCController.TurnNPCTowardsTarget();
+        }
+
+        public void TurnNPCAwayFromTarget()
+        {
+            NPCController.TurnNPCAwayFromTarget();
         }
     }
 }

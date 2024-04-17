@@ -13,17 +13,9 @@ namespace Unity.Game.NPC
 
         public float HeadTurnDuration = 0.25f;
 
-        [Header("VFX")]
-        [Tooltip("VFX marker to display when NPC is active to talk to. Displays at character's feet.")]
-        public GameObject NPCActiveMarker;
-
-        [Header("SFX")]
-        [Tooltip("SFX to play when NPC is active")]
-        public AudioClip NPCActiveClip;
-
         [Header("Debug Display")]
-        [Tooltip("Color of the sphere gizmo representing the inner range")]
-        public Color InnerRangeColor = Color.red;
+        //[Tooltip("Color of the sphere gizmo representing the inner range")]
+        //public Color InnerRangeColor = Color.red;
 
         [Tooltip("Color of the sphere gizmo representing the detection range")]
         public Color DetectionRangeColor = Color.blue;
@@ -85,29 +77,13 @@ namespace Unity.Game.NPC
             HeadAim.data.sourceObjects = sources;
         }
 
-        public void SetNPCActiveMarker()
+        public void TurnNPCTowardsTarget()
         {
-            if(NPCActiveMarker)
-            {
-                NPCActiveMarker.SetActive(true);
-
-            }
-
-            if(NPCActiveClip)
-            {
-                AudioUtility.CreateSfx(NPCActiveClip, transform.position, AudioUtility.AudioGroups.UserInterface, 1f, 3f);
-            }
-
             StartCoroutine(TurnHead(0f, 1f, HeadTurnDuration));
         }
 
-        public void ClearNPCActiveMarker()
+        public void TurnNPCAwayFromTarget()
         {
-            if(NPCActiveMarker)
-            {
-                NPCActiveMarker.SetActive(false);
-            }
-
             StartCoroutine(TurnHead(1f, 0f, HeadTurnDuration));
         }
 
@@ -120,8 +96,8 @@ namespace Unity.Game.NPC
                 Gizmos.DrawWireSphere(transform.position, DetectionModule.DetectionRange);
 
                 // Attack range
-                Gizmos.color = InnerRangeColor;
-                Gizmos.DrawWireSphere(transform.position, DetectionModule.InnerRange);
+                //Gizmos.color = InnerRangeColor;
+                //Gizmos.DrawWireSphere(transform.position, DetectionModule.InnerRange);
             }
         }
     }

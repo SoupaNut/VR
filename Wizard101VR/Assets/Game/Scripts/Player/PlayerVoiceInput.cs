@@ -20,6 +20,9 @@ namespace Unity.Game.Player
         [Tooltip("Button to press when talking")]
         public InputActionProperty TalkButton;
 
+        [Tooltip("The max distance the player can be before the NPC becomes inactive.")]
+        public float TalkRange = 10f;
+
         [Header("SFX")]
         [Tooltip("Sound to play when microphone starts recording")]
         public AudioClip MicrophoneStartClip;
@@ -27,9 +30,18 @@ namespace Unity.Game.Player
         [Tooltip("Sound to play when microphone stops recording")]
         public AudioClip MicrophoneStopClip;
 
+        [Tooltip("SFX to play when NPC is active")]
+        public AudioClip NPCActiveClip;
+
         [Header("VFX")]
         [Tooltip("Border to display around oculus lens when player presses talk button")]
         public GameObject MicrophoneUI;
+
+        [Tooltip("VFX marker to display when talking to active NPC. Displays at NPC's feet.")]
+        public GameObject NPCActiveMarker;
+
+        [Tooltip("Range indicating how far away the player can be before NPC becomes inactive")]
+        public GameObject RangeIndicator;
 
         public bool IsTalking { get; private set; }
 
@@ -58,6 +70,11 @@ namespace Unity.Game.Player
             // - 0.5 so that we don't accidentally go over the talk limit
             m_MaxTalkDuration = VoiceManager.RuntimeConfiguration.maxRecordingTime - 0.2f;
             VoiceManager.VoiceEvents.OnFullTranscription.AddListener(AskChatGpt);
+
+            if(RangeIndicator)
+            {
+                RangeIndicator.transform.localScale = new Vector3(TalkRange, RangeIndicator.transform.localScale.y, TalkRange);
+            }
 
         }
 
@@ -88,6 +105,49 @@ namespace Unity.Game.Player
                     VoiceManager.Activate();
                 }
             }
+
+            CheckNPCWithinTalkRange();
+        }
+
+        void CheckNPCWithinTalkRange()
+        {
+            if(m_ChatGPTManager)
+            {
+                float sqrTalkRange = TalkRange * TalkRange;
+                float sqrDistance = (m_ChatGPTManager.transform.position - transform.position).sqrMagnitude;
+
+                // if we go out of the talk range
+                if(sqrDistance > sqrTalkRange)
+                {
+                    SetNPCActiveUI(false, null);
+                    m_ChatGPTManager.TurnNPCAwayFromTarget();
+                    m_ChatGPTManager = null;
+                }
+            }
+        }
+
+        void SetNPCActiveUI(bool active, Transform parent)
+        {
+            // Display VFX
+            if(NPCActiveMarker)
+            {
+                NPCActiveMarker.transform.parent = active ? parent : null;
+                NPCActiveMarker.transform.position = active ? parent.position : Vector3.zero;
+                NPCActiveMarker.SetActive(active);
+            }
+
+            if (RangeIndicator)
+            {
+                RangeIndicator.transform.parent = active ? parent : null;
+                RangeIndicator.transform.position = active ? parent.position : Vector3.zero;
+                RangeIndicator.SetActive(active);
+            }
+
+            // Play SFX
+            if (NPCActiveClip && active)
+            {
+                AudioUtility.CreateSfx(NPCActiveClip, NPCActiveMarker.transform.position, AudioUtility.AudioGroups.UserInterface, 1f, 3f);
+            }
         }
 
         void OnTalkButtonPerformed(InputAction.CallbackContext context)
@@ -100,7 +160,6 @@ namespace Unity.Game.Player
             {
                 MicrophoneUI.SetActive(true);
             }
-
 
             // Play SFX
             if (MicrophoneStartClip)
@@ -144,20 +203,14 @@ namespace Unity.Game.Player
                 // if we were previously talking to an NPC
                 if(m_ChatGPTManager != null)
                 {
-                    m_ChatGPTManager.TryGetComponent<NpcController>(out NpcController oldNpc);
-                    if (oldNpc)
-                    {
-                        oldNpc.ClearNPCActiveMarker();
-                    }
+                    m_ChatGPTManager.TurnNPCAwayFromTarget();
+                    SetNPCActiveUI(false, null);
                 }
 
                 // get the current NPC
                 m_ChatGPTManager = chatgptManager;
-                m_ChatGPTManager.TryGetComponent<NpcController>(out NpcController newNpc);
-                if (newNpc)
-                {
-                    newNpc.SetNPCActiveMarker();
-                }
+                m_ChatGPTManager.TurnNPCTowardsTarget();
+                SetNPCActiveUI(true, m_ChatGPTManager.transform);
             }
         }
     }
