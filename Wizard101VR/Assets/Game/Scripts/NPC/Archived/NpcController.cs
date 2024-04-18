@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using Unity.Game.Shared;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
@@ -14,8 +13,6 @@ namespace Unity.Game.NPC
         public float HeadTurnDuration = 0.25f;
 
         [Header("Debug Display")]
-        //[Tooltip("Color of the sphere gizmo representing the inner range")]
-        //public Color InnerRangeColor = Color.red;
 
         [Tooltip("Color of the sphere gizmo representing the detection range")]
         public Color DetectionRangeColor = Color.blue;

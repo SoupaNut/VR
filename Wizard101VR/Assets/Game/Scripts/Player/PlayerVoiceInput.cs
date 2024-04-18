@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using Oculus.Voice;
@@ -19,9 +18,6 @@ namespace Unity.Game.Player
 
         [Tooltip("Button to press when talking")]
         public InputActionProperty TalkButton;
-
-        [Tooltip("The max distance the player can be before the NPC becomes inactive.")]
-        public float TalkRange = 10f;
 
         [Header("SFX")]
         [Tooltip("Sound to play when microphone starts recording")]
@@ -44,6 +40,7 @@ namespace Unity.Game.Player
         public GameObject RangeIndicator;
 
         public bool IsTalking { get; private set; }
+        public float TalkRange { get; private set; }
 
         ChatGPTManager m_ChatGPTManager;
         float m_MaxTalkDuration;
@@ -66,6 +63,8 @@ namespace Unity.Game.Player
         void Start()
         {
             GazeInteractor.selectEntered.AddListener(GazeSelectEnteredHandler);
+
+            TalkRange = GazeInteractor.maxRaycastDistance;
 
             // - 0.5 so that we don't accidentally go over the talk limit
             m_MaxTalkDuration = VoiceManager.RuntimeConfiguration.maxRecordingTime - 0.2f;
@@ -209,7 +208,7 @@ namespace Unity.Game.Player
 
                 // get the current NPC
                 m_ChatGPTManager = chatgptManager;
-                m_ChatGPTManager.TurnNPCTowardsTarget();
+                m_ChatGPTManager.TurnNPCTowardsTarget(transform);
                 SetNPCActiveUI(true, m_ChatGPTManager.transform);
             }
         }

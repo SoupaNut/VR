@@ -40,7 +40,7 @@ namespace Unity.Game.NPC
         [System.Serializable]
         public class OnResponseEvent : UnityEvent<string> { }
 
-        public NpcController NPCController { get; private set; }
+        public RigController RigController { get; private set; }
 
         OpenAIApi openai = new OpenAIApi();
         List<ChatMessage> messages = new List<ChatMessage>();
@@ -48,8 +48,8 @@ namespace Unity.Game.NPC
 
         void Start()
         {
-            NPCController = GetComponent<NpcController>();
-            DebugUtility.HandleErrorIfNullGetComponent<NpcController, ChatGPTManager>(NPCController, this, gameObject);
+            RigController = GetComponentInChildren<RigController>();
+            DebugUtility.HandleErrorIfNullGetComponent<RigController, ChatGPTManager>(RigController, this, gameObject);
         }
 
         public string GetInstructions()
@@ -128,14 +128,14 @@ namespace Unity.Game.NPC
             }
         }
 
-        public void TurnNPCTowardsTarget()
+        public void TurnNPCTowardsTarget(Transform target)
         {
-            NPCController.TurnNPCTowardsTarget();
+            RigController.TurnNPCTowardsTarget(target);
         }
 
         public void TurnNPCAwayFromTarget()
         {
-            NPCController.TurnNPCAwayFromTarget();
+            RigController.TurnNPCAwayFromTarget();
         }
     }
 }
