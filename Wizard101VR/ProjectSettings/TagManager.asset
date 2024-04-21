@@ -10,11 +10,11 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Outlined Object
+  - 
   - Water
   - UI
   - Player
-  - 
+  - Ignore Collision
   - 
   - 
   - 

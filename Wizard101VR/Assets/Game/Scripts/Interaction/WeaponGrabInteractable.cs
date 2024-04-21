@@ -8,13 +8,28 @@ namespace Unity.Game.Interaction
         public InteractorManager InteractorManager { get; set; }
         public bool IsWeaponEnabled { get; private set; }
 
+        Outline m_Outline;
+
         void Start()
         {
-            var outline = GetComponent<Outline>();
-            if(outline)
+            m_Outline = GetComponent<Outline>();
+            if(m_Outline)
             {
-                outline.enabled = false;
+                m_Outline.enabled = false;
             }
+        }
+
+        protected override void OnHoverEntered(HoverEnterEventArgs args)
+        {
+            m_Outline.enabled = !isSelected;
+
+            base.OnHoverEntered(args);
+        }
+
+        protected override void OnHoverExited(HoverExitEventArgs args)
+        {
+            m_Outline.enabled = false;
+            base.OnHoverExited(args);
         }
 
         protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -32,7 +47,7 @@ namespace Unity.Game.Interaction
 
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
-            InteractorManager = new InteractorManager();
+            InteractorManager = null;
             IsWeaponEnabled = false;
 
             base.OnSelectExited(args);

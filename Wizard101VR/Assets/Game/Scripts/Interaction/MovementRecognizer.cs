@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using PDollarGestureRecognizer;
 using System.IO;
+using System.Linq;
 
 namespace Unity.Game.Interaction
 {
@@ -25,6 +26,9 @@ namespace Unity.Game.Interaction
         [Tooltip("How long it takes for the line to despawn after player stops drawing")]
         public float LineDespawnTime = 2f;
 
+        [Tooltip("Set this to a value greater than 0, to get rounded corners on each end of the line")]
+        public int EndCapVertices = 8; 
+
         [Header("Gesture Recognition")]
         [Tooltip("True = Create a new gesture, False = Compare with recorded gestures")]
         public bool CreationMode = true;
@@ -32,7 +36,7 @@ namespace Unity.Game.Interaction
         [Tooltip("Name of the new gesture when in Creation Mode")]
         public string NewGestureName;
 
-        [Tooltip("How accurate the gesture should be.")]
+        [Tooltip("How accurate the gesture should be. Turn down to 0 to let the SpellcastManager handle the recognition threshold.")]
         [Range(0f, 1f)]
         public float RecognitionThreshold = 0.9f;
         
@@ -43,7 +47,7 @@ namespace Unity.Game.Interaction
         public OnRecognizedEvent onRecognized;
 
         [System.Serializable]
-        public class OnRecognizedEvent : UnityEvent<string> { }
+        public class OnRecognizedEvent : UnityEvent<string, float> { }
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
         // - - - - - - - - - - P R I V A T E - - - - - - - - - - //
@@ -57,7 +61,8 @@ namespace Unity.Game.Interaction
         void Start()
         {
             // Get all recorded gestures
-            string[] gestureFiles = Directory.GetFiles(Application.persistentDataPath, "*" + m_GestureFileExtension);
+            string directoryPath = Path.Combine(Application.dataPath, "Game", "Gestures");
+            string[] gestureFiles = Directory.GetFiles(directoryPath, "*" + m_GestureFileExtension);
             foreach (var item in gestureFiles)
             {
                 m_GestureList.Add(GestureIO.ReadGestureFromFile(item));
@@ -86,6 +91,8 @@ namespace Unity.Game.Interaction
             GameObject lineGameObject = new GameObject("Line");
             m_CurrentLine = lineGameObject.AddComponent<LineRenderer>();
 
+            m_CurrentLine.numCapVertices = EndCapVertices;
+
             UpdateLine();
         }
 
@@ -108,11 +115,19 @@ namespace Unity.Game.Interaction
             }
         }
 
-        public void EndMovement()
+        public void EndMovement(string gestureToCompare="")
         {
             // Destroy the line we drew
             Destroy(m_CurrentLine.gameObject, LineDespawnTime);
             m_CurrentLine = null;
+
+            List<Gesture> gestures = m_GestureList;
+
+            //If given a gesture, we only compare against this gesture
+            if (gestureToCompare != "" && gestureToCompare != null)
+            {
+                gestures = m_GestureList.Where(gesture => gesture.Name == gestureToCompare.ToLower()).ToList();
+            }
 
             Point[] pointArray = new Point[m_PositionsList.Count];
 
@@ -136,18 +151,14 @@ namespace Unity.Game.Interaction
             // Recognize
             else
             {
-                Result result = PointCloudRecognizer.Classify(newGesture, m_GestureList.ToArray());
+                Result result = PointCloudRecognizer.Classify(newGesture, gestures.ToArray());
                 Debug.Log(result.GestureClass + result.Score);
 
                 if (result.Score > RecognitionThreshold)
                 {
-                    onRecognized.Invoke(result.GestureClass);
-
-                    //return result.GestureClass;
+                    onRecognized.Invoke(result.GestureClass, result.Score);
                 }
             }
-
-            //return "";
         }
     }
 }

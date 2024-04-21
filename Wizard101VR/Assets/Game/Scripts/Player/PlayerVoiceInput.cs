@@ -90,12 +90,19 @@ namespace Unity.Game.Player
         // Update is called once per frame
         void Update()
         {
+            HandlePlayerTalking();
+
+            CheckNPCWithinTalkRange();
+        }
+
+        void HandlePlayerTalking()
+        {
             if (IsTalking)
             {
                 m_CurrentTalkTime += Time.deltaTime;
 
                 // Stop Talking if we reached our max limit
-                if(m_CurrentTalkTime > m_MaxTalkDuration)
+                if (m_CurrentTalkTime > m_MaxTalkDuration)
                 {
                     StoppedTalking();
                 }
@@ -104,8 +111,6 @@ namespace Unity.Game.Player
                     VoiceManager.Activate();
                 }
             }
-
-            CheckNPCWithinTalkRange();
         }
 
         void CheckNPCWithinTalkRange()

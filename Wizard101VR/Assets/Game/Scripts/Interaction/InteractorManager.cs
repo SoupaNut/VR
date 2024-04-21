@@ -7,6 +7,10 @@ namespace Unity.Game.Interaction
 {
     public class InteractorManager : MonoBehaviour
     {
+        [Header("Interactor Manager")]
+        [Tooltip("Reference to the other hand's Interactor Manager.")]
+        public InteractorManager OtherInteractorManager;
+
         [Header("Interactors")]
         public GameObject TeleportInteractor;
         public GameObject DirectInteractor;
@@ -22,6 +26,8 @@ namespace Unity.Game.Interaction
         public bool IsGrabRayHovered { get; private set; }
         public bool IsGrabRaySelected { get; private set; }
         public bool IsActivated { get; private set; }
+
+        public GameObject SelectedInteractable { get; private set; }
 
         // interactors
         XRRayInteractor m_TeleportInteractor;
@@ -119,12 +125,12 @@ namespace Unity.Game.Interaction
 
         void GrabHoverEnteredHandler(HoverEnterEventArgs args)
         {
-            SetObjectOutline(args.interactableObject, true);
+            //SetObjectOutline(args.interactableObject, true);
         }
 
         void GrabHoverExitedHandler(HoverExitEventArgs args)
         {
-            SetObjectOutline(args.interactableObject, false);
+            //SetObjectOutline(args.interactableObject, false);
         }
 
         void GrabSelectEnteredHandler(SelectEnterEventArgs args)
@@ -134,42 +140,48 @@ namespace Unity.Game.Interaction
                 // disable anchor control
                 m_GrabInteractor.allowAnchorControl = false;
             }
+
+            SelectedInteractable = args.interactableObject.transform.gameObject;
         }
 
         void GrabSelectExitedHandler(SelectExitEventArgs args)
         {
             // enable anchor control
             m_GrabInteractor.allowAnchorControl = true;
+
+            SelectedInteractable = null;
         }
 
         void DirectHoverEnteredHandler(HoverEnterEventArgs args)
         {
-            SetObjectOutline(args.interactableObject, true);
+            //SetObjectOutline(args.interactableObject, true);
         }
 
         void DirectHoverExitedHandler(HoverExitEventArgs args)
         {
-            SetObjectOutline(args.interactableObject, false);
+            //SetObjectOutline(args.interactableObject, false);
         }
 
         void DirectSelectEnteredHandler(SelectEnterEventArgs args)
         {
+            SelectedInteractable = args.interactableObject.transform.gameObject;
         }
 
         void DirectSelectExitedHandler(SelectExitEventArgs args)
         {
+            SelectedInteractable = null;
         }
 
-        void SetObjectOutline(IXRHoverInteractable grabbable, bool enable)
-        {
-            var outline = grabbable.transform.GetComponent<Outline>();
+        //void SetObjectOutline(IXRHoverInteractable grabbable, bool enable)
+        //{
+        //    var outline = grabbable.transform.GetComponent<Outline>();
 
-            // Check if has Outline component
-            if(outline)
-            {
-                outline.enabled = enable && !grabbable.transform.GetComponent<XRGrabInteractable>().isSelected;
-            }
-        }
+        //    // Check if has Outline component
+        //    if(outline)
+        //    {
+        //        outline.enabled = enable && !grabbable.transform.GetComponent<XRBaseInteractable>().isSelected;
+        //    }
+        //}
     }
 
 }

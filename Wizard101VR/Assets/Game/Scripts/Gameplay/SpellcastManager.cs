@@ -16,21 +16,13 @@ namespace Unity.Game.Gameplay
 
         public Transform WandTip;
 
-        [System.Serializable]
-        public class SpellData
-        {
-            public BasicSpell Spell;
-            public bool UseMovement;
-            public string MovementName;
-            public bool UseVoice;
-            public string VoiceName;
-        }
+        [Range(0f, 1f)]
+        public float MinimumRecognitionThreshold = 0.85f;
 
-        public List<SpellData> Spells;
-
+        CardData m_SpellToCast;
         WeaponGrabInteractable m_WeaponGrabInteractable;
         bool m_IsCasting = false;
-        string SaidSpell;
+        string m_SaidSpell;
 
         
 
@@ -41,7 +33,7 @@ namespace Unity.Game.Gameplay
             DebugUtility.HandleErrorIfNullGetComponent<WeaponGrabInteractable, MovementRecognizer>(m_WeaponGrabInteractable, this, gameObject);
 
             VoiceRecognizer.VoiceEvents.OnPartialResponse.AddListener(SetSaidSpell);
-            VoiceRecognizer.VoiceEvents.OnFullTranscription.AddListener(CastSpell);
+            //VoiceRecognizer.VoiceEvents.OnFullTranscription.AddListener(CastSpell);
         }
 
         // Update is called once per frame
@@ -76,7 +68,7 @@ namespace Unity.Game.Gameplay
             m_IsCasting = true;
             MovementRecognizer.StartMovement();
             VoiceRecognizer.Activate();
-            SaidSpell = "";
+            m_SaidSpell = "";
         }
 
         public void UpdateCasting()
@@ -87,64 +79,64 @@ namespace Unity.Game.Gameplay
         public void StopCasting()
         {
             m_IsCasting = false;
-            //CastSpell(SaidSpell);
-            MovementRecognizer.EndMovement();
-            VoiceRecognizer.Deactivate();
-        }
-
-        public void CastSpell(string movementName)
-        {
-            SpellData spellToCast;
-
-            //if(movementName != null && movementName != "")
-            //{
-            //    int spellToCastIndex = Spells.FindIndex(x => x.MovementName == movementName && x.UseMovement);
-
-            //    // Found a matching spell
-            //    if (spellToCastIndex >= 0)
-            //    {
-            //        spellToCast = Spells[spellToCastIndex];
-            //    }
-            //    else
-            //    {
-            //        spellToCast = Spells[0];
-            //    }
-            //}
-            if(SaidSpell != null && SaidSpell != "")
+            if (m_SpellToCast != null)
             {
-                int spellToCastIndex = Spells.FindIndex(x => x.VoiceName == SaidSpell && x.UseVoice);
-                //int spellToCastIndex = Spells.FindIndex(x => SaidSpell.Contains(x.VoiceName) && x.UseVoice);
-
-                // Found a matching spell
-                if (spellToCastIndex >= 0)
-                {
-                    spellToCast = Spells[spellToCastIndex];
-                }
-                else
-                {
-                    spellToCast = Spells[0];
-                }
+                // compare against a given gesture
+                MovementRecognizer.EndMovement(m_SpellToCast.School.ToString());
             }
             else
             {
-                spellToCast = Spells[0];
+                // Let movement recognizer figure out the movement
+                MovementRecognizer.EndMovement();
             }
 
-            
-
-            BasicSpell spawnedSpell = Instantiate(spellToCast.Spell);
-            spawnedSpell.Initialize(WandTip);
+            VoiceRecognizer.Deactivate();
         }
 
-        //void SetSaidSpell(string text)
-        //{
-        //    SaidSpell = text;
-        //}
+        public void CastSpell(string name, float score)
+        {
+            // Check if we have a spell to cast
+            if (m_SpellToCast == null)
+                return;
+
+            // If the spell needs to use voice
+            if(m_SpellToCast.UseVoice)
+            {
+                // Said spell doesn't match spell name
+                if(m_SaidSpell.ToLower() != m_SpellToCast.SpellName.ToLower())
+                {
+                    // fail
+                    return;
+                }
+            }
+
+            // calculate target score based on the spell accuracy
+            float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
+
+            if(score > targetScore)
+            {
+                BasicSpell spawnedSpell = Instantiate(m_SpellToCast.SpellPrefab);
+                spawnedSpell.Initialize(WandTip);
+            }
+        }
+
+        public void SetSpellToCast(CardData spell)
+        {
+            if (!m_IsCasting)
+            {
+                if(spell != null)
+                {
+                    MovementRecognizer.LineMaterial = spell.LineMaterial;
+                }
+
+                m_SpellToCast = spell;
+            }
+        }
 
         void SetSaidSpell(WitResponseNode response)
         {
             string intentName = response["intents"][0]["name"].Value.ToString();
-            SaidSpell = intentName;
+            m_SaidSpell = intentName;
         }
 
     }
