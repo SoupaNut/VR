@@ -103,7 +103,7 @@ namespace Unity.Game.Gameplay
             if(m_SpellToCast.UseVoice)
             {
                 // Said spell doesn't match spell name
-                if(m_SaidSpell.ToLower() != m_SpellToCast.SpellName.ToLower())
+                if(m_SaidSpell.ToLower() != m_SpellToCast.Name.ToLower())
                 {
                     // fail
                     return;
@@ -115,7 +115,7 @@ namespace Unity.Game.Gameplay
 
             if(score > targetScore)
             {
-                BasicSpell spawnedSpell = Instantiate(m_SpellToCast.SpellPrefab);
+                BasicSpell spawnedSpell = Instantiate(m_SpellToCast.Animation);
                 spawnedSpell.Initialize(WandTip);
             }
         }
@@ -127,6 +127,8 @@ namespace Unity.Game.Gameplay
                 if(spell != null)
                 {
                     MovementRecognizer.LineMaterial = spell.LineMaterial;
+
+                    Debug.Log(MovementRecognizer.LineMaterial);
                 }
 
                 m_SpellToCast = spell;

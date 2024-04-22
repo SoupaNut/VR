@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
+  m_Name: Death_DarkSprite
+  m_EditorClassIdentifier: 
+  Animation: {fileID: 4354425890933916390, guid: d1f867ebb9c77c0469c54ff382b68bfb,
+    type: 3}
+  LineMaterial: {fileID: 2100000, guid: b9d50a316aa3861469d8d7443faea3a0, type: 2}
+  Artwork: {fileID: 21300000, guid: fb486e4e2c32f7540a0921fdba426d92, type: 3}
+  CardTemplate: {fileID: 21300000, guid: 299e79918e146eb4ab1379363f6b2d41, type: 3}
+  SchoolSymbol: {fileID: 21300000, guid: 8866797b1da50384fb44cf3dae1017af, type: 3}
+  TypeIcon: {fileID: 21300000, guid: 3d9bf04b98e5c6f4db6309589c638827, type: 3}
+  Name: Dark Sprite
+  Description: 65-105
+  School: 5
+  PipCost: 1
+  Accuracy: 85
+  Damage: 0
+  UseVoice: 0

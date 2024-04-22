@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
+  m_Name: Myth_BloodBat
+  m_EditorClassIdentifier: 
+  Animation: {fileID: 4354425890933916390, guid: d1f867ebb9c77c0469c54ff382b68bfb,
+    type: 3}
+  LineMaterial: {fileID: 2100000, guid: d9409311069079545846f49c6aa74f93, type: 2}
+  Artwork: {fileID: 21300000, guid: bd2a2d9982bab084480aeebabdbdf8fb, type: 3}
+  CardTemplate: {fileID: 21300000, guid: d7bdb4cfc222b4243b02cef3b88e7a5a, type: 3}
+  SchoolSymbol: {fileID: 21300000, guid: 9f133903ccec4f84bb9f7b9e5444d69a, type: 3}
+  TypeIcon: {fileID: 21300000, guid: 3d9bf04b98e5c6f4db6309589c638827, type: 3}
+  Name: Blood Bat
+  Description: 95-115
+  School: 3
+  PipCost: 1
+  Accuracy: 85
+  Damage: 0
+  UseVoice: 0

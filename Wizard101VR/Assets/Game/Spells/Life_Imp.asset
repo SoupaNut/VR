@@ -1,0 +1,28 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
+  m_Name: Life_Imp
+  m_EditorClassIdentifier: 
+  Animation: {fileID: 4354425890933916390, guid: d1f867ebb9c77c0469c54ff382b68bfb,
+    type: 3}
+  LineMaterial: {fileID: 2100000, guid: 961408b3a3989474a9caa7843eb00a31, type: 2}
+  Artwork: {fileID: 21300000, guid: b1eeac186a1a73740aa20cedc5e681a1, type: 3}
+  CardTemplate: {fileID: 21300000, guid: 5db8ed82ef1efc84aa48ab9d71e561fa, type: 3}
+  SchoolSymbol: {fileID: 21300000, guid: 2842e758928f00e4bac71cb800246abf, type: 3}
+  TypeIcon: {fileID: 21300000, guid: 3d9bf04b98e5c6f4db6309589c638827, type: 3}
+  Name: Imp
+  Description: 90-110
+  School: 4
+  PipCost: 1
+  Accuracy: 90
+  Damage: 0
+  UseVoice: 0

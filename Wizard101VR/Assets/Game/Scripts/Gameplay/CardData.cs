@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace Unity.Game.Gameplay
 {
-    [System.Serializable]
-    public class CardData
+    [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
+    public class CardData : ScriptableObject
     {
         public enum SpellSchools
         {
@@ -16,13 +16,25 @@ namespace Unity.Game.Gameplay
             Balance
         }
 
-        public BasicSpell SpellPrefab;
+        [Header("Art")]
+        public BasicSpell Animation;
 
         public Material LineMaterial;
 
-        public string SpellName;
+        public Sprite Artwork;
 
-        public bool UseVoice;
+        public Sprite CardTemplate;
+
+        public Sprite SchoolSymbol;
+
+        public Sprite TypeIcon;
+
+
+        [Header("Card Info")]
+        public string Name;
+
+        [TextArea(2, 4)]
+        public string Description;
 
         public SpellSchools School;
 
@@ -35,7 +47,7 @@ namespace Unity.Game.Gameplay
         public int Accuracy = 100;
 
         public float Damage;
+
+        public bool UseVoice;
     }
 }
-
-
