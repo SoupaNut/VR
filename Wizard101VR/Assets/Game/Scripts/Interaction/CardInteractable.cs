@@ -1,6 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using Unity.Game.Interaction;
+using Unity.Game.Shared;
+using Unity.Game.UI;
 using UnityEngine;
 using UnityEngine.XR.Interaction.Toolkit;
 
@@ -12,19 +12,12 @@ namespace Unity.Game.Gameplay
 
         public bool IsCardSelected { get; private set; }
 
-        Outline m_Outline;
+        CardDisplay m_CardDisplay;
 
-
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
-            IsCardSelected = false;
-
-            m_Outline = GetComponent<Outline>();
-            if (m_Outline)
-            {
-                m_Outline.enabled = false;
-            }
+            m_CardDisplay = GetComponentInChildren<CardDisplay>();
+            DebugUtility.HandleErrorIfNullGetComponent<CardDisplay, CardInteractable>(m_CardDisplay, this, gameObject);
         }
 
         protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -40,20 +33,13 @@ namespace Unity.Game.Gameplay
                 SetSpellToCast(args, SpellCardData);
             }
 
-            // Toggle outline
-            if(m_Outline)
-            {
-                m_Outline.enabled = IsCardSelected;
-            }
+            m_CardDisplay.DisplayCardOutline(IsCardSelected);
 
             base.OnSelectEntered(args);
         }
 
         protected override void OnSelectExited(SelectExitEventArgs args)
         {
-            //IsCardSelected = false;
-            //SetSpellToCast(args, null);
-
             base.OnSelectExited(args);
         }
 

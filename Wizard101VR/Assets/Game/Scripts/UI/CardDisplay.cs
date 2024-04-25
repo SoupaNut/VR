@@ -6,10 +6,11 @@ using UnityEngine.UI;
 
 namespace Unity.Game.UI
 {
-    [RequireComponent(typeof(CardInteractable))]
     public class CardDisplay : MonoBehaviour
     {
         [Header("Card Canvas References")]
+        public GameObject Outline;
+
         public Image Artwork;
 
         public Image CardTemplate;
@@ -26,13 +27,12 @@ namespace Unity.Game.UI
 
         public TextMeshProUGUI Accuracy;
 
-
         CardData Card;
 
         // Start is called before the first frame update
         void Start()
         {
-            Card = GetComponent<CardInteractable>().SpellCardData;
+            Card = GetComponentInParent<CardInteractable>().SpellCardData;
 
             Artwork.sprite = Card.Artwork;
 
@@ -49,6 +49,14 @@ namespace Unity.Game.UI
             PipCost.text = Card.PipCost.ToString();
 
             Accuracy.text = Card.Accuracy.ToString() + "%";
+        }
+
+        public void DisplayCardOutline(bool active)
+        {
+            if(Outline)
+            {
+                Outline.SetActive(active);
+            }
         }
     }
 }

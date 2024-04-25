@@ -125,12 +125,10 @@ namespace Unity.Game.Interaction
 
         void GrabHoverEnteredHandler(HoverEnterEventArgs args)
         {
-            //SetObjectOutline(args.interactableObject, true);
         }
 
         void GrabHoverExitedHandler(HoverExitEventArgs args)
         {
-            //SetObjectOutline(args.interactableObject, false);
         }
 
         void GrabSelectEnteredHandler(SelectEnterEventArgs args)
@@ -154,12 +152,10 @@ namespace Unity.Game.Interaction
 
         void DirectHoverEnteredHandler(HoverEnterEventArgs args)
         {
-            //SetObjectOutline(args.interactableObject, true);
         }
 
         void DirectHoverExitedHandler(HoverExitEventArgs args)
         {
-            //SetObjectOutline(args.interactableObject, false);
         }
 
         void DirectSelectEnteredHandler(SelectEnterEventArgs args)
@@ -171,17 +167,6 @@ namespace Unity.Game.Interaction
         {
             SelectedInteractable = null;
         }
-
-        //void SetObjectOutline(IXRHoverInteractable grabbable, bool enable)
-        //{
-        //    var outline = grabbable.transform.GetComponent<Outline>();
-
-        //    // Check if has Outline component
-        //    if(outline)
-        //    {
-        //        outline.enabled = enable && !grabbable.transform.GetComponent<XRBaseInteractable>().isSelected;
-        //    }
-        //}
     }
 
 }

@@ -8,7 +8,7 @@
         "com.unity.cloud.gltfast": "6.0.1",
         "com.unity.nuget.newtonsoft-json": "3.0.2"
       },
-      "hash": "4b4e99effdb9032c0911b8548ad131718121457c"
+      "hash": "bd7d1d9cdf0206567e5cab28752b9e15ae5b1c4f"
     },
     "com.srcnalt.openai-unity": {
       "version": "https://github.com/srcnalt/OpenAI-Unity.git",
