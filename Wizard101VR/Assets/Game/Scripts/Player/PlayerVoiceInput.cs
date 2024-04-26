@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Oculus.Voice;
 using Unity.Game.Shared;
-using Unity.Game.NPC;
+using Unity.Game.Entity.NPC;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Unity.Game.Player
@@ -204,14 +204,14 @@ namespace Unity.Game.Player
             // If we are looking at a different npc
             if (chatgptManager && chatgptManager != m_ChatGPTManager)
             {
-                // if we were previously talking to an NPC
+                // Deselect the previous NPC
                 if(m_ChatGPTManager != null)
                 {
                     m_ChatGPTManager.TurnNPCAwayFromTarget();
                     SetNPCActiveUI(false, null);
                 }
 
-                // get the current NPC
+                // Select the current NPC
                 m_ChatGPTManager = chatgptManager;
                 m_ChatGPTManager.TurnNPCTowardsTarget(transform);
                 SetNPCActiveUI(true, m_ChatGPTManager.transform);

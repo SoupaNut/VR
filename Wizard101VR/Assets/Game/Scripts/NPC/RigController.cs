@@ -3,7 +3,7 @@ using Unity.Game.Shared;
 using UnityEngine;
 using UnityEngine.Animations.Rigging;
 
-namespace Unity.Game.NPC
+namespace Unity.Game.Entity
 {
     public class RigController : MonoBehaviour
     {
@@ -26,17 +26,13 @@ namespace Unity.Game.NPC
             public float maxWeight;
         }
 
-        ActorsManager m_ActorsManager;
         bool m_IsSelected;
         bool m_IsLookingAtTarget;
-        Transform m_TargetTransform;
+        Transform m_Target;
         
         // Start is called before the first frame update
         void Awake()
         {
-            m_ActorsManager = FindObjectOfType<ActorsManager>();
-            DebugUtility.HandleErrorIfNullFindObject<ActorsManager, RigController>(m_ActorsManager, this);
-
             foreach(var constraint in Constraints)
             {
                 constraint.constraint.weight = 0f;
@@ -81,7 +77,7 @@ namespace Unity.Game.NPC
         public void TurnNPCTowardsTarget(Transform target)
         {
             m_IsSelected = true;
-            m_TargetTransform = target;
+            m_Target = target;
 
             if(IsTargetWithinFieldOfView())
             {
@@ -93,8 +89,7 @@ namespace Unity.Game.NPC
         public void TurnNPCAwayFromTarget()
         {
             m_IsSelected = false;
-            m_TargetTransform = null;
-
+            m_Target = null;
             m_IsLookingAtTarget = false;
 
             StartTurnBodyPart();
@@ -112,13 +107,13 @@ namespace Unity.Game.NPC
 
         bool IsTargetWithinFieldOfView()
         {
-            if(m_TargetTransform == null)
+            if(m_Target == null)
             {
                 return false;
             }
             else
             {
-                Vector3 direction = m_TargetTransform.position - transform.position;
+                Vector3 direction = m_Target.position - transform.position;
                 float angle = Vector3.Angle(transform.forward, direction);
 
                 return angle <= FieldOfVision;

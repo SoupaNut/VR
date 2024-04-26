@@ -14,10 +14,12 @@ namespace Unity.Game.Gameplay
 
         CardDisplay m_CardDisplay;
 
-        private void Start()
+        void Start()
         {
             m_CardDisplay = GetComponentInChildren<CardDisplay>();
             DebugUtility.HandleErrorIfNullGetComponent<CardDisplay, CardInteractable>(m_CardDisplay, this, gameObject);
+
+            m_CardDisplay.Load(SpellCardData);
         }
 
         protected override void OnSelectEntered(SelectEnterEventArgs args)
@@ -36,11 +38,6 @@ namespace Unity.Game.Gameplay
             m_CardDisplay.DisplayCardOutline(IsCardSelected);
 
             base.OnSelectEntered(args);
-        }
-
-        protected override void OnSelectExited(SelectExitEventArgs args)
-        {
-            base.OnSelectExited(args);
         }
 
         void SetSpellToCast(BaseInteractionEventArgs args, CardData spellToCast)

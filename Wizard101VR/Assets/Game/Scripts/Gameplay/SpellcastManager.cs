@@ -30,10 +30,9 @@ namespace Unity.Game.Gameplay
         void Start()
         {
             m_WeaponGrabInteractable = GetComponent<WeaponGrabInteractable>();
-            DebugUtility.HandleErrorIfNullGetComponent<WeaponGrabInteractable, MovementRecognizer>(m_WeaponGrabInteractable, this, gameObject);
+            DebugUtility.HandleErrorIfNullGetComponent<WeaponGrabInteractable, SpellcastManager>(m_WeaponGrabInteractable, this, gameObject);
 
             VoiceRecognizer.VoiceEvents.OnPartialResponse.AddListener(SetSaidSpell);
-            //VoiceRecognizer.VoiceEvents.OnFullTranscription.AddListener(CastSpell);
         }
 
         // Update is called once per frame
@@ -99,37 +98,62 @@ namespace Unity.Game.Gameplay
             if (m_SpellToCast == null)
                 return;
 
-            // If the spell needs to use voice
-            if(m_SpellToCast.UseVoice)
+            
+            bool voiceValid = true;
+            // Voice Recognition Handling
             {
-                // Said spell doesn't match spell name
-                if(m_SaidSpell.ToLower() != m_SpellToCast.Name.ToLower())
+                if (m_SpellToCast.UseVoice)
                 {
-                    // fail
-                    return;
+                    // Said spell doesn't match spell name
+                    if (m_SaidSpell.ToLower() != m_SpellToCast.Name.ToLower())
+                    {
+                        voiceValid = false; // fail
+                    }
                 }
             }
 
-            // calculate target score based on the spell accuracy
-            float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
+            bool movementValid = true;
+            // Movement Recognition Handling
+            {
+                if(m_SpellToCast.UseMovement)
+                {
+                    // calculate target score based on the spell accuracy
+                    float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
 
-            if(score > targetScore)
+                    // Movement is not accurate enough
+                    if (score < targetScore)
+                    {
+                        movementValid = false;
+                    }
+                }
+            }
+
+            if(voiceValid && movementValid)
             {
                 BasicSpell spawnedSpell = Instantiate(m_SpellToCast.Animation);
                 spawnedSpell.Initialize(WandTip);
             }
+
+            // calculate target score based on the spell accuracy
+            //float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
+
+            //if(score > targetScore && voiceSpellCorrect)
+            //{
+            //    BasicSpell spawnedSpell = Instantiate(m_SpellToCast.Animation);
+            //    spawnedSpell.Initialize(WandTip);
+            //}
         }
 
         public void SetSpellToCast(CardData spell)
         {
             if (!m_IsCasting)
             {
-                if(spell != null)
-                {
-                    MovementRecognizer.LineMaterial = spell.LineMaterial;
+                //if(spell != null)
+                //{
+                //    MovementRecognizer.LineMaterial = spell.LineMaterial;
+                //}
 
-                    Debug.Log(MovementRecognizer.LineMaterial);
-                }
+                MovementRecognizer.LineMaterial = spell ? spell.LineMaterial : null;
 
                 m_SpellToCast = spell;
             }

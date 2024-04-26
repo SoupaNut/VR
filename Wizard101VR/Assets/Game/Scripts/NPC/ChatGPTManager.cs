@@ -6,7 +6,7 @@ using UnityEngine.Events;
 using OpenAI;
 using Unity.Game.Shared;
 
-namespace Unity.Game.NPC
+namespace Unity.Game.Entity.NPC
 {
     public class ChatGPTManager : MonoBehaviour
     {
