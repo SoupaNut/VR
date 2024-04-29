@@ -1,14 +1,24 @@
 {
   "dependencies": {
+    "com.meta.xr.sdk.interaction": {
+      "version": "64.0.0",
+      "depth": 0,
+      "source": "registry",
+      "dependencies": {
+        "com.unity.textmeshpro": "3.0.6",
+        "com.unity.ugui": "1.0.0"
+      },
+      "url": "https://packages.unity.com"
+    },
     "com.readyplayerme.core": {
-      "version": "https://github.com/readyplayerme/rpm-unity-sdk-core.git",
+      "version": "https://github.com/readyplayerme/rpm-unity-sdk-core.git#v6.2.2",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.cloud.gltfast": "6.0.1",
         "com.unity.nuget.newtonsoft-json": "3.0.2"
       },
-      "hash": "bd7d1d9cdf0206567e5cab28752b9e15ae5b1c4f"
+      "hash": "42bce563926ddb76d0a6f6d4d9d2eeeb1f0dd82b"
     },
     "com.srcnalt.openai-unity": {
       "version": "https://github.com/srcnalt/OpenAI-Unity.git",
@@ -177,7 +187,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.textmeshpro": {
-      "version": "3.0.6",
+      "version": "3.0.8",
       "depth": 0,
       "source": "registry",
       "dependencies": {
@@ -226,7 +236,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.xr.interaction.toolkit": {
-      "version": "2.5.3",
+      "version": "2.5.4",
       "depth": 0,
       "source": "registry",
       "dependencies": {

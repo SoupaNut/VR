@@ -450,6 +450,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5879551490305778965}
   - component: {fileID: 2483974402673834375}
+  - component: {fileID: 3845970246027557974}
   m_Layer: 0
   m_Name: Card
   m_TagString: Untagged
@@ -465,15 +466,15 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4192670390996431311}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3, y: 1.276, z: 0.648}
+  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3526187990703377296}
   - {fileID: 6297050331692005758}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
 --- !u!114 &2483974402673834375
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,6 +578,28 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   SpellCardData: {fileID: 0}
+  TimeThreshold: 0.25
+--- !u!114 &3845970246027557974
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4192670390996431311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a14d8fa2be3d2ad4c83a2ea0d9121e9c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Outline: {fileID: 8738852440060648422}
+  Artwork: {fileID: 7169892778145883271}
+  CardTemplate: {fileID: 6039143980407546902}
+  SchoolSymbol: {fileID: 886804950844017083}
+  TypeIcon: {fileID: 9177465399151785428}
+  Name: {fileID: 6474787519451328190}
+  Description: {fileID: 717346505041843773}
+  PipCost: {fileID: 7291464311983562765}
+  Accuracy: {fileID: 6249320862223155616}
 --- !u!1 &4497796191823619477
 GameObject:
   m_ObjectHideFlags: 0
@@ -995,7 +1018,6 @@ GameObject:
   - component: {fileID: 2691790019670144242}
   - component: {fileID: 818402895553172524}
   - component: {fileID: 934549447376444492}
-  - component: {fileID: 904494979270649005}
   m_Layer: 5
   m_Name: Canvas
   m_TagString: Untagged
@@ -1120,30 +1142,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 180, y: 276, z: 0.001}
+  m_Size: {x: 180, y: 276, z: 2}
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &904494979270649005
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 8555090604308618779, guid: 3ef3e8d4f9d12dd45b8436aa50422166,
-    type: 3}
-  m_PrefabInstance: {fileID: 2567570239112863496}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7882756818554818299}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a14d8fa2be3d2ad4c83a2ea0d9121e9c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Outline: {fileID: 8738852440060648422}
-  Artwork: {fileID: 7169892778145883271}
-  CardTemplate: {fileID: 6039143980407546902}
-  SchoolSymbol: {fileID: 886804950844017083}
-  TypeIcon: {fileID: 9177465399151785428}
-  Name: {fileID: 6474787519451328190}
-  Description: {fileID: 717346505041843773}
-  PipCost: {fileID: 7291464311983562765}
-  Accuracy: {fileID: 6249320862223155616}
 --- !u!1 &8253608359615234779
 GameObject:
   m_ObjectHideFlags: 0
@@ -1815,7 +1815,12 @@ PrefabInstance:
     - target: {fileID: 6165220726998037882, guid: 3ef3e8d4f9d12dd45b8436aa50422166,
         type: 3}
       propertyPath: m_Size.z
-      value: 0.001
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6165220726998037882, guid: 3ef3e8d4f9d12dd45b8436aa50422166,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8226792993353740998, guid: 3ef3e8d4f9d12dd45b8436aa50422166,
         type: 3}
@@ -1854,6 +1859,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 8226792993353740998, guid: 3ef3e8d4f9d12dd45b8436aa50422166, type: 3}
+    - {fileID: 0}
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

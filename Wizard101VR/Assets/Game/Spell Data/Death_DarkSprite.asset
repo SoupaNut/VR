@@ -16,13 +16,15 @@ MonoBehaviour:
     type: 3}
   LineMaterial: {fileID: 2100000, guid: b9d50a316aa3861469d8d7443faea3a0, type: 2}
   Artwork: {fileID: 21300000, guid: fb486e4e2c32f7540a0921fdba426d92, type: 3}
-  CardTemplate: {fileID: 21300000, guid: 299e79918e146eb4ab1379363f6b2d41, type: 3}
-  SchoolSymbol: {fileID: 21300000, guid: 8866797b1da50384fb44cf3dae1017af, type: 3}
-  TypeIcon: {fileID: 21300000, guid: 3d9bf04b98e5c6f4db6309589c638827, type: 3}
+  CardTemplate: {fileID: -1756976220, guid: ac17ed94b0b8bd54090ad8aabcb4b722, type: 3}
+  SchoolSymbol: {fileID: 1866661329, guid: c3ceea4a5d3b9a9468090f2f901c3443, type: 3}
+  TypeIcon: {fileID: 686558021, guid: 423f49bb42c780d4e899f7b177472a2a, type: 3}
   Name: Dark Sprite
-  Description: 65-105
+  Description: 65-105<sprite="School_Icons" name="Death_School"><sprite="Spell_Icons"
+    name="Damage">
   School: 5
   PipCost: 1
   Accuracy: 85
   Damage: 0
   UseVoice: 0
+  UseMovement: 1

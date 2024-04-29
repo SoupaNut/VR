@@ -16,13 +16,15 @@ MonoBehaviour:
     type: 3}
   LineMaterial: {fileID: 2100000, guid: 961408b3a3989474a9caa7843eb00a31, type: 2}
   Artwork: {fileID: 21300000, guid: b1eeac186a1a73740aa20cedc5e681a1, type: 3}
-  CardTemplate: {fileID: 21300000, guid: 5db8ed82ef1efc84aa48ab9d71e561fa, type: 3}
-  SchoolSymbol: {fileID: 21300000, guid: 2842e758928f00e4bac71cb800246abf, type: 3}
-  TypeIcon: {fileID: 21300000, guid: 3d9bf04b98e5c6f4db6309589c638827, type: 3}
+  CardTemplate: {fileID: 732358185, guid: ac17ed94b0b8bd54090ad8aabcb4b722, type: 3}
+  SchoolSymbol: {fileID: 1903258403, guid: c3ceea4a5d3b9a9468090f2f901c3443, type: 3}
+  TypeIcon: {fileID: 686558021, guid: 423f49bb42c780d4e899f7b177472a2a, type: 3}
   Name: Imp
-  Description: 90-110
+  Description: 90-110<sprite="School_Icons" name="Life_School"><sprite="Spell_Icons"
+    name="Damage">
   School: 4
   PipCost: 1
   Accuracy: 90
   Damage: 0
   UseVoice: 0
+  UseMovement: 1

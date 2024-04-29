@@ -1,4 +1,7 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.AI;
+using Unity.Game.Shared;
 
 namespace Unity.Game.Entity
 {
@@ -8,10 +11,12 @@ namespace Unity.Game.Entity
         [Tooltip("The distance at which the entity considers that it has reached its current path destination point")]
         public float PathReachingRadius = 2f;
 
+        public Color PathReachingRangeColor = Color.yellow;
+
         public UnityAction onDetectedTarget;
         public UnityAction onLostTarget;
 
-        public NavMeshAgent NavMeshAgent { get; set; }
+        public UnityEngine.AI.NavMeshAgent NavMeshAgent { get; set; }
         public PatrolPath PatrolPath { get; set; }
 
         int m_DestinationPathNodeIndex;

@@ -5,6 +5,7 @@ using Unity.Game.Interaction;
 using Unity.Game.Shared;
 using Oculus.Voice;
 using Meta.WitAi.Json;
+using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Unity.Game.Gameplay
 {
@@ -19,19 +20,32 @@ namespace Unity.Game.Gameplay
         [Range(0f, 1f)]
         public float MinimumRecognitionThreshold = 0.85f;
 
+        public Material DefaultLineMaterial;
+
+
+        DeckManager m_DeckManager;
         CardData m_SpellToCast;
         WeaponGrabInteractable m_WeaponGrabInteractable;
         bool m_IsCasting = false;
         string m_SaidSpell;
+        
 
         
 
         // Start is called before the first frame update
         void Start()
         {
+            MovementRecognizer.LineMaterial = DefaultLineMaterial;
+
             m_WeaponGrabInteractable = GetComponent<WeaponGrabInteractable>();
             DebugUtility.HandleErrorIfNullGetComponent<WeaponGrabInteractable, SpellcastManager>(m_WeaponGrabInteractable, this, gameObject);
 
+            m_DeckManager = FindObjectOfType<DeckManager>();
+            DebugUtility.HandleErrorIfNullFindObject<SpellcastManager, SpellcastManager>(this, m_DeckManager);
+
+
+            m_WeaponGrabInteractable.onWeaponEnable += WeaponEnabledHandler;
+            m_WeaponGrabInteractable.onWeaponDisable += WeaponDisabledHandler;
             VoiceRecognizer.VoiceEvents.OnPartialResponse.AddListener(SetSaidSpell);
         }
 
@@ -60,6 +74,18 @@ namespace Unity.Game.Gameplay
                     StopCasting();
                 }
             }
+        }
+
+        void WeaponEnabledHandler()
+        {
+            m_DeckManager.DeckEnabled = true;
+        }
+
+        void WeaponDisabledHandler()
+        {
+            m_DeckManager.ClearSelectedCard();
+            m_DeckManager.DeckEnabled = false;
+            m_DeckManager.DeckDisplay.Display.SetActive(false);
         }
 
         public void StartCasting()
@@ -98,33 +124,28 @@ namespace Unity.Game.Gameplay
             if (m_SpellToCast == null)
                 return;
 
-            
-            bool voiceValid = true;
             // Voice Recognition Handling
+            bool voiceValid = true;
+            if (m_SpellToCast.UseVoice)
             {
-                if (m_SpellToCast.UseVoice)
+                // Said spell doesn't match spell name
+                if (m_SaidSpell.ToLower() != m_SpellToCast.Name.ToLower())
                 {
-                    // Said spell doesn't match spell name
-                    if (m_SaidSpell.ToLower() != m_SpellToCast.Name.ToLower())
-                    {
-                        voiceValid = false; // fail
-                    }
+                    voiceValid = false; // fail
                 }
             }
 
-            bool movementValid = true;
             // Movement Recognition Handling
+            bool movementValid = true;
+            if (m_SpellToCast.UseMovement)
             {
-                if(m_SpellToCast.UseMovement)
-                {
-                    // calculate target score based on the spell accuracy
-                    float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
+                // calculate target score based on the spell accuracy
+                float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
 
-                    // Movement is not accurate enough
-                    if (score < targetScore)
-                    {
-                        movementValid = false;
-                    }
+                // Movement is not accurate enough
+                if (score < targetScore)
+                {
+                    movementValid = false;
                 }
             }
 
@@ -133,28 +154,13 @@ namespace Unity.Game.Gameplay
                 BasicSpell spawnedSpell = Instantiate(m_SpellToCast.Animation);
                 spawnedSpell.Initialize(WandTip);
             }
-
-            // calculate target score based on the spell accuracy
-            //float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
-
-            //if(score > targetScore && voiceSpellCorrect)
-            //{
-            //    BasicSpell spawnedSpell = Instantiate(m_SpellToCast.Animation);
-            //    spawnedSpell.Initialize(WandTip);
-            //}
         }
 
         public void SetSpellToCast(CardData spell)
         {
             if (!m_IsCasting)
             {
-                //if(spell != null)
-                //{
-                //    MovementRecognizer.LineMaterial = spell.LineMaterial;
-                //}
-
-                MovementRecognizer.LineMaterial = spell ? spell.LineMaterial : null;
-
+                MovementRecognizer.LineMaterial = spell ? spell.LineMaterial : DefaultLineMaterial;
                 m_SpellToCast = spell;
             }
         }

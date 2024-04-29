@@ -16,13 +16,15 @@ MonoBehaviour:
     type: 3}
   LineMaterial: {fileID: 2100000, guid: 245880278a548fb4dbc04deb9a319a0e, type: 2}
   Artwork: {fileID: 21300000, guid: f2dc361a53f5c8c4fb7b574c4c80ce25, type: 3}
-  CardTemplate: {fileID: 21300000, guid: a8763a8603994b1469b5103d0c53b3a9, type: 3}
-  SchoolSymbol: {fileID: 21300000, guid: 1f8d691139cf96b4e9b9ba055b48d288, type: 3}
-  TypeIcon: {fileID: 21300000, guid: 3d9bf04b98e5c6f4db6309589c638827, type: 3}
+  CardTemplate: {fileID: 969165889, guid: ac17ed94b0b8bd54090ad8aabcb4b722, type: 3}
+  SchoolSymbol: {fileID: -570876999, guid: c3ceea4a5d3b9a9468090f2f901c3443, type: 3}
+  TypeIcon: {fileID: 686558021, guid: 423f49bb42c780d4e899f7b177472a2a, type: 3}
   Name: Scarab
-  Description: 65-105
+  Description: 65-105<sprite="School_Icons" name="Balance_School"><sprite="Spell_Icons"
+    name="Damage">
   School: 6
   PipCost: 1
   Accuracy: 85
   Damage: 0
   UseVoice: 0
+  UseMovement: 1

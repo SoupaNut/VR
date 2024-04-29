@@ -16,13 +16,15 @@ MonoBehaviour:
     type: 3}
   LineMaterial: {fileID: 2100000, guid: 972b44eb2201100418710fa6ea1bffbe, type: 2}
   Artwork: {fileID: 21300000, guid: d71ab864983b3b8469f195cfed9f02c3, type: 3}
-  CardTemplate: {fileID: 21300000, guid: 35a5c3b866452884aafbe9ca14df241b, type: 3}
-  SchoolSymbol: {fileID: 21300000, guid: 1bf3092dcf166c947bed5e4136362795, type: 3}
-  TypeIcon: {fileID: 21300000, guid: 3d9bf04b98e5c6f4db6309589c638827, type: 3}
+  CardTemplate: {fileID: 42714679, guid: ac17ed94b0b8bd54090ad8aabcb4b722, type: 3}
+  SchoolSymbol: {fileID: -717879332, guid: c3ceea4a5d3b9a9468090f2f901c3443, type: 3}
+  TypeIcon: {fileID: 686558021, guid: 423f49bb42c780d4e899f7b177472a2a, type: 3}
   Name: Thunder Snake
-  Description: 105-145
+  Description: 105-145<sprite="School_Icons" name="Storm_School"><sprite="Spell_Icons"
+    name="Damage">
   School: 2
   PipCost: 1
   Accuracy: 70
   Damage: 0
   UseVoice: 0
+  UseMovement: 1

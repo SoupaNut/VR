@@ -16,13 +16,15 @@ MonoBehaviour:
     type: 3}
   LineMaterial: {fileID: 2100000, guid: d9409311069079545846f49c6aa74f93, type: 2}
   Artwork: {fileID: 21300000, guid: bd2a2d9982bab084480aeebabdbdf8fb, type: 3}
-  CardTemplate: {fileID: 21300000, guid: d7bdb4cfc222b4243b02cef3b88e7a5a, type: 3}
-  SchoolSymbol: {fileID: 21300000, guid: 9f133903ccec4f84bb9f7b9e5444d69a, type: 3}
-  TypeIcon: {fileID: 21300000, guid: 3d9bf04b98e5c6f4db6309589c638827, type: 3}
+  CardTemplate: {fileID: 598115860, guid: ac17ed94b0b8bd54090ad8aabcb4b722, type: 3}
+  SchoolSymbol: {fileID: -446654387, guid: c3ceea4a5d3b9a9468090f2f901c3443, type: 3}
+  TypeIcon: {fileID: 686558021, guid: 423f49bb42c780d4e899f7b177472a2a, type: 3}
   Name: Blood Bat
-  Description: 95-115
+  Description: 95-115<sprite="School_Icons" name="Myth_School"><sprite="Spell_Icons"
+    name="Damage">
   School: 3
   PipCost: 1
   Accuracy: 85
   Damage: 0
   UseVoice: 0
+  UseMovement: 1

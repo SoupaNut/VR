@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Unity.Game.Interaction
@@ -7,6 +8,8 @@ namespace Unity.Game.Interaction
     {
         public InteractorManager InteractorManager { get; set; }
         public bool IsWeaponEnabled { get; private set; }
+        public UnityAction onWeaponEnable;
+        public UnityAction onWeaponDisable;
 
         Outline m_Outline;
 
@@ -40,6 +43,7 @@ namespace Unity.Game.Interaction
             {
                 InteractorManager = interactorManager;
                 IsWeaponEnabled = true;
+                onWeaponEnable?.Invoke();
             }
 
             base.OnSelectEntered(args);
@@ -49,6 +53,7 @@ namespace Unity.Game.Interaction
         {
             InteractorManager = null;
             IsWeaponEnabled = false;
+            onWeaponDisable?.Invoke();
 
             base.OnSelectExited(args);
         }

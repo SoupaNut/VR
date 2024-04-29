@@ -1,6 +1,7 @@
 {
   "dependencies": {
-    "com.readyplayerme.core": "https://github.com/readyplayerme/rpm-unity-sdk-core.git",
+    "com.meta.xr.sdk.interaction": "64.0.0",
+    "com.readyplayerme.core": "https://github.com/readyplayerme/rpm-unity-sdk-core.git#v6.2.2",
     "com.srcnalt.openai-unity": "https://github.com/srcnalt/OpenAI-Unity.git",
     "com.unity.2d.sprite": "1.0.0",
     "com.unity.animation.rigging": "1.2.1",
@@ -10,11 +11,11 @@
     "com.unity.ide.vscode": "1.2.5",
     "com.unity.render-pipelines.universal": "14.0.9",
     "com.unity.test-framework": "1.1.33",
-    "com.unity.textmeshpro": "3.0.6",
+    "com.unity.textmeshpro": "3.0.8",
     "com.unity.timeline": "1.7.6",
     "com.unity.ugui": "1.0.0",
     "com.unity.visualscripting": "1.9.1",
-    "com.unity.xr.interaction.toolkit": "2.5.3",
+    "com.unity.xr.interaction.toolkit": "2.5.4",
     "com.unity.xr.management": "4.4.1",
     "com.unity.xr.openxr": "1.9.1",
     "com.unity.modules.ai": "1.0.0",
