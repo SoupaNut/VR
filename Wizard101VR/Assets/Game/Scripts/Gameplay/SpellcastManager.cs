@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Game.Interaction;
 using Unity.Game.Shared;
 using Oculus.Voice;
 using Meta.WitAi.Json;
-using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Unity.Game.Gameplay
 {
@@ -28,9 +25,6 @@ namespace Unity.Game.Gameplay
         WeaponGrabInteractable m_WeaponGrabInteractable;
         bool m_IsCasting = false;
         string m_SaidSpell;
-        
-
-        
 
         // Start is called before the first frame update
         void Start()

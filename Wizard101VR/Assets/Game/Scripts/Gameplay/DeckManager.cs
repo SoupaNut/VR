@@ -1,8 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 using Unity.Game.Shared;
-using Unity.Game.Interaction;
 using UnityEngine.InputSystem;
 
 namespace Unity.Game.Gameplay
