@@ -8,15 +8,14 @@ namespace Unity.Game.Entity
     [RequireComponent(typeof(NavMeshAgent))]
     public class BaseEntityController : MonoBehaviour
     {
+        [Header("Patrol Parameters")]
         [Tooltip("The distance at which the entity considers that it has reached its current path destination point")]
         public float PathReachingRadius = 2f;
 
+        [Tooltip("Color of the sphere gizmo representing the path reaching range")]
         public Color PathReachingRangeColor = Color.yellow;
 
-        public UnityAction onDetectedTarget;
-        public UnityAction onLostTarget;
-
-        public UnityEngine.AI.NavMeshAgent NavMeshAgent { get; set; }
+        public NavMeshAgent NavMeshAgent { get; set; }
         public PatrolPath PatrolPath { get; set; }
 
         int m_DestinationPathNodeIndex;
@@ -26,7 +25,6 @@ namespace Unity.Game.Entity
             NavMeshAgent = GetComponent<NavMeshAgent>();
             DebugUtility.HandleErrorIfNullGetComponent<NavMeshAgent, BaseEntityController>(NavMeshAgent, this, gameObject);
         }
-
 
         bool IsPathValid()
         {
