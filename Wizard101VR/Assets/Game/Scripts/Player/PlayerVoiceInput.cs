@@ -2,7 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using Oculus.Voice;
 using Unity.Game.Shared;
-using Unity.Game.Entity.NPC;
+using Unity.Game.AI.NPC;
 using UnityEngine.XR.Interaction.Toolkit;
 
 namespace Unity.Game.Player

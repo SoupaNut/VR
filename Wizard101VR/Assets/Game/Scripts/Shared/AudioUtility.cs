@@ -9,10 +9,11 @@ namespace Unity.Game.Shared
 
         public enum AudioGroups
         {
-            UserInterface
-            //DamageTick,
+            General,
+            UserInterface,
+            DamageTick,
             //Impact,
-            //EnemyDetection,
+            EnemyDetection,
             //Pickup,
             //WeaponShoot,
             //WeaponOverheat,
@@ -20,7 +21,7 @@ namespace Unity.Game.Shared
             //WeaponChargeLoop,
             //HUDVictory,
             //HUDObjective,
-            //EnemyAttack
+            EnemyAttack
         }
 
         public static float GetLoudnessFromAudioClip(int clipPosition, AudioClip clip, int sampleWindow = 64)
