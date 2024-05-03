@@ -18216,6 +18216,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_HoverBot
       objectReference: {fileID: 0}
+    - target: {fileID: 4273631514073908364, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
+        type: 3}
+      propertyPath: m_CullingMode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4273631514073908364, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
+        type: 3}
+      propertyPath: m_ApplyRootMotion
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7820987864612595569, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
+        type: 3}
+      propertyPath: ProjectilePrefab
+      value: 
+      objectReference: {fileID: 6210188611831562678, guid: 028c72d9b1622ba4eac83ac315fb00f6,
+        type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

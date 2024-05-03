@@ -620,7 +620,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 99dcd53d86db4fc4b813a3d1db9e97e4, type: 3}
+  m_Motion: {fileID: 1827226128182048838, guid: 31e2bbd724d0c8642b64ed8644163c9e,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -675,7 +676,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 77af6154680218844a53b30c3371260a, type: 3}
+  m_Motion: {fileID: 1827226128182048838, guid: 3be12684f9a6e254a88690907dc905f1,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -732,7 +734,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d4c6e776733ed444c81b0b76a8610f82, type: 3}
+  m_Motion: {fileID: 1827226128182048838, guid: ecf4b6cecb7a6ad40ab958260bf5d897,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -868,7 +871,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: 78b093b3bf9e0b7488fb706d8ad2e0f8, type: 3}
+  m_Motion: {fileID: 1827226128182048838, guid: 7154e5e2d4468b244bdaf7d3b31a02af,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -895,7 +899,8 @@ AnimatorState:
   m_MirrorParameterActive: 0
   m_CycleOffsetParameterActive: 0
   m_TimeParameterActive: 0
-  m_Motion: {fileID: 7400000, guid: d21446ed42271994d97223de428c84f6, type: 3}
+  m_Motion: {fileID: 1827226128182048838, guid: cb9063d18e7f75d4abd54b613b27e96f,
+    type: 3}
   m_Tag: 
   m_SpeedParameter: 
   m_MirrorParameter: 
@@ -1018,7 +1023,7 @@ AnimatorStateMachine:
   m_ChildStateMachines:
   - serializedVersion: 1
     m_StateMachine: {fileID: 1107642148417176584}
-    m_Position: {x: 612, y: 168, z: 0}
+    m_Position: {x: 610, y: 170, z: 0}
   - serializedVersion: 1
     m_StateMachine: {fileID: 1107284700259559066}
     m_Position: {x: 610, y: 300, z: 0}

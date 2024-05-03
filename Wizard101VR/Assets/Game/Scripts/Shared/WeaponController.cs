@@ -26,8 +26,8 @@ namespace Unity.Game.Shared
         [Tooltip("The type of weapon will affect how it shoots")]
         public WeaponShootType ShootType;
 
-        //[Tooltip("The projectile prefab")]
-        //public ProjectileBase ProjectilePrefab;
+        [Tooltip("The projectile prefab")]
+        public ProjectileBase ProjectilePrefab;
 
         [Tooltip("How fast the projectile prefab travels")]
         public float ProjectileSpeed = 20f;
@@ -177,26 +177,26 @@ namespace Unity.Game.Shared
         private void HandleShoot()
         {
             // spawn bullet
-            //ProjectileBase spawnedProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position, WeaponMuzzle.rotation);
-            //spawnedProjectile.Shoot(this);
+            ProjectileBase spawnedProjectile = Instantiate(ProjectilePrefab, WeaponMuzzle.position, WeaponMuzzle.rotation);
+            spawnedProjectile.Shoot(this);
 
-            //onShoot?.Invoke();
+            onShoot?.Invoke();
 
-            //// Spawn Muzzle Flash
-            //if (MuzzleFlashPrefab != null)
-            //{
-            //    GameObject spawnedMuzzleFlash = Instantiate(MuzzleFlashPrefab, WeaponMuzzle.position, WeaponMuzzle.rotation, WeaponMuzzle.transform);
+            // Spawn Muzzle Flash
+            if (MuzzleFlashPrefab != null)
+            {
+                GameObject spawnedMuzzleFlash = Instantiate(MuzzleFlashPrefab, WeaponMuzzle.position, WeaponMuzzle.rotation, WeaponMuzzle.transform);
 
 
-            //    Destroy(spawnedMuzzleFlash, 2f);
-            //}
+                Destroy(spawnedMuzzleFlash, 2f);
+            }
 
-            //// play weapon bullet sound
-            //float spatialBlend = 1f;
-            //float minDistance = 3f;
-            //AudioUtility.CreateSfx(WeaponSound, WeaponMuzzle.position, AudioUtility.AudioGroups.WeaponShoot, spatialBlend, minDistance);
+            // play weapon bullet sound
+            float spatialBlend = 1f;
+            float minDistance = 3f;
+            AudioUtility.CreateSfx(WeaponSound, WeaponMuzzle.position, AudioUtility.AudioGroups.WeaponShoot, spatialBlend, minDistance);
 
-            //m_LastShotFired = Time.time;
+            m_LastShotFired = Time.time;
         }
     }
 }
