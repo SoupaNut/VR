@@ -1,8 +1,8 @@
-using UnityEngine;
+using Meta.WitAi.Json;
+using Oculus.Voice;
 using Unity.Game.Interaction;
 using Unity.Game.Shared;
-using Oculus.Voice;
-using Meta.WitAi.Json;
+using UnityEngine;
 
 namespace Unity.Game.Gameplay
 {
@@ -14,14 +14,14 @@ namespace Unity.Game.Gameplay
 
         public Transform WandTip;
 
-        [Range(0f, 1f)]
-        public float MinimumRecognitionThreshold = 0.85f;
+        //[Range(0f, 1f)]
+        //public float MinimumRecognitionThreshold = 0.85f;
 
         public Material DefaultLineMaterial;
 
 
         DeckManager m_DeckManager;
-        CardData m_SpellToCast;
+        SpellData m_SpellToCast;
         WeaponGrabInteractable m_WeaponGrabInteractable;
         bool m_IsCasting = false;
         string m_SaidSpell;
@@ -98,10 +98,10 @@ namespace Unity.Game.Gameplay
         public void StopCasting()
         {
             m_IsCasting = false;
-            if (m_SpellToCast != null)
+            if (m_SpellToCast != null && m_SpellToCast.UseMovement)
             {
                 // compare against a given gesture
-                MovementRecognizer.EndMovement(m_SpellToCast.School.ToString());
+                MovementRecognizer.EndMovement(m_SpellToCast.MovementName.ToString());
             }
             else
             {
@@ -123,7 +123,7 @@ namespace Unity.Game.Gameplay
             if (m_SpellToCast.UseVoice)
             {
                 // Said spell doesn't match spell name
-                if (m_SaidSpell.ToLower() != m_SpellToCast.Name.ToLower())
+                if (m_SaidSpell.ToLower() != m_SpellToCast.VoiceName.ToLower())
                 {
                     voiceValid = false; // fail
                 }
@@ -133,11 +133,15 @@ namespace Unity.Game.Gameplay
             bool movementValid = true;
             if (m_SpellToCast.UseMovement)
             {
-                // calculate target score based on the spell accuracy
-                float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
+                //// calculate target score based on the spell accuracy
+                //float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
 
-                // Movement is not accurate enough
-                if (score < targetScore)
+                //// Movement is not accurate enough
+                //if (score < targetScore)
+                //{
+                //    movementValid = false;
+                //}
+                if(name.ToLower() != m_SpellToCast.MovementName.ToLower())
                 {
                     movementValid = false;
                 }
@@ -145,16 +149,16 @@ namespace Unity.Game.Gameplay
 
             if(voiceValid && movementValid)
             {
-                BasicSpell spawnedSpell = Instantiate(m_SpellToCast.Animation);
+                BasicSpell spawnedSpell = Instantiate(m_SpellToCast.SpellPrefab);
                 spawnedSpell.Initialize(WandTip);
             }
         }
 
-        public void SetSpellToCast(CardData spell)
+        public void SetSpellToCast(SpellData spell)
         {
             if (!m_IsCasting)
             {
-                MovementRecognizer.LineMaterial = spell ? spell.LineMaterial : DefaultLineMaterial;
+                MovementRecognizer.LineMaterial = (spell && spell.UseMovement) ? spell.LineMaterial : DefaultLineMaterial;
                 m_SpellToCast = spell;
             }
         }

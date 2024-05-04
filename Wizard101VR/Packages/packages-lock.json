@@ -11,14 +11,14 @@
       "url": "https://packages.unity.com"
     },
     "com.readyplayerme.core": {
-      "version": "https://github.com/readyplayerme/rpm-unity-sdk-core.git#v6.2.3",
+      "version": "https://github.com/readyplayerme/rpm-unity-sdk-core.git#v6.2.4",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.cloud.gltfast": "6.0.1",
         "com.unity.nuget.newtonsoft-json": "3.0.2"
       },
-      "hash": "2e010e4fe5ff55fcebb2ea03af69f050626c3b6c"
+      "hash": "aaebf807bfc23a8257678cb0d232a684016e513c"
     },
     "com.srcnalt.openai-unity": {
       "version": "https://github.com/srcnalt/OpenAI-Unity.git",

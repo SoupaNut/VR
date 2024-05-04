@@ -2,8 +2,8 @@ using UnityEngine;
 
 namespace Unity.Game.Gameplay
 {
-    [CreateAssetMenu(fileName = "New Card", menuName = "Card")]
-    public class CardData : ScriptableObject
+    [CreateAssetMenu(fileName = "New Spell", menuName = "Spell")]
+    public class SpellData : ScriptableObject
     {
         public enum SpellSchools
         {
@@ -15,10 +15,20 @@ namespace Unity.Game.Gameplay
             Death,
             Balance
         }
-
-        [Header("Art")]
         [Tooltip("Prefab of the spell animation to instantiate.")]
-        public BasicSpell Animation;
+        public BasicSpell SpellPrefab;
+
+        [Tooltip("Set to true to make the spell use the voice recognizer.")]
+        public bool UseVoice = false;
+
+        [Tooltip("The name to compare in the voice recognizer")]
+        public string VoiceName;
+
+        [Tooltip("Set to true to make the spell use the movement recognizer.")]
+        public bool UseMovement = false;
+
+        [Tooltip("The movement to compare to in the movement recognizer.")]
+        public string MovementName;
 
         [Tooltip("The material that the Movement Recognizer on the wand will be set to")]
         public Material LineMaterial;
@@ -35,10 +45,8 @@ namespace Unity.Game.Gameplay
         [Tooltip("Icon for the spell type of the card.")]
         public Sprite TypeIcon;
 
-
-        [Header("Card Info")]
-        [Tooltip("The spell's name.")]
-        public string Name;
+        [Tooltip("Name string that is displayed on the top of the card")]
+        public string CardName;
 
         [Tooltip("Description of the card.")]
         [TextArea(2, 4)]
@@ -58,10 +66,6 @@ namespace Unity.Game.Gameplay
         [Tooltip("How much damage the spell does.")]
         public float Damage;
 
-        [Tooltip("Set to true to make the spell use the voice recognizer.")]
-        public bool UseVoice = false;
-
-        [Tooltip("Set to true to make the spell use the movement recognizer.")]
-        public bool UseMovement = true;
+        
     }
 }

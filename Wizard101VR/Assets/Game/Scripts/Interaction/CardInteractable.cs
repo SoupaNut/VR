@@ -1,18 +1,15 @@
-using Unity.Game.Interaction;
-using Unity.Game.Shared;
 using UnityEngine.XR.Interaction.Toolkit;
 using UnityEngine;
 using UnityEngine.Events;
+using Unity.Game.Shared;
+using Unity.Game.Gameplay;
 
-namespace Unity.Game.Gameplay
+namespace Unity.Game.Interaction
 {
     [RequireComponent(typeof(CardDisplay))]
     public class CardInteractable : XRSimpleInteractable
     {
-        public CardData SpellCardData;
-
-        
-
+        public SpellData SpellCardData;
         public UnityAction<CardInteractable> onCardSelect;
 
         public SpellcastManager SpellcastManager { get; set; }
@@ -66,33 +63,11 @@ namespace Unity.Game.Gameplay
             base.OnSelectEntered(args);
         }
 
-        public void Load(CardData spell)
+        public void Load(SpellData spell)
         {
             SpellCardData = spell;
             CardDisplay.Load(spell);
         }
-
-        //public void SetSpellToCast(BaseInteractionEventArgs args, CardData spellToCast)
-        //{
-        //    // Check if we have an interactor
-        //    var interactor = args.interactorObject.transform.parent.GetComponent<InteractorManager>();
-
-        //    if (interactor)
-        //    {
-        //        // Check if we have an interactable selected on the other hand
-        //        var interactable = interactor.OtherInteractorManager.SelectedInteractable;
-
-        //        if (interactable != null)
-        //        {
-        //            var spellcastManager = interactable.GetComponent<SpellcastManager>();
-
-        //            if (spellcastManager)
-        //            {
-        //                spellcastManager.SetSpellToCast(spellToCast);
-        //            }
-        //        }
-        //    }
-        //}
     }
 }
 

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Unity.Game.Shared;
+using Unity.Game.Interaction;
 using UnityEngine.InputSystem;
 
 namespace Unity.Game.Gameplay
@@ -9,7 +10,7 @@ namespace Unity.Game.Gameplay
     {
         public InputActionProperty DeckButton;
         public List<CardInteractable> DisplayCards;
-        public List<CardData> AllSpells;
+        public List<SpellData> AllSpells;
         
         public DeckDisplay DeckDisplay { get; private set; }
         public bool DeckEnabled { get; set; }
@@ -73,12 +74,12 @@ namespace Unity.Game.Gameplay
             SelectedCard.CardDisplay.DisplayCardOutline(true);
         }
 
-        public CardData DrawCard()
+        public SpellData DrawCard()
         {
             if(AllSpells.Count == 0)
                 return null;
 
-            CardData drawnCard = AllSpells[0];
+            SpellData drawnCard = AllSpells[0];
             AllSpells.RemoveAt(0);
             return drawnCard;
         }
@@ -91,7 +92,7 @@ namespace Unity.Game.Gameplay
             {
                 n--;
                 int k = rng.Next(n + 1);
-                CardData value = AllSpells[k];
+                SpellData value = AllSpells[k];
                 AllSpells[k] = AllSpells[n];
                 AllSpells[n] = value;
             }

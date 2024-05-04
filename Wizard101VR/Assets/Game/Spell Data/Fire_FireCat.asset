@@ -12,19 +12,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
   m_Name: Fire_FireCat
   m_EditorClassIdentifier: 
-  Animation: {fileID: 7525361114696974857, guid: ad57aa0246daffa419331d0dcb30a07a,
+  SpellPrefab: {fileID: 7525361114696974857, guid: ad57aa0246daffa419331d0dcb30a07a,
     type: 3}
+  UseVoice: 0
+  VoiceName: 
+  UseMovement: 1
+  MovementName: fire
   LineMaterial: {fileID: 2100000, guid: 195ace2102b95674b8d3880b707bdbcf, type: 2}
   Artwork: {fileID: 21300000, guid: 77764a4b6b758814f89382f8021e1493, type: 3}
   CardTemplate: {fileID: 1728394120, guid: ac17ed94b0b8bd54090ad8aabcb4b722, type: 3}
   SchoolSymbol: {fileID: 935179752, guid: c3ceea4a5d3b9a9468090f2f901c3443, type: 3}
   TypeIcon: {fileID: 686558021, guid: 423f49bb42c780d4e899f7b177472a2a, type: 3}
-  Name: Fire Cat
+  CardName: Fire Cat
   Description: 80-120<sprite="School_Icons" name="Fire_School"><sprite="Spell_Icons"
     name="Damage">
   School: 0
   PipCost: 1
   Accuracy: 75
   Damage: 120
-  UseVoice: 0
-  UseMovement: 1

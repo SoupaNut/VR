@@ -33,7 +33,7 @@ namespace Unity.Game.Gameplay
             }
         }
 
-        public void Load(CardData data)
+        public void Load(SpellData data)
         {
             if(data != null)
             {
@@ -45,7 +45,7 @@ namespace Unity.Game.Gameplay
 
                 TypeIcon.sprite = data.TypeIcon;
 
-                Name.text = data.Name;
+                Name.text = data.CardName;
 
                 Description.text = data.Description;
 

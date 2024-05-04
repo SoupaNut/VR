@@ -2,20 +2,30 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.XR.Interaction.Toolkit;
 using Unity.Game.Shared;
+using Unity.XR.CoreUtils;
+using System.Linq;
 
 namespace Unity.Game.Interaction
 {
     public class InteractorManager : MonoBehaviour
     {
-        [Header("Interactor Manager")]
+        [Header("General")]
+        [Tooltip("Reference to the player object")]
+        public Transform Player;
+
         [Tooltip("Reference to the other hand's Interactor Manager.")]
         public InteractorManager OtherInteractorManager;
+
+        [Tooltip("Layers to hit when checking for obstruction.")]
+        public LayerMask RaycastLayers;
 
         [Header("Interactors")]
         public GameObject TeleportInteractor;
         public GameObject DirectInteractor;
         public GameObject GrabInteractor;
         public float ActivationThreshold = 0.1f;
+
+        
 
         public InputActionProperty TeleportInput { get => m_TeleportInput; set => m_TeleportInput = value; }
         public InputActionProperty ActivateInput { get => m_ActivateInput; set => m_ActivateInput = value; }
@@ -26,6 +36,8 @@ namespace Unity.Game.Interaction
         public bool IsGrabRayHovered { get; private set; }
         public bool IsGrabRaySelected { get; private set; }
         public bool IsActivated { get; private set; }
+
+        public bool IsObstructed { get; private set; }
 
         public GameObject SelectedInteractable { get; private set; }
 
@@ -38,9 +50,17 @@ namespace Unity.Game.Interaction
         InputActionProperty m_TeleportInput;
         InputActionProperty m_ActivateInput;
 
+        // Colliders
+        Collider[] m_SelfColliders;
+
         // Start is called before the first frame update
         void Start()
         {
+            // Get Self Colliders
+            {
+                m_SelfColliders = Player.GetComponentsInChildren<Collider>();
+            }
+
             // Get Interactors
             {
                 m_GrabInteractor = GrabInteractor.GetComponent<XRRayInteractor>();
@@ -77,6 +97,13 @@ namespace Unity.Game.Interaction
         // Update is called once per frame
         void Update()
         {
+            UpdateInteractorStates();
+            HandleObstruction();
+            HandleInteractors();
+        }
+
+        void UpdateInteractorStates()
+        {
             // Direct Interactor
             IsDirectGrabSelected = m_DirectInteractor.interactablesSelected.Count > 0;
             IsDirectGrabHovered = m_DirectInteractor.interactablesHovered.Count > 0;
@@ -90,8 +117,24 @@ namespace Unity.Game.Interaction
 
             // Activate
             IsActivated = m_ActivateInput.action.ReadValue<float>() > ActivationThreshold;
+        }
 
-            HandleInteractors();
+        void HandleObstruction()
+        {
+            // Check for obstructions between the camera and hand controller
+            var camera = Player.GetComponent<XROrigin>().Camera;
+            RaycastHit[] hits = Physics.RaycastAll(camera.transform.position, (transform.position - camera.transform.position).normalized, 
+                                                    Vector3.Distance(camera.transform.position, transform.position), RaycastLayers, 
+                                                    QueryTriggerInteraction.Ignore);
+            IsObstructed = false;
+            foreach (RaycastHit hit in hits)
+            {
+                if (!m_SelfColliders.Contains(hit.collider))
+                {
+                    IsObstructed = true;
+                    break;
+                }
+            }
         }
 
         void HandleInteractors()
@@ -109,10 +152,17 @@ namespace Unity.Game.Interaction
                 GrabInteractor.GetComponent<XRInteractorLineVisual>().enabled = false;
             }
             // Enable Teleport, Disable Grab Ray
-            else if (IsTeleportSelected && !IsGrabRayHovered && !IsGrabRaySelected)
+            else if (IsTeleportSelected && !IsGrabRayHovered && !IsGrabRaySelected && !IsObstructed)
             {
                 TeleportInteractor.SetActive(true);
                 GrabInteractor.SetActive(false);
+            }
+            // Disable Teleport, Disable Grab Ray
+            else if (IsObstructed)
+            {
+                TeleportInteractor.SetActive(false);
+                GrabInteractor.SetActive(false);
+                GrabInteractor.GetComponent<XRInteractorLineVisual>().enabled = false;
             }
             // Disable Teleport, Enable Grab Ray
             else

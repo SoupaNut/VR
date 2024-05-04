@@ -64,7 +64,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 18.03, y: 0, z: -7.42}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7435576134623196840}
@@ -318,6 +318,8 @@ MonoBehaviour:
   FireRate: 1
   Damage: 10
   ShootType: 1
+  ProjectilePrefab: {fileID: 6210188611831562678, guid: 028c72d9b1622ba4eac83ac315fb00f6,
+    type: 3}
   ProjectileSpeed: 100
   HasInfiniteAmmo: 1
   MaxAmmo: 30
@@ -1340,9 +1342,9 @@ Animator:
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: b26efddf4b853614f972d3d6e8af4a20, type: 3}
   m_Controller: {fileID: 9100000, guid: 854fde7ecb5a64d438dba2d5ad2d9d8b, type: 2}
-  m_CullingMode: 0
+  m_CullingMode: 1
   m_UpdateMode: 0
-  m_ApplyRootMotion: 0
+  m_ApplyRootMotion: 1
   m_LinearVelocityBlending: 0
   m_StabilizeFeet: 0
   m_WarningMessage: 
