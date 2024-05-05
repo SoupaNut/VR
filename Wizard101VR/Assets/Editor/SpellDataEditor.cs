@@ -29,8 +29,8 @@ public class SpellDataEditor : Editor
     bool generalGroup = true;
     bool voiceRecognizerGroup = true;
     bool movementRecognizerGroup = true;
-    bool cardArtGroup = false;
-    bool cardInfoGroup = false;
+    bool cardArtGroup = true;
+    bool cardInfoGroup = true;
     #endregion
 
     private void OnEnable()
@@ -93,7 +93,7 @@ public class SpellDataEditor : Editor
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
-        cardArtGroup = EditorGUILayout.BeginFoldoutHeaderGroup(cardArtGroup, "Card Art (Optional)");
+        cardArtGroup = EditorGUILayout.BeginFoldoutHeaderGroup(cardArtGroup, "Card Art");
         if(cardArtGroup)
         {
             EditorGUILayout.PropertyField(Artwork);
@@ -103,7 +103,7 @@ public class SpellDataEditor : Editor
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
-        cardInfoGroup = EditorGUILayout.BeginFoldoutHeaderGroup(cardInfoGroup, "Card Info (Optional)");
+        cardInfoGroup = EditorGUILayout.BeginFoldoutHeaderGroup(cardInfoGroup, "Card Info");
         if (cardInfoGroup)
         {
             EditorGUILayout.PropertyField(CardName);

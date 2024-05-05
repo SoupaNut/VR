@@ -34,6 +34,7 @@ namespace Unity.Game.Gameplay
             m_WeaponGrabInteractable = GetComponent<WeaponGrabInteractable>();
             DebugUtility.HandleErrorIfNullGetComponent<WeaponGrabInteractable, SpellcastManager>(m_WeaponGrabInteractable, this, gameObject);
 
+            // TODO: Change FindObjectOfType to GetComponent
             m_DeckManager = FindObjectOfType<DeckManager>();
             DebugUtility.HandleErrorIfNullFindObject<SpellcastManager, SpellcastManager>(this, m_DeckManager);
 
