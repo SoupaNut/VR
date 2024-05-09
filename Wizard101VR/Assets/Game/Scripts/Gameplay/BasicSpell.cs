@@ -4,10 +4,15 @@ namespace Unity.Game.Gameplay
 {
     public class BasicSpell : MonoBehaviour
     {
-        public virtual void Initialize(Transform wandTip)
+        [Tooltip("Max amount of time the object stays active in the scene.")]
+        public float MaxLifeTime = 5f;
+
+        public virtual void Cast(SpellcastManager manager)
         {
-            transform.position = wandTip.position;
-            transform.rotation = wandTip.rotation;
+            transform.position = manager.WandTip.position;
+            transform.forward = manager.WandTip.forward;
+
+            Destroy(gameObject, MaxLifeTime);
         }
     }
 }

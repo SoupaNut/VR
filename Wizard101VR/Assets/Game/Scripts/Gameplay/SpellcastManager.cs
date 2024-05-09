@@ -1,5 +1,6 @@
 using Meta.WitAi.Json;
 using Oculus.Voice;
+using System.Collections.Generic;
 using Unity.Game.Interaction;
 using Unity.Game.Shared;
 using UnityEngine;
@@ -19,12 +20,15 @@ namespace Unity.Game.Gameplay
 
         public Material DefaultLineMaterial;
 
+        public List<Collider> IgnoredColliders = new List<Collider>();
+
 
         DeckManager m_DeckManager;
         SpellData m_SpellToCast;
         WeaponGrabInteractable m_WeaponGrabInteractable;
         bool m_IsCasting = false;
         string m_SaidSpell;
+        Collider[] m_SelfColliders;
 
         // Start is called before the first frame update
         void Start()
@@ -37,6 +41,8 @@ namespace Unity.Game.Gameplay
             // TODO: Change FindObjectOfType to GetComponent
             m_DeckManager = FindObjectOfType<DeckManager>();
             DebugUtility.HandleErrorIfNullFindObject<SpellcastManager, SpellcastManager>(this, m_DeckManager);
+
+            m_SelfColliders = transform.GetComponentsInChildren<Collider>();    
 
 
             m_WeaponGrabInteractable.onWeaponEnable += WeaponEnabledHandler;
@@ -74,6 +80,18 @@ namespace Unity.Game.Gameplay
         void WeaponEnabledHandler()
         {
             m_DeckManager.DeckEnabled = true;
+
+            IgnoredColliders = new List<Collider>();
+
+            // Add self colliders
+            IgnoredColliders.AddRange(m_SelfColliders);
+            
+            // Add player colliders
+            Collider[] playerColliders = m_WeaponGrabInteractable.InteractorManager.Player.gameObject.GetComponentsInChildren<Collider>();
+            if (playerColliders.Length > 0)
+            {
+                IgnoredColliders.AddRange(playerColliders);
+            }
         }
 
         void WeaponDisabledHandler()
@@ -81,6 +99,7 @@ namespace Unity.Game.Gameplay
             m_DeckManager.ClearSelectedCard();
             m_DeckManager.DeckEnabled = false;
             m_DeckManager.DeckDisplay.Display.SetActive(false);
+            IgnoredColliders = null;
         }
 
         public void StartCasting()
@@ -99,21 +118,25 @@ namespace Unity.Game.Gameplay
         public void StopCasting()
         {
             m_IsCasting = false;
+            VoiceRecognizer.Deactivate();
+
             if (m_SpellToCast != null && m_SpellToCast.UseMovement)
             {
                 // compare against a given gesture
                 MovementRecognizer.EndMovement(m_SpellToCast.MovementName.ToString());
             }
-            else
+            else if (m_SpellToCast.UseMovement)
             {
                 // Let movement recognizer figure out the movement
                 MovementRecognizer.EndMovement();
             }
-
-            VoiceRecognizer.Deactivate();
+            else
+            {
+                CastSpell();
+            }
         }
 
-        public void CastSpell(string name, float score)
+        public void CastSpell(string name="", float score=0f)
         {
             // Check if we have a spell to cast
             if (m_SpellToCast == null)
@@ -151,7 +174,7 @@ namespace Unity.Game.Gameplay
             if(voiceValid && movementValid)
             {
                 BasicSpell spawnedSpell = Instantiate(m_SpellToCast.SpellPrefab);
-                spawnedSpell.Initialize(WandTip);
+                spawnedSpell.Cast(this);
             }
         }
 

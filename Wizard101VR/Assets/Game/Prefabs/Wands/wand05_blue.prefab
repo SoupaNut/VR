@@ -88,7 +88,7 @@ MonoBehaviour:
   onRecognized:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
+      - m_Target: {fileID: 6956071083650250456}
         m_TargetAssemblyTypeName: Unity.Game.Gameplay.SpellcastManager, Assembly-CSharp
         m_MethodName: CastSpell
         m_Mode: 0
@@ -116,7 +116,7 @@ GameObject:
   - component: {fileID: 7004732519922038685}
   - component: {fileID: 2005548179872278245}
   - component: {fileID: 6248075953214464557}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: wand05_blue
   m_TagString: Untagged
   m_Icon: {fileID: 0}

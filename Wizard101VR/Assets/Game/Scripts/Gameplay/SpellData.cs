@@ -62,10 +62,5 @@ namespace Unity.Game.Gameplay
         [Tooltip("The probability that the spell will be cast.")]
         [Range(0, 100)]
         public int Accuracy = 100;
-
-        [Tooltip("How much damage the spell does.")]
-        public float Damage;
-
-        
     }
 }

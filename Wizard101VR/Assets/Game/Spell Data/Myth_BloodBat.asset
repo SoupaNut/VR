@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
   m_Name: Myth_BloodBat
   m_EditorClassIdentifier: 
-  SpellPrefab: {fileID: 4354425890933916390, guid: d1f867ebb9c77c0469c54ff382b68bfb,
+  SpellPrefab: {fileID: 4079661982811393613, guid: 131c3b7f62e99ef4a89b10eef68edf7a,
     type: 3}
   UseVoice: 0
   VoiceName: 
@@ -29,4 +29,3 @@ MonoBehaviour:
   School: 3
   PipCost: 1
   Accuracy: 85
-  Damage: 0

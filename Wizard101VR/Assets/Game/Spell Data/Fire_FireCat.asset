@@ -12,11 +12,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
   m_Name: Fire_FireCat
   m_EditorClassIdentifier: 
-  SpellPrefab: {fileID: 7525361114696974857, guid: ad57aa0246daffa419331d0dcb30a07a,
+  SpellPrefab: {fileID: 5130645417263282252, guid: 6b6b9fee4cd73104ebd8841402669741,
     type: 3}
   UseVoice: 0
   VoiceName: 
-  UseMovement: 1
+  UseMovement: 0
   MovementName: fire
   LineMaterial: {fileID: 2100000, guid: 195ace2102b95674b8d3880b707bdbcf, type: 2}
   Artwork: {fileID: 21300000, guid: 77764a4b6b758814f89382f8021e1493, type: 3}
@@ -29,4 +29,3 @@ MonoBehaviour:
   School: 0
   PipCost: 1
   Accuracy: 75
-  Damage: 120

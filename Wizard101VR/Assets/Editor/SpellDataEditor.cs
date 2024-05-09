@@ -24,7 +24,6 @@ public class SpellDataEditor : Editor
     SerializedProperty School;
     SerializedProperty PipCost;
     SerializedProperty Accuracy;
-    SerializedProperty Damage;
 
     bool generalGroup = true;
     bool voiceRecognizerGroup = true;
@@ -54,7 +53,6 @@ public class SpellDataEditor : Editor
         School = serializedObject.FindProperty("School");
         PipCost = serializedObject.FindProperty("PipCost");
         Accuracy = serializedObject.FindProperty("Accuracy");
-        Damage = serializedObject.FindProperty("Damage");
     }
 
     public override void OnInspectorGUI()
@@ -111,7 +109,6 @@ public class SpellDataEditor : Editor
             EditorGUILayout.PropertyField(School);
             EditorGUILayout.PropertyField(PipCost);
             EditorGUILayout.PropertyField(Accuracy);
-            EditorGUILayout.PropertyField(Damage);
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
 
