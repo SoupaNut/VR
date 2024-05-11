@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
+  m_Name: Fire_FireBall
+  m_EditorClassIdentifier: 
+  SpellPrefab: {fileID: 5130645417263282252, guid: 6b6b9fee4cd73104ebd8841402669741,
+    type: 3}
+  UseVoice: 0
+  VoiceName: 
+  UseMovement: 0
+  MovementName: fire
+  LineMaterial: {fileID: 2100000, guid: 195ace2102b95674b8d3880b707bdbcf, type: 2}
+  Artwork: {fileID: 21300000, guid: 93283df3060855242bccfb95e221e4ee, type: 3}
+  CardTemplate: {fileID: 1728394120, guid: ac17ed94b0b8bd54090ad8aabcb4b722, type: 3}
+  SchoolSymbol: {fileID: 935179752, guid: c3ceea4a5d3b9a9468090f2f901c3443, type: 3}
+  TypeIcon: {fileID: 686558021, guid: 423f49bb42c780d4e899f7b177472a2a, type: 3}
+  CardName: FireBall
+  Description: 10<sprite="School_Icons" name="Fire_School"><sprite="Spell_Icons"
+    name="Damage">
+  School: 0
+  PipCost: 0
+  Accuracy: 75

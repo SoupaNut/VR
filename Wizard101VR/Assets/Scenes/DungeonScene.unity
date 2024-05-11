@@ -16534,9 +16534,9 @@ MonoBehaviour:
   AllSpells:
   - {fileID: 11400000, guid: b2cd4b23024fcbd4ea5fd3a020a97b54, type: 2}
   - {fileID: 11400000, guid: e444808402bbf4a4693fb4d40e80db55, type: 2}
-  - {fileID: 11400000, guid: 420de9338a7b60346806ae3fb310010c, type: 2}
+  - {fileID: 11400000, guid: 473f7c04641fe374697292e2615827c9, type: 2}
   - {fileID: 11400000, guid: dcecd006fd88e6446bdd5a2e3b623d22, type: 2}
-  - {fileID: 11400000, guid: dcecd006fd88e6446bdd5a2e3b623d22, type: 2}
+  - {fileID: 11400000, guid: 94e1e8af4a906df42a29e9d14275b10a, type: 2}
 --- !u!114 &2181199002790551308
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18723,6 +18723,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1750083204423919003, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
+        type: 3}
+      propertyPath: DamagedSfxClip
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2466785496804541471, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
         type: 3}

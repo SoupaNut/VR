@@ -14119,6 +14119,37 @@ ParticleSystemRenderer:
   m_MeshWeighting2: 1
   m_MeshWeighting3: 1
   m_MaskInteraction: 0
+--- !u!1 &4796648734639328116
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7947699299055014312}
+  m_Layer: 0
+  m_Name: Root
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7947699299055014312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4796648734639328116}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: -0.2}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1966540559900487313}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &6798631812607232048
 GameObject:
   m_ObjectHideFlags: 0
@@ -14145,13 +14176,14 @@ Transform:
   m_GameObject: {fileID: 6798631812607232048}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1.058, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4438840590784042712}
   - {fileID: 9102906361609391767}
   - {fileID: 8188679367458768244}
+  - {fileID: 7947699299055014312}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5130645417263282252
@@ -14170,10 +14202,17 @@ MonoBehaviour:
   Radius: 0.07
   Speed: 10
   Damage: 10
-  Center: {fileID: 4438840590784042712}
+  Root: {fileID: 7947699299055014312}
+  Center: {fileID: 1966540559900487313}
   HittableLayers:
     serializedVersion: 2
     m_Bits: 2423
+  OnCastSfx: {fileID: 8300000, guid: 695d630f691f5d7438b4728bece5bdfa, type: 3}
+  ImpactVfx: {fileID: 484278158676776206, guid: 5b6db082fad36a64fab1ba7e3f8de01a,
+    type: 3}
+  ImpactSfxClip: {fileID: 8300000, guid: c1550f6827d14704f83386245907c37b, type: 3}
+  ImpactVfxLifetime: 5
+  ImpactVfxSpawnOffset: 0.01
 --- !u!1 &7281567092548937840
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -14,6 +15,8 @@ namespace Unity.Game.Shared
             DamageTick,
             Impact,
             EnemyDetection,
+            EnemyDeath,
+            Spells,
             //Pickup,
             WeaponShoot,
             //WeaponOverheat,
@@ -43,20 +46,41 @@ namespace Unity.Game.Shared
             return totalLoudness / sampleWindow;
         }
 
-        public static void CreateSfx(AudioClip clip, Vector3 position, AudioGroups audioGroup, float spatialBlend = 0f, float rolloffDistanceMin = 1f)
+        public static AudioSource CreateSfx(AudioClip clip, GameObject gameObject, AudioGroups audioGroup, float spatialBlend = 0f, float rolloffDistanceMin = 1f)
+        {
+            AudioSource source = gameObject.GetComponent<AudioSource>();
+
+            // Add an audio source if the gameobject doesn't have one
+            if(source == null)
+            {
+                source = gameObject.AddComponent<AudioSource>();
+            }
+
+            SetAudioSource(source, clip, audioGroup, spatialBlend, rolloffDistanceMin);
+
+            return source;
+        }
+
+        public static AudioSource CreateSfx(AudioClip clip, Vector3 position, AudioGroups audioGroup, float spatialBlend = 0f, float rolloffDistanceMin = 1f)
         {
             GameObject impactSfxInstance = new GameObject();
             impactSfxInstance.transform.position = position;
 
             AudioSource source = impactSfxInstance.AddComponent<AudioSource>();
+            SetAudioSource(source, clip, audioGroup, spatialBlend, rolloffDistanceMin);
+
+            Destroy(impactSfxInstance, clip.length);
+
+            return source;
+        }
+
+        static void SetAudioSource(AudioSource source, AudioClip clip, AudioGroups audioGroup, float spatialBlend = 0f, float rolloffDistanceMin = 1f)
+        {
             source.clip = clip;
             source.spatialBlend = spatialBlend;
             source.minDistance = rolloffDistanceMin;
             source.Play();
-
             source.outputAudioMixerGroup = GetAudioGroup(audioGroup);
-
-            Destroy(impactSfxInstance, clip.length);
         }
 
         public static AudioMixerGroup GetAudioGroup(AudioGroups group)
@@ -94,6 +118,24 @@ namespace Unity.Game.Shared
 
             s_AudioManager.GetFloat("MasterVolume", out var valueInDb);
             return Mathf.Pow(10f, valueInDb / 20.0f);
+        } 
+
+        public static IEnumerator FadeOut(AudioSource source, float duration)
+        {
+            float startVolume = source.volume;
+
+            float startTime = Time.time;
+
+            while(Time.time < startTime + duration)
+            {
+                float progress = (Time.time - startTime) / duration;
+                source.volume = Mathf.Lerp(startVolume, 0, progress);
+
+                yield return null;
+            }
+
+            source.volume = 0;
+            source.Stop();
         }
     }
 }

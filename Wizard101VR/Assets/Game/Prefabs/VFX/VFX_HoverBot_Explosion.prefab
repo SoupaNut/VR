@@ -4847,7 +4847,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 51b4b159ffad18a408fe75b6f8ccbc2f, type: 2}
+  - {fileID: 2100000, guid: 189808d5a6c1be149a97a612f6c1b9fd, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9747,7 +9747,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 133346923945d9f4db816ec7db12fd03, type: 2}
+  - {fileID: 2100000, guid: 5b0f6896f4d01b441946dcd381bacceb, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -9791,7 +9791,7 @@ ParticleSystemRenderer:
   m_VertexStreams: 00030409
   m_UseCustomTrailVertexStreams: 0
   m_TrailVertexStreams: 00010304
-  m_Mesh: {fileID: 4300000, guid: 0b19a2ad6ee6e8444919efa02deb1db2, type: 3}
+  m_Mesh: {fileID: -6068814390798103960, guid: 1aeebf1818171a6428409ace2990597c, type: 3}
   m_Mesh1: {fileID: 0}
   m_Mesh2: {fileID: 0}
   m_Mesh3: {fileID: 0}
@@ -14647,7 +14647,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 5e98ae3eabd1549449a0ae4409a21eff, type: 2}
+  - {fileID: 2100000, guid: 19e5def444eba8a42b86f8ae4f6a8e43, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19560,8 +19560,8 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: a74eef6270cec6b4c9dfed0e7aa93cf6, type: 2}
-  - {fileID: 2100000, guid: a74eef6270cec6b4c9dfed0e7aa93cf6, type: 2}
+  - {fileID: 2100000, guid: a573d634e9d9ad7468733e326d3979ee, type: 2}
+  - {fileID: 2100000, guid: a573d634e9d9ad7468733e326d3979ee, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -19623,9 +19623,9 @@ AudioSource:
   m_GameObject: {fileID: 8950624839484268180}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 243414201558254368, guid: fcc71635aab95ff4fbdf1880bf2afa2f,
+  OutputAudioMixerGroup: {fileID: -6735610085979056578, guid: cc47353b477576843967473bb1a6fcc7,
     type: 2}
-  m_audioClip: {fileID: 8300000, guid: 0a338d82d61863d4aa095317ca6ce19e, type: 3}
+  m_audioClip: {fileID: 8300000, guid: e80095b93ab633d458dcc6c4939d7294, type: 3}
   m_PlayOnAwake: 1
   m_Volume: 1
   m_Pitch: 1

@@ -20,7 +20,8 @@ namespace Unity.Game.Gameplay
 
         public Material DefaultLineMaterial;
 
-        public List<Collider> IgnoredColliders = new List<Collider>();
+        public List<Collider> IgnoredColliders { get; private set; }
+        public GameObject Owner { get; private set; }
 
 
         DeckManager m_DeckManager;
@@ -56,24 +57,29 @@ namespace Unity.Game.Gameplay
             // If wand is being grabbed
             if(m_WeaponGrabInteractable.IsWeaponEnabled)
             {
-                bool isActivated = m_WeaponGrabInteractable.InteractorManager.IsActivated;
+                if(m_SpellToCast != null)
+                {
+                    bool isActivated = m_WeaponGrabInteractable.InteractorManager.IsActivated;
 
-                // Start Casting
-                if(!m_IsCasting && isActivated)
-                {
-                    StartCasting();
-                }
-                // Update Casting
-                else if(m_IsCasting && isActivated)
-                {
-                    UpdateCasting();
-                }
+                    // Start Casting
+                    if (!m_IsCasting && isActivated)
+                    {
+                        StartCasting();
+                    }
+                    // Update Casting
+                    else if (m_IsCasting && isActivated)
+                    {
+                        UpdateCasting();
+                    }
 
-                // End Casting
-                else if(m_IsCasting && !isActivated)
-                {
-                    StopCasting();
+                    // End Casting
+                    else if (m_IsCasting && !isActivated)
+                    {
+                        StopCasting();
+                    }
                 }
+                // TODO: add indicator to user that they need to select a spell to start casting
+                
             }
         }
 
@@ -81,13 +87,16 @@ namespace Unity.Game.Gameplay
         {
             m_DeckManager.DeckEnabled = true;
 
+            GameObject player = m_WeaponGrabInteractable.InteractorManager.Player.gameObject;
+            Owner = player;
+
             IgnoredColliders = new List<Collider>();
 
             // Add self colliders
             IgnoredColliders.AddRange(m_SelfColliders);
             
             // Add player colliders
-            Collider[] playerColliders = m_WeaponGrabInteractable.InteractorManager.Player.gameObject.GetComponentsInChildren<Collider>();
+            Collider[] playerColliders = player.GetComponentsInChildren<Collider>();
             if (playerColliders.Length > 0)
             {
                 IgnoredColliders.AddRange(playerColliders);
@@ -100,25 +109,33 @@ namespace Unity.Game.Gameplay
             m_DeckManager.DeckEnabled = false;
             m_DeckManager.DeckDisplay.Display.SetActive(false);
             IgnoredColliders = null;
+            Owner = null;
         }
 
         public void StartCasting()
         {
             m_IsCasting = true;
-            MovementRecognizer.StartMovement();
-            VoiceRecognizer.Activate();
             m_SaidSpell = "";
+
+            if(m_SpellToCast.UseMovement)
+                MovementRecognizer.StartMovement();
+            
+            if(m_SpellToCast.UseVoice)
+                VoiceRecognizer.Activate();
+            
         }
 
         public void UpdateCasting()
         {
-            MovementRecognizer.UpdateMovement();
+            if(m_SpellToCast.UseMovement)
+                MovementRecognizer.UpdateMovement();
         }
 
         public void StopCasting()
         {
             m_IsCasting = false;
-            VoiceRecognizer.Deactivate();
+            if(m_SpellToCast.UseVoice)
+                VoiceRecognizer.Deactivate();
 
             if (m_SpellToCast != null && m_SpellToCast.UseMovement)
             {
