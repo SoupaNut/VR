@@ -81,10 +81,6 @@ namespace Unity.Game.Gameplay
         [Tooltip("Layers this projectile can collide with")]
         public LayerMask HittableLayers = -1;
 
-        [Header("General SFX")]
-        [Tooltip("Clip to play upon cast.")]
-        public AudioClip OnCastSfx;
-
         [Header("Impact")]
         [Tooltip("VFX prefab to spawn upon impact")]
         public GameObject ImpactVfx;
@@ -104,12 +100,6 @@ namespace Unity.Game.Gameplay
             base.Cast(manager);
 
             IgnoredColliders = manager.IgnoredColliders;
-
-            if(OnCastSfx)
-            {
-                AudioUtility.CreateSfx(OnCastSfx, gameObject, AudioUtility.AudioGroups.Spells, 1f);
-            }
-                
         }
 
         void Update()

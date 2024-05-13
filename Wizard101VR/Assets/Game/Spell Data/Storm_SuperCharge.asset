@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
-  m_Name: Storm_ThunderSnake
+  m_Name: Storm_SuperCharge
   m_EditorClassIdentifier: 
   SpellPrefab: {fileID: 6943622817285434524, guid: 07124dd2cb6c25f4db62fd3c2ef4d8c2,
     type: 3}
@@ -19,13 +19,13 @@ MonoBehaviour:
   UseMovement: 1
   MovementName: storm
   LineMaterial: {fileID: 2100000, guid: 972b44eb2201100418710fa6ea1bffbe, type: 2}
-  Artwork: {fileID: 21300000, guid: d71ab864983b3b8469f195cfed9f02c3, type: 3}
+  Artwork: {fileID: 21300000, guid: 348667e7a80bcd6439aa486f56875e38, type: 3}
   CardTemplate: {fileID: 42714679, guid: ac17ed94b0b8bd54090ad8aabcb4b722, type: 3}
   SchoolSymbol: {fileID: -717879332, guid: c3ceea4a5d3b9a9468090f2f901c3443, type: 3}
   TypeIcon: {fileID: 686558021, guid: 423f49bb42c780d4e899f7b177472a2a, type: 3}
-  CardName: thunder snake
-  Description: 105-145<sprite="School_Icons" name="Storm_School"><sprite="Spell_Icons"
+  CardName: Supercharge
+  Description: 20-100<sprite="School_Icons" name="Storm_School"><sprite="Spell_Icons"
     name="Damage">
   School: 2
-  PipCost: 1
+  PipCost: 0
   Accuracy: 70
