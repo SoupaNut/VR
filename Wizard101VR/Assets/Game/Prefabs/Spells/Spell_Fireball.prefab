@@ -14159,8 +14159,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1966540559900487313}
-  - component: {fileID: 5130645417263282252}
   - component: {fileID: 1931371903917563071}
+  - component: {fileID: 74399237514142895}
   m_Layer: 0
   m_Name: Spell_Fireball
   m_TagString: Untagged
@@ -14187,32 +14187,6 @@ Transform:
   - {fileID: 7947699299055014312}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &5130645417263282252
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6798631812607232048}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4c7817bc32e30d1428d8dad1a384f2fa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  MaxLifeTime: 5
-  Radius: 0.07
-  Speed: 10
-  Damage: 10
-  Root: {fileID: 7947699299055014312}
-  Center: {fileID: 1966540559900487313}
-  HittableLayers:
-    serializedVersion: 2
-    m_Bits: 2423
-  OnCastSfx: {fileID: 0}
-  ImpactVfx: {fileID: 484278158676776206, guid: 5b6db082fad36a64fab1ba7e3f8de01a,
-    type: 3}
-  ImpactVfxLifetime: 5
-  ImpactVfxSpawnOffset: 0.01
 --- !u!82 &1931371903917563071
 AudioSource:
   m_ObjectHideFlags: 0
@@ -14310,6 +14284,35 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &74399237514142895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6798631812607232048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c7817bc32e30d1428d8dad1a384f2fa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  MaxLifeTime: 5
+  OnCastSfx: {fileID: 0}
+  Damage: 10
+  Speed: 10
+  DetectionRadius: 0.16
+  Root: {fileID: 7947699299055014312}
+  Tip: {fileID: 1966540559900487313}
+  HittableLayers:
+    serializedVersion: 2
+    m_Bits: 2423
+  OnHitLifetime: 0
+  ImpactVfx: {fileID: 484278158676776206, guid: 5b6db082fad36a64fab1ba7e3f8de01a,
+    type: 3}
+  ImpactVfxLifetime: 5
+  ImpactVfxSpawnOffset: 0.1
+  DisplayColliderRadius: 1
+  ColliderColor: {r: 0, g: 1, b: 0, a: 1}
 --- !u!1 &7281567092548937840
 GameObject:
   m_ObjectHideFlags: 0

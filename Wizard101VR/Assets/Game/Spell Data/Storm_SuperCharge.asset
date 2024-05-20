@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
   m_Name: Storm_SuperCharge
   m_EditorClassIdentifier: 
-  SpellPrefab: {fileID: 6943622817285434524, guid: 07124dd2cb6c25f4db62fd3c2ef4d8c2,
+  SpellPrefab: {fileID: 4007110113032877875, guid: 07124dd2cb6c25f4db62fd3c2ef4d8c2,
     type: 3}
   UseVoice: 0
   VoiceName: 

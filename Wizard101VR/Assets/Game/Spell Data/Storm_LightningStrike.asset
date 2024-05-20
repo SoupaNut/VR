@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
+  m_Name: Storm_LightningStrike
+  m_EditorClassIdentifier: 
+  SpellPrefab: {fileID: 5802645231964398586, guid: 83258806b1ebb54489ce531f8fecb421,
+    type: 3}
+  UseVoice: 0
+  VoiceName: 
+  UseMovement: 0
+  MovementName: storm
+  LineMaterial: {fileID: 2100000, guid: 972b44eb2201100418710fa6ea1bffbe, type: 2}
+  Artwork: {fileID: 21300000, guid: 7ed9cc3878c9a274199e3300f5f67a86, type: 3}
+  CardTemplate: {fileID: 42714679, guid: ac17ed94b0b8bd54090ad8aabcb4b722, type: 3}
+  SchoolSymbol: {fileID: -717879332, guid: c3ceea4a5d3b9a9468090f2f901c3443, type: 3}
+  TypeIcon: {fileID: 686558021, guid: 423f49bb42c780d4e899f7b177472a2a, type: 3}
+  CardName: Lightning Strike
+  Description: 5<sprite="School_Icons" name="Storm_School"><sprite="Spell_Icons"
+    name="Damage">
+  School: 2
+  PipCost: 0
+  Accuracy: 70

@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff43e47a89c4042469cb4619bf7df29a, type: 3}
   m_Name: Fire_FireBall
   m_EditorClassIdentifier: 
-  SpellPrefab: {fileID: 5130645417263282252, guid: 6b6b9fee4cd73104ebd8841402669741,
+  SpellPrefab: {fileID: 74399237514142895, guid: 6b6b9fee4cd73104ebd8841402669741,
     type: 3}
   UseVoice: 0
   VoiceName: 

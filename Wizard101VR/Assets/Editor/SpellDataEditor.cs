@@ -1,5 +1,6 @@
 using UnityEditor;
 using Unity.Game.Gameplay;
+using UnityEngine;
 
 [CustomEditor(typeof(SpellData))]
 public class SpellDataEditor : Editor
@@ -67,6 +68,7 @@ public class SpellDataEditor : Editor
             EditorGUILayout.PropertyField(SpellPrefab);
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        GUILayout.Space(10);
 
         voiceRecognizerGroup = EditorGUILayout.BeginFoldoutHeaderGroup(voiceRecognizerGroup, "Voice");
         if (voiceRecognizerGroup)
@@ -78,6 +80,7 @@ public class SpellDataEditor : Editor
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        GUILayout.Space(10);
 
         movementRecognizerGroup = EditorGUILayout.BeginFoldoutHeaderGroup(movementRecognizerGroup, "Movement");
         if (movementRecognizerGroup)
@@ -90,6 +93,7 @@ public class SpellDataEditor : Editor
             }
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        GUILayout.Space(10);
 
         cardArtGroup = EditorGUILayout.BeginFoldoutHeaderGroup(cardArtGroup, "Card Art");
         if(cardArtGroup)
@@ -100,6 +104,7 @@ public class SpellDataEditor : Editor
             EditorGUILayout.PropertyField(TypeIcon);
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        GUILayout.Space(10);
 
         cardInfoGroup = EditorGUILayout.BeginFoldoutHeaderGroup(cardInfoGroup, "Card Info");
         if (cardInfoGroup)
@@ -111,6 +116,7 @@ public class SpellDataEditor : Editor
             EditorGUILayout.PropertyField(Accuracy);
         }
         EditorGUILayout.EndFoldoutHeaderGroup();
+        GUILayout.Space(10);
 
 
         serializedObject.ApplyModifiedProperties();
