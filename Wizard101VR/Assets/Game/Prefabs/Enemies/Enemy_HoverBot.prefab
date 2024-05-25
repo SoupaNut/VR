@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 1750083204423919003}
   - component: {fileID: 1264864180239799762}
   - component: {fileID: 7820987864612595569}
+  - component: {fileID: 6261140636692531223}
   m_Layer: 0
   m_Name: Enemy_HoverBot
   m_TagString: Untagged
@@ -64,7 +65,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 18.03, y: 0, z: -7.42}
-  m_LocalScale: {x: 0.25, y: 0.25, z: 0.25}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7435576134623196840}
@@ -237,45 +238,13 @@ MonoBehaviour:
   SelfDestructYHeight: -20
   DeathDuration: 0
   OrientationSpeed: 10
-  DamagedSfxClip: {fileID: 8300000, guid: 2afe1d8fb73c57342817fede005078c0, type: 3}
+  DamagedSfxClip: {fileID: 0}
   DeathVfx: {fileID: 8950624839484268180, guid: cc181876c882e134ea3a6b7d9abb98c2,
     type: 3}
   DeathVfxSpawnPoint: {fileID: 7834266638705790070}
   EyeColorMaterial: {fileID: 2100000, guid: af18ade97394b13469e6a88e51bbffad, type: 2}
   DefaultEyeColor: {r: 2.9960783, g: 0.9160931, b: 0, a: 1}
   AttackEyeColor: {r: 2.9960787, g: 0.13679013, b: 0, a: 1}
-  BodyMaterial: {fileID: 2100000, guid: a7a065019e52e634d8575fb6d9b7e4ab, type: 2}
-  OnHitBodyGradient:
-    serializedVersion: 2
-    key0: {r: 0, g: 0, b: 0, a: 1}
-    key1: {r: 1, g: 0.9669811, b: 0.9669811, a: 1}
-    key2: {r: 1, g: 1, b: 1, a: 0}
-    key3: {r: 0, g: 0, b: 0, a: 0}
-    key4: {r: 0, g: 0, b: 0, a: 0}
-    key5: {r: 0, g: 0, b: 0, a: 0}
-    key6: {r: 0, g: 0, b: 0, a: 0}
-    key7: {r: 0, g: 0, b: 0, a: 0}
-    ctime0: 0
-    ctime1: 15008
-    ctime2: 50527
-    ctime3: 65535
-    ctime4: 0
-    ctime5: 0
-    ctime6: 0
-    ctime7: 0
-    atime0: 0
-    atime1: 65535
-    atime2: 0
-    atime3: 0
-    atime4: 0
-    atime5: 0
-    atime6: 0
-    atime7: 0
-    m_Mode: 0
-    m_ColorSpace: -1
-    m_NumColorKeys: 4
-    m_NumAlphaKeys: 2
-  FlashOnHitDuration: 0.2
   AttackRangeColor: {r: 1, g: 0, b: 0, a: 1}
   DetectionRangeColor: {r: 0, g: 0, b: 1, a: 1}
 --- !u!114 &1264864180239799762
@@ -327,6 +296,51 @@ MonoBehaviour:
   AmmoReloadRate: 10
   WeaponSound: {fileID: 8300000, guid: dbde5ea6c219425478d4dcda2ce8ed31, type: 3}
   MuzzleFlashPrefab: {fileID: 3257943994090498087}
+--- !u!114 &6261140636692531223
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2466785496804541471}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 00f5e3bac17c9bf45a487b0667a9b14c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  FlashMaterials:
+  - {fileID: 2100000, guid: a7a065019e52e634d8575fb6d9b7e4ab, type: 2}
+  FlashGradient:
+    serializedVersion: 2
+    key0: {r: 0, g: 0, b: 0, a: 1}
+    key1: {r: 1, g: 0.9669811, b: 0.9669811, a: 1}
+    key2: {r: 1, g: 1, b: 1, a: 0}
+    key3: {r: 0, g: 0, b: 0, a: 0}
+    key4: {r: 0, g: 0, b: 0, a: 0}
+    key5: {r: 0, g: 0, b: 0, a: 0}
+    key6: {r: 0, g: 0, b: 0, a: 0}
+    key7: {r: 0, g: 0, b: 0, a: 0}
+    ctime0: 0
+    ctime1: 15008
+    ctime2: 50527
+    ctime3: 65535
+    ctime4: 0
+    ctime5: 0
+    ctime6: 0
+    ctime7: 0
+    atime0: 0
+    atime1: 65535
+    atime2: 0
+    atime3: 0
+    atime4: 0
+    atime5: 0
+    atime6: 0
+    atime7: 0
+    m_Mode: 0
+    m_ColorSpace: -1
+    m_NumColorKeys: 4
+    m_NumAlphaKeys: 2
+  FlashDuration: 0.2
 --- !u!1 &5604541617068996330
 GameObject:
   m_ObjectHideFlags: 0

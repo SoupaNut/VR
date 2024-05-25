@@ -1,7 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Unity.Game.Shared;
+using System.Linq;
+using Unity.VisualScripting;
 
 namespace Unity.Game.Gameplay.Props
 {
@@ -32,6 +32,8 @@ namespace Unity.Game.Gameplay.Props
         [Tooltip("Layers the explosion can collide with")]
         public LayerMask HittableLayers = -1;
 
+        public Transform ExplosionOrigin;
+
         [Header("Debug")]
         public bool DisplayRadius;
 
@@ -44,12 +46,15 @@ namespace Unity.Game.Gameplay.Props
         bool m_HasExploded = false;
         float timer = 0f;
         Health m_Health;
+        Collider[] m_SelfColliders;
 
         // Start is called before the first frame update
         void Start()
         {
             FireVfx.SetActive(false);
             ExplosionVfx.SetActive(false);
+
+            m_SelfColliders = GetComponentsInChildren<Collider>();
 
             m_Health = GetComponent<Health>();
             m_Health.onDamage += OnDamaged;
@@ -91,23 +96,44 @@ namespace Unity.Game.Gameplay.Props
             FireVfx.SetActive(false);
             ExplosionVfx.SetActive(true);
 
-            Collider[] colliders = Physics.OverlapSphere(transform.position, ExplosionRadius, HittableLayers);
-            Debug.Log("Length: " + colliders.Length);
+            // Get colliders within the explosion radius
+            Collider[] colliders = Physics.OverlapSphere(ExplosionOrigin.position, ExplosionRadius, HittableLayers);
+
             foreach (Collider collider in colliders)
             {
-                Debug.Log(collider.gameObject.name);
-                // Calculate direction from the explosion to the hit point
-                Vector3 direction = collider.transform.position - transform.position;
+                // Skip to next collider if current one doesn't have health or is a self collider
+                Health health = collider.GetComponentInParent<Health>();
+                if (health == null || m_SelfColliders.Contains(collider)) continue;
 
-                // check if there is a direct line of sight
-                if (!Physics.Raycast(transform.position, direction, direction.magnitude, HittableLayers))
+
+                // Check for obstructions
+                Vector3 targetPosition = collider.transform.position;
+                Vector3 diffVector = targetPosition - ExplosionOrigin.position;
+                Vector3 direction = diffVector.normalized;
+                float sqrDistance = diffVector.sqrMagnitude;
+
+                RaycastHit[] hits = Physics.RaycastAll(ExplosionOrigin.position, direction, ExplosionRadius, HittableLayers, QueryTriggerInteraction.Ignore);
+
+                bool isObstructed = false;
+
+                foreach(var hit in hits)
                 {
-                    // Damage
-                    Health health = collider.GetComponentInParent<Health>();
-                    if (health != null)
+                    // Skip if the hit collider is part of self colliders, or has Health component
+                    if (m_SelfColliders.Contains(hit.collider) || hit.collider == collider || hit.collider.GetComponentInParent<Health>()) continue;
+
+                    float sqrHitDistance = (hit.point - ExplosionOrigin.position).sqrMagnitude;
+
+                    // if an obstruction is found before the target collider, mark as obstructed and break
+                    if(sqrHitDistance < sqrDistance)
                     {
-                        health.TakeDamage(Damage, null);
+                        isObstructed = true;
+                        break;
                     }
+                }
+
+                if(!isObstructed)
+                {
+                    health.TakeDamage(Damage, gameObject);
                 }
             }
             m_HasExploded = true;
@@ -120,7 +146,7 @@ namespace Unity.Game.Gameplay.Props
             if(DisplayRadius)
             {
                 Gizmos.color = RadiusColor;
-                Gizmos.DrawWireSphere(transform.position, ExplosionRadius);
+                Gizmos.DrawWireSphere(ExplosionOrigin.position, ExplosionRadius);
             }
         }
     }

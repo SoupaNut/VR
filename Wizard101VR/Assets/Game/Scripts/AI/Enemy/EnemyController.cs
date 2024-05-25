@@ -1,26 +1,14 @@
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using Unity.Game.Shared;
 
 namespace Unity.Game.AI.Enemy
 {
+    using RendererData = TypesUtility.RendererIndexData;
+
     [RequireComponent(typeof(Health), typeof(Actor))]
     public class EnemyController : BaseEntityController
     {
-        [System.Serializable]
-        public struct RendererIndexData
-        {
-            public Renderer Renderer;
-            public int MaterialIndex;
-
-            public RendererIndexData(Renderer renderer, int index)
-            {
-                Renderer = renderer;
-                MaterialIndex = index;
-            }
-        }
-
         [Header("General")]
         [Tooltip("The Y height at which the enemy will be automatically killed (if it falls off of the level)")]
         public float SelfDestructYHeight = -20f;
@@ -54,17 +42,6 @@ namespace Unity.Game.AI.Enemy
         [ColorUsageAttribute(true, true)]
         public Color AttackEyeColor;
 
-        [Header("Flash on hit")]
-        [Tooltip("The material used for the body of the hoverbot")]
-        public Material BodyMaterial;
-
-        [Tooltip("The gradient representing the color of the flash on hit")]
-        [GradientUsageAttribute(true)]
-        public Gradient OnHitBodyGradient;
-
-        [Tooltip("The duration of the flash on hit")]
-        public float FlashOnHitDuration = 0.5f;
-
         [Header("Debug Display")]
         [Tooltip("Color of the sphere gizmo representing the attack range")]
         public Color AttackRangeColor = Color.red;
@@ -93,11 +70,7 @@ namespace Unity.Game.AI.Enemy
         Actor m_Actor;
         WeaponController m_WeaponController;
 
-        List<RendererIndexData> m_BodyRenderers = new List<RendererIndexData>();
-        MaterialPropertyBlock m_BodyFlashMaterialPropertyBlock;
-        float m_LastTimeDamaged = Mathf.NegativeInfinity;
-
-        RendererIndexData m_EyeRendererData;
+        RendererData m_EyeRendererData;
         MaterialPropertyBlock m_EyeColorMaterialPropertyBlock;
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -//
 
@@ -128,17 +101,10 @@ namespace Unity.Game.AI.Enemy
                 {
                     if (renderer.sharedMaterials[i] == EyeColorMaterial)
                     {
-                        m_EyeRendererData = new RendererIndexData(renderer, i);
-                    }
-
-                    if (renderer.sharedMaterials[i] == BodyMaterial)
-                    {
-                        m_BodyRenderers.Add(new RendererIndexData(renderer, i));
+                        m_EyeRendererData = new RendererData(renderer, i);
                     }
                 }
             }
-
-            m_BodyFlashMaterialPropertyBlock = new MaterialPropertyBlock();
 
             // Check if we have an eye renderer for this enemy
             if (m_EyeRendererData.Renderer != null)
@@ -185,14 +151,6 @@ namespace Unity.Game.AI.Enemy
             EnsureIsWithinLevelBounds();
 
             DetectionModule.HandleTargetDetection(m_Actor, m_SelfColliders);
-
-            // flash body on hit
-            Color currentColor = OnHitBodyGradient.Evaluate((Time.time - m_LastTimeDamaged) / FlashOnHitDuration);
-            m_BodyFlashMaterialPropertyBlock.SetColor("_EmissionColor", currentColor);
-            foreach (var data in m_BodyRenderers)
-            {
-                data.Renderer.SetPropertyBlock(m_BodyFlashMaterialPropertyBlock, data.MaterialIndex);
-            }
         }
 
         void EnsureIsWithinLevelBounds()
@@ -236,7 +194,6 @@ namespace Unity.Game.AI.Enemy
                 }
 
                 onDamaged?.Invoke();
-                m_LastTimeDamaged = Time.time;
             }
         }
 
