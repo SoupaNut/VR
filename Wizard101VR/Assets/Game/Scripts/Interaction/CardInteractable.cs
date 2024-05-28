@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using Unity.Game.Shared;
 using Unity.Game.Gameplay;
+using Unity.Game.Gameplay.Spells;
 
 namespace Unity.Game.Interaction
 {

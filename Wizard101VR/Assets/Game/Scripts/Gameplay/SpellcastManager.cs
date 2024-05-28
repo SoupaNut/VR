@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.Game.Interaction;
 using Unity.Game.Shared;
 using UnityEngine;
+using Unity.Game.Gameplay.Spells;
 
 namespace Unity.Game.Gameplay
 {
@@ -14,9 +15,6 @@ namespace Unity.Game.Gameplay
         public AppVoiceExperience VoiceRecognizer;
 
         public Transform WandTip;
-
-        //[Range(0f, 1f)]
-        //public float MinimumRecognitionThreshold = 0.85f;
 
         public Material DefaultLineMaterial;
 
@@ -174,14 +172,6 @@ namespace Unity.Game.Gameplay
             bool movementValid = true;
             if (m_SpellToCast.UseMovement)
             {
-                //// calculate target score based on the spell accuracy
-                //float targetScore = (1f - MinimumRecognitionThreshold) * (1f - (m_SpellToCast.Accuracy * 0.01f)) + MinimumRecognitionThreshold;
-
-                //// Movement is not accurate enough
-                //if (score < targetScore)
-                //{
-                //    movementValid = false;
-                //}
                 if(name.ToLower() != m_SpellToCast.MovementName.ToLower())
                 {
                     movementValid = false;

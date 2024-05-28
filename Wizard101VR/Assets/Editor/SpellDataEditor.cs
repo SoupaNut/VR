@@ -1,5 +1,5 @@
 using UnityEditor;
-using Unity.Game.Gameplay;
+using Unity.Game.Gameplay.Spells;
 using UnityEngine;
 
 [CustomEditor(typeof(SpellData))]

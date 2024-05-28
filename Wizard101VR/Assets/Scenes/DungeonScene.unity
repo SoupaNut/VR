@@ -16037,7 +16037,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -16269,7 +16269,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -16853,6 +16853,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Explosive_Barrel
       objectReference: {fileID: 0}
+    - target: {fileID: 6156895617914313926, guid: 22ee9deccec8ed542b63c8d8eacdb748,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7224182648369770956, guid: 22ee9deccec8ed542b63c8d8eacdb748,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -16951,7 +16956,7 @@ MonoBehaviour:
   - {fileID: 11400000, guid: b2cd4b23024fcbd4ea5fd3a020a97b54, type: 2}
   - {fileID: 11400000, guid: 5242f7825105c08419581d2b932d16c5, type: 2}
   - {fileID: 11400000, guid: 473f7c04641fe374697292e2615827c9, type: 2}
-  - {fileID: 11400000, guid: dcecd006fd88e6446bdd5a2e3b623d22, type: 2}
+  - {fileID: 11400000, guid: d261275ec0d889b4ba6a70c9c41dbd61, type: 2}
   - {fileID: 11400000, guid: 2c5a9ea6022347a469bd9900a6a2b9e3, type: 2}
 --- !u!114 &2181199002790551308
 MonoBehaviour:
@@ -19077,21 +19082,6 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 318977131421885249, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
         type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 318977131421885249, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 318977131421885249, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 318977131421885249, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
-        type: 3}
       propertyPath: m_LocalPosition.x
       value: 18.03
       objectReference: {fileID: 0}
@@ -19139,11 +19129,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1750083204423919003, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
-        type: 3}
-      propertyPath: DamagedSfxClip
-      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 2466785496804541471, guid: 0998c63b9b41cd84abbaaed021ddd9d8,
         type: 3}
@@ -20969,7 +20954,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -22366,7 +22351,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
@@ -23911,7 +23896,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}

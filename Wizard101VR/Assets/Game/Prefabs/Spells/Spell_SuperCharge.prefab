@@ -303,10 +303,12 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 2423
   OnHitLifetime: 0
-  ImpactVfx: {fileID: 0}
+  ImpactVfx: {fileID: 2932962426033766531, guid: 981db0032521f2b4a94e9e52f8d48077,
+    type: 3}
   ImpactVfxLifetime: 5
   ImpactVfxSpawnOffset: 0.1
   DisplayColliderRadius: 1
   ColliderColor: {r: 0, g: 1, b: 0, a: 1}
-  ExplosionRadius: 2
-  ExplodeAtEndOfLife: 0
+  ExplosionRadius: 5
+  ExplodeAtEndOfLife: 1
+  ExplosionDelay: 1.5

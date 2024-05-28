@@ -1,6 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using Unity.Game.Gameplay.Spells;
 
 namespace Unity.Game.Gameplay
 {
